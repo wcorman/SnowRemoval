@@ -1,16 +1,28 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 class Pricing extends React.Component {
+
 	constructor() {
-		super();
+    super();
+    const today = new Date();
+
 		this.state = {
 			schedule: { price: 25, driveways: 0 },
 			sameDay: { price: 35, driveways: 0 },
-			priority: { price: 55, driveways: 0 }
+			priority: { price: 55, driveways: 0 },
+			startDate: (today.setDate(today.getDate() + 1)),
 		};
 	}
+
+	handleChange = (date) => {
+		this.setState({
+			startDate: date
+    });
+	};
 
 	drivewaySelect = (e) => {
 		const plan = e.currentTarget.id;
@@ -58,7 +70,7 @@ class Pricing extends React.Component {
 									<h5 className="card-title text-muted text-uppercase text-center">Schedule Ahead</h5>
 									<h6 className="card-price text-center">${this.state.schedule.price}</h6>
 									<div className="d-flex justify-content-center">
-										<form className="">
+										<form>
 											<select
 												defaultValue="0"
 												className="custom-select my-1 mr-sm-2"
@@ -71,7 +83,9 @@ class Pricing extends React.Component {
 											</select>
 										</form>
 									</div>
-
+									<div className="d-flex justify-content-center">
+										<DatePicker selected={this.state.startDate} onChange={this.handleChange} />
+									</div>
 									<hr />
 									<ul className="fa-ul">
 										<li>
