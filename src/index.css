@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-section.pricing {
+body {
   background: #007bff;
   background: linear-gradient(to right, #0062E6, #33AEFF);
 }
@@ -73,4 +73,15 @@ section.pricing {
   .pricing .card:hover .btn {
     opacity: 1;
   }
+}
+
+/*!
+ * Scrolling Nav
+ */
+header {
+  padding: 156px 0 100px;
+}
+
+section {
+  padding: 150px 0;
 }
