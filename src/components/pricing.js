@@ -15,7 +15,6 @@ class Pricing extends React.Component {
     const today = new Date();
 
     var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10))
-    var ds = displayDate.toString('MM/dd/yy HH:mm:ss');
 
 		this.state = {
 			schedule: { price: 25, driveways: 0 },
@@ -31,7 +30,6 @@ class Pricing extends React.Component {
     console.log("today: ", new Date());
 
     var moment = require('moment');
-    var date2 = moment("2013-03-24")
     var now = moment();
 
     if (date < now) {
@@ -40,8 +38,6 @@ class Pricing extends React.Component {
       console.log("Future");
     }
 
-    let today = new Date();
-    let selected = date;
       const toolTip = document.getElementById('toolTip');
       console.log(toolTip);
 
