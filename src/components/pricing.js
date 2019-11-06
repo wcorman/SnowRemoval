@@ -3,22 +3,64 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Button from 'react-bootstrap/Button';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 class Pricing extends React.Component {
-
+  
 	constructor() {
     super();
+
     const today = new Date();
+
+    var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10))
+    var ds = displayDate.toString('MM/dd/yy HH:mm:ss');
 
 		this.state = {
 			schedule: { price: 25, driveways: 0 },
 			sameDay: { price: 35, driveways: 0 },
 			priority: { price: 55, driveways: 0 },
-			startDate: (today.setDate(today.getDate() + 1)),
-		};
+      startDate: (today.setDate(today.getDate() + 0.5)),
+      displayDate: displayDate,
+    };
 	}
 
 	handleChange = (date) => {
+    console.log("selected: ", date);
+    console.log("today: ", new Date());
+
+    var moment = require('moment');
+    var date2 = moment("2013-03-24")
+    var now = moment();
+
+    if (date < now) {
+      console.log("Past");
+    } else {
+      console.log("Future");
+    }
+
+    let today = new Date();
+    let selected = date;
+      const toolTip = document.getElementById('toolTip');
+      console.log(toolTip);
+
+    if (date < now) {
+      const button = document.getElementById('scheduleButton');
+      const toolTip = document.getElementById('toolTip');
+      // toolTip.classList.add("hideToolTip");
+      button.setAttribute("disabled", true);
+      button.classList.add("disabled");
+      button.style.pointerEvents = "none";
+    } else {
+      const button = document.getElementById('scheduleButton');
+      const toolTip = document.getElementById('toolTip');
+      // toolTip.classList.remove("hideToolTip");
+      button.removeAttribute("disabled");
+      button.classList.remove("disabled");
+      button.style.pointerEvents = "";
+    }
+
 		this.setState({
 			startDate: date
     });
@@ -84,8 +126,9 @@ class Pricing extends React.Component {
 										</form>
 									</div>
 									<div className="d-flex justify-content-center">
-										<DatePicker selected={this.state.startDate} onChange={this.handleChange} />
+										<DatePicker selected={this.state.startDate} onChange={this.handleChange} className="datePicker d-flex justify-content-center"/>
 									</div>
+                  <p>{}</p>
 									<hr />
 									<ul className="fa-ul">
 										<li>
@@ -101,9 +144,14 @@ class Pricing extends React.Component {
 											</span>Most cost effective
 										</li>
 									</ul>
-									<a href="#" className="btn btn-block btn-primary text-uppercase">
-										Clear that snow!
-									</a>
+
+                  <OverlayTrigger placement="bottom" overlay={<Tooltip className="hideToolTip" id="toolTip">Please use the Same Day option!</Tooltip>} >
+<div>
+                    <Button className="btn btn-block btn-primary text-uppercase" id="scheduleButton">
+                      Clear that snow!
+                    </Button>
+</div>
+                  </OverlayTrigger>
 								</div>
 							</div>
 						</div>

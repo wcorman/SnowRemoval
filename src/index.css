@@ -85,3 +85,33 @@ header {
 section {
   padding: 150px 0;
 }
+
+.datePicker {
+  border-style: solid;
+  border-radius: 4px;
+  border-width: thin;
+  border-color: #CED4D9;
+  text-align: center;
+}
+
+.custom-select {
+    text-align: center;
+}
+
+.disabled {
+  background-color: #CED4D9 !important;
+  border-color: #CED4D9 !important;
+}
+
+.hideToolTip {
+  visibility: hidden;
+}
+
+.husky {
+  width: 300px;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  padding: 14px;
+}

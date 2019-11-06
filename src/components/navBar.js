@@ -8,7 +8,7 @@ import Nav from 'react-bootstrap/Nav';
 function NavBar() {
   return (
   <Navbar bg="light" variant="light">
-    <Navbar.Brand href="#home">Snow Removal</Navbar.Brand>
+    <Navbar.Brand href="#home">Powder Hound</Navbar.Brand>
     <Nav className="mr-auto">
       <Nav.Link href="#home">Home</Nav.Link>
       <Nav.Link href="#services">Services</Nav.Link>
