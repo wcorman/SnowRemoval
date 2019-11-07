@@ -4,62 +4,50 @@ import '../App.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Button from 'react-bootstrap/Button';
-import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 class Pricing extends React.Component {
-  
 	constructor() {
-    super();
+		super();
 
-    const today = new Date();
+		const today = new Date();
 
-    var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10))
+		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
 
 		this.state = {
 			schedule: { price: 25, driveways: 0 },
 			sameDay: { price: 35, driveways: 0 },
-			priority: { price: 55, driveways: 0 },
-      startDate: (today.setDate(today.getDate() + 0.5)),
-      displayDate: displayDate,
-    };
+			priority: { price: 45, driveways: 0 },
+			startDate: today.setDate(today.getDate() + 0.5),
+			displayDate: displayDate,
+			dateError: false
+		};
 	}
 
 	handleChange = (date) => {
-    console.log("selected: ", date);
-    console.log("today: ", new Date());
+		var moment = require('moment');
+		var now = moment();
 
-    var moment = require('moment');
-    var now = moment();
-
-    if (date < now) {
-      console.log("Past");
-    } else {
-      console.log("Future");
-    }
-
-      const toolTip = document.getElementById('toolTip');
-      console.log(toolTip);
-
-    if (date < now) {
-      const button = document.getElementById('scheduleButton');
-      const toolTip = document.getElementById('toolTip');
-      // toolTip.classList.add("hideToolTip");
-      button.setAttribute("disabled", true);
-      button.classList.add("disabled");
-      button.style.pointerEvents = "none";
-    } else {
-      const button = document.getElementById('scheduleButton');
-      const toolTip = document.getElementById('toolTip');
-      // toolTip.classList.remove("hideToolTip");
-      button.removeAttribute("disabled");
-      button.classList.remove("disabled");
-      button.style.pointerEvents = "";
-    }
+		if (date < now) {
+			const button = document.getElementById('scheduleButton');
+			button.setAttribute('disabled', true);
+			button.classList.add('disabled');
+			button.style.pointerEvents = 'none';
+			this.setState({
+				dateError: true
+			});
+		} else {
+			const button = document.getElementById('scheduleButton');
+			button.removeAttribute('disabled');
+			button.classList.remove('disabled');
+			button.style.pointerEvents = '';
+			this.setState({
+				dateError: false
+			});
+		}
 
 		this.setState({
 			startDate: date
-    });
+		});
 	};
 
 	drivewaySelect = (e) => {
@@ -88,23 +76,24 @@ class Pricing extends React.Component {
 
 		if (plan === 'priority') {
 			if (driveways === '1') {
-				this.setState({ [plan]: { price: 60, driveways: 1 } });
+				this.setState({ [plan]: { price: 50, driveways: 1 } });
 			} else if (driveways === '2') {
-				this.setState({ [plan]: { price: 65, driveways: 2 } });
+				this.setState({ [plan]: { price: 55, driveways: 2 } });
 			} else {
-				this.setState({ [plan]: { price: 55, driveways: 0 } });
+				this.setState({ [plan]: { price: 60, driveways: 0 } });
 			}
 		}
 	};
 
 	render() {
+		const dateError = this.state.dateError;
 		return (
 			<section className="pricing py-5">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-4">
 							<div className="card mb-5 mb-lg-0">
-								<div className="card-body">
+								<div className="card-body card-container">
 									<h5 className="card-title text-muted text-uppercase text-center">Schedule Ahead</h5>
 									<h6 className="card-price text-center">${this.state.schedule.price}</h6>
 									<div className="d-flex justify-content-center">
@@ -122,10 +111,16 @@ class Pricing extends React.Component {
 										</form>
 									</div>
 									<div className="d-flex justify-content-center">
-										<DatePicker selected={this.state.startDate} onChange={this.handleChange} className="datePicker d-flex justify-content-center"/>
+										<DatePicker
+											selected={this.state.startDate}
+											onChange={this.handleChange}
+											className="datePicker d-flex justify-content-center"
+										/>
 									</div>
-                  <p>{}</p>
-									<hr />
+									<p className="dateError">
+										<b>{dateError ? 'Please choose a future date' : ''}</b>
+									</p>
+									<hr className="--small" />
 									<ul className="fa-ul">
 										<li>
 											<span className="fa-li">
@@ -140,23 +135,23 @@ class Pricing extends React.Component {
 											</span>Most cost effective
 										</li>
 									</ul>
-
-                  <OverlayTrigger placement="bottom" overlay={<Tooltip className="hideToolTip" id="toolTip">Please use the Same Day option!</Tooltip>} >
-<div>
-                    <Button className="btn btn-block btn-primary text-uppercase" id="scheduleButton">
-                      Clear that snow!
-                    </Button>
-</div>
-                  </OverlayTrigger>
+									<div className="button-container">
+										<Button
+											className="btn btn-block btn-primary text-uppercase button"
+											id="scheduleButton"
+										>
+											Clear that snow!
+										</Button>
+									</div>
 								</div>
 							</div>
 						</div>
 
 						<div className="col-lg-4">
 							<div className="card mb-5 mb-lg-0">
-								<div className="card-body">
+								<div className="card-body card-container">
 									<h5 className="card-title text-muted text-uppercase text-center">
-										Same Day Removal
+										Same Day Clearing
 									</h5>
 									<h6 className="card-price text-center">${this.state.sameDay.price}</h6>
 
@@ -190,18 +185,20 @@ class Pricing extends React.Component {
 											<strong>4pm</strong> deadline for payment
 										</li>
 									</ul>
-									<a href="#" className="btn btn-block btn-primary text-uppercase">
-										Clear that snow!
-									</a>
+									<div className="button-container">
+										<a href="#" className="btn btn-block btn-primary text-uppercase button">
+											Clear that snow!
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
 
 						<div className="col-lg-4">
 							<div className="card">
-								<div className="card-body">
+								<div className="card-body card-container">
 									<h5 className="card-title text-muted text-uppercase text-center">
-										Priority Removal
+										Priority Clearing
 									</h5>
 									<h6 className="card-price text-center">${this.state.priority.price}</h6>
 
@@ -237,9 +234,11 @@ class Pricing extends React.Component {
 											<strong>7pm</strong> deadline for payment
 										</li>
 									</ul>
-									<a href="#" className="btn btn-block btn-primary text-uppercase">
-										Clear that snow!
-									</a>
+									<div className="button-container">
+										<a href="#" className="btn btn-block btn-primary text-uppercase button">
+											Clear that snow!
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>

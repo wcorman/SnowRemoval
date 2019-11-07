@@ -25,12 +25,17 @@ body {
 }
 
 .card-body {
-  min-height: 410px;
+  min-height: 442px;
 }
 
 .pricing hr {
   margin: 1.5rem 0;
 }
+
+.--small {
+  margin-top: 0rem !important;
+}
+
 
 .pricing .card-title {
   margin: 0.5rem 0;
@@ -112,13 +117,41 @@ section {
 }
 
 .husky {
-  width: 300px;
-  text-align: center;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  padding: 14px;
+    width: 100%;
+    max-width: 375px;
+  height: auto;
+
+  margin-top: 24px;
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.huskyNav {
+  height: 40px;
+  padding-right: 10px;
+}
+
+.card-container {
+display:flex;
+flex-direction:column;
+height: 100%;
+}
+
+.button-container {
+  display: flex;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.button {
+  align-self: flex-end;
+}
+
+.dateError {
+  color: #ff0033;
+  align-self: center;
+  margin: 0;
+  height: 30px;
 }
