@@ -9,12 +9,11 @@ import Logo from '../navLogo.svg';
 
 function NavBar() {
   return (
-  <Navbar bg="light" variant="light">
+  <Navbar bg="light" variant="light" style={{backgroundColor: '#e3f2fd'}}>
     <Image src={Logo} className="huskyNav"/>
     <Nav className="mr-auto">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#services">Services</Nav.Link>
       <Nav.Link href="#pricing">Pricing</Nav.Link>
+      <Nav.Link href="#contact">Contact</Nav.Link>
     </Nav>
 
   </Navbar>

@@ -5,6 +5,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Button from 'react-bootstrap/Button';
 
+import InfoModal from '../components/modal';
+
 class Pricing extends React.Component {
 	constructor() {
 		super();
@@ -19,13 +21,15 @@ class Pricing extends React.Component {
 			priority: { price: 45, driveways: 0 },
 			startDate: today.setDate(today.getDate() + 0.5),
 			displayDate: displayDate,
-			dateError: false
+			dateError: false,
+			modalShow: false
 		};
 	}
 
 	handleChange = (date) => {
 		var moment = require('moment');
 		var now = moment();
+		console.log(date);
 
 		if (date < now) {
 			const button = document.getElementById('scheduleButton');
@@ -41,7 +45,8 @@ class Pricing extends React.Component {
 			button.classList.remove('disabled');
 			button.style.pointerEvents = '';
 			this.setState({
-				dateError: false
+				dateError: false,
+				displayDate: date,
 			});
 		}
 
@@ -85,8 +90,15 @@ class Pricing extends React.Component {
 		}
 	};
 
+	setModalShow = (showModal) => {
+			this.setState({
+				modalShow: showModal
+			});
+	}
+
 	render() {
 		const dateError = this.state.dateError;
+
 		return (
 			<section className="pricing py-5">
 				<div className="container">
@@ -244,6 +256,11 @@ class Pricing extends React.Component {
 						</div>
 					</div>
 				</div>
+				<Button variant="primary" onClick={() => this.setModalShow(true)}>
+					{this.state.displayDate.toDateString()}
+				</Button>
+
+				<InfoModal chosendate={this.state.displayDate.toDateString()} show={this.state.modalShow} onHide={() => this.setModalShow(false)} />
 			</section>
 		);
 	}
