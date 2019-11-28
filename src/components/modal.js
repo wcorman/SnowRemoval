@@ -15,9 +15,10 @@ function InfoModal(props) {
 					<Modal.Body>
 						<Form>
 							<Form.Row>
-								<Form.Group style={{width: '100%'}}>
+								<Form.Group style={{ width: '100%' }}>
 									<Form.Label />
 									<Form.Control
+										required
 										placeholder="ex: 306-555-5555"
 										id="phoneNumber"
 										onChange={(value) => props.onUpdateField(value.currentTarget)}
@@ -29,7 +30,6 @@ function InfoModal(props) {
 							</Button>
 						</Form>
 					</Modal.Body>
-
 				</div>
 			);
 		} else {
@@ -45,19 +45,34 @@ function InfoModal(props) {
 							<Form.Row>
 								<Form.Group as={Col}>
 									<Form.Label>First Name</Form.Label>
-									<Form.Control placeholder="First name" id="firstName" onChange={(value) => props.onUpdateField(value.currentTarget)} />
+									<Form.Control
+										required
+										placeholder="First name"
+										id="firstName"
+										onChange={(value) => props.onUpdateField(value.currentTarget)}
+									/>
 								</Form.Group>
 
 								<Form.Group as={Col}>
 									<Form.Label>Last Name</Form.Label>
-									<Form.Control placeholder="Last name" id="lastName" onChange={(value) => props.onUpdateField(value.currentTarget)} />
+									<Form.Control
+										placeholder="Last name"
+										id="lastName"
+										onChange={(value) => props.onUpdateField(value.currentTarget)}
+									/>
 								</Form.Group>
 							</Form.Row>
 
 							<Form.Row>
 								<Form.Group as={Col}>
 									<Form.Label>Email</Form.Label>
-									<Form.Control type="email" placeholder="Enter email" id="email" onChange={(value) => props.onUpdateField(value.currentTarget)} />
+									<Form.Control
+										required
+										type="email"
+										placeholder="Enter email"
+										id="email"
+										onChange={(value) => props.onUpdateField(value.currentTarget)}
+									/>
 								</Form.Group>
 							</Form.Row>
 
@@ -82,17 +97,24 @@ function InfoModal(props) {
 
 							<Form.Group>
 								<Form.Label>Address</Form.Label>
-								<Form.Control placeholder="Enter Address" id="address" onChange={(value) => props.onUpdateField(value.currentTarget)} />
+								<Form.Control
+									required
+									placeholder="Enter Address"
+									id="address"
+									onChange={(value) => props.onUpdateField(value.currentTarget)}
+								/>
 							</Form.Group>
 
-							<Button variant="primary" onClick={() => props.onPayment(props.price)}>
+							<Button
+								disabled={props.validform}
+								variant="primary"
+								type="submit"
+								onClick={() => props.onPayment(props.price)}
+							>
 								Pay {props.price}
 							</Button>
 						</Form>
 					</Modal.Body>
-					<Modal.Footer>
-						<Button onClick={props.onHide}>Close</Button>
-					</Modal.Footer>
 				</div>
 			);
 		}

@@ -37,15 +37,16 @@ class Pricing extends React.Component {
 			isLoaded: false,
 			error: null,
 			validPhone: 1,
+			validForm: 1,
 			orderType: null,
 			customer: {
-				firstName: null,
-				lastName: null,
-				email: null,
-				phoneNumber: null,
+				firstName: '',
+				lastName: '',
+				email: '',
+				phoneNumber: '',
 				city: 'Saskatoon',
 				province: 'Saskatchewan',
-				address: null,
+				address: '',
 				numberOfOrders: null,
 				totalSpent: null
 			}
@@ -66,15 +67,47 @@ class Pricing extends React.Component {
 
 		const field = input.id;
 
+		if (field === 'phoneNumber') {
+			this.phoneValidation(input.value);
+		} else {
+			this.fieldValidation(input.id);
+		}
+
 		this.setState({
 			customer: {
 				...this.state.customer,
 				[field]: input.value
 			}
 		});
+	};
 
-		if (field === 'phoneNumber') {
-			this.phoneValidation(input.value);
+	fieldValidation = () => {
+		const { firstName, lastName, address, email } = this.state.customer;
+
+		var pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/igm;
+
+		if (firstName === '' || lastName === '' || address === '' || !pattern.test(email)) {
+			this.setState({
+				validForm: 1
+			});
+		} else {
+			this.setState({
+				validForm: 0
+			});
+		}
+	};
+
+	emailValidation = (email) => {
+		var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g;
+
+		if (pattern.test(email)) {
+			this.setState({
+				validForm: 0
+			});
+		} else {
+			this.setState({
+				validForm: 1
+			});
 		}
 	};
 
@@ -102,11 +135,11 @@ class Pricing extends React.Component {
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 
-		this.setState({
-			scheduleModal: false,
-			sameDayModal: false,
-			priorityModal: false
-		});
+		// this.setState({
+		// 	scheduleModal: false,
+		// 	sameDayModal: false,
+		// 	priorityModal: false
+		// });
 	};
 
 	handleChange = (date) => {
@@ -367,6 +400,7 @@ class Pricing extends React.Component {
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
+					validform={this.state.validForm}
 					onPayment={this.onPayment}
 					price={this.state.schedule.price}
 					label="Scheduled snow clearing"
@@ -379,6 +413,7 @@ class Pricing extends React.Component {
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
+					validform={this.state.validForm}
 					onPayment={this.onPayment}
 					price={this.state.sameDay.price}
 					label="Same day clearing"
@@ -391,6 +426,7 @@ class Pricing extends React.Component {
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
+					validform={this.state.validForm}
 					onPayment={this.onPayment}
 					price={this.state.priority.price}
 					label="Priority clearing"
