@@ -11,7 +11,12 @@ class Pricing extends React.Component {
 	constructor() {
 		super();
 
+		this.onPayment = this.onPayment.bind(this);
+
 		const today = new Date();
+
+		var moment = require('moment');
+		var now = moment();
 
 		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
 
@@ -21,10 +26,58 @@ class Pricing extends React.Component {
 			priority: { price: 45, driveways: 0 },
 			startDate: today.setDate(today.getDate() + 0.5),
 			displayDate: displayDate,
+			today: today,
 			dateError: false,
-			modalShow: false
+			modalShow: false,
+			scheduleModal: false,
+			sameDayModal: false,
+			priorityModal: false,
+			price: null,
+			phoneCheck: 0,
+			phoneNumber: null,
+			isLoaded: false,
+			error: null,
+			validPhone: 1
 		};
 	}
+
+	componentDidMount() {
+		fetch('http://localhost:4000/orders/phone/306')
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+			})
+			.catch(console.log);
+	}
+
+	updatePhone = (number) => {
+		var pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g;
+
+		this.setState({
+			phoneNumber: number
+		});
+
+		if (pattern.test(number)) {
+			this.setState({
+				validPhone: 0
+			});
+		} else {
+			this.setState({
+				validPhone: 1
+			});
+		}
+	};
+
+	checkPhone = () => {
+		console.log('TESTING');
+		this.setState({
+			phoneCheck: 1
+		});
+	};
+
+	onPayment = (amount) => {
+		console.log('PAID ' + amount + ' to Powder Hounds');
+	};
 
 	handleChange = (date) => {
 		var moment = require('moment');
@@ -46,7 +99,7 @@ class Pricing extends React.Component {
 			button.style.pointerEvents = '';
 			this.setState({
 				dateError: false,
-				displayDate: date,
+				displayDate: date
 			});
 		}
 
@@ -85,16 +138,26 @@ class Pricing extends React.Component {
 			} else if (driveways === '2') {
 				this.setState({ [plan]: { price: 55, driveways: 2 } });
 			} else {
-				this.setState({ [plan]: { price: 60, driveways: 0 } });
+				this.setState({ [plan]: { price: 45, driveways: 0 } });
 			}
 		}
 	};
 
-	setModalShow = (showModal) => {
+	setModalShow = (selection, showModal) => {
+		if (selection === 'schedule') {
 			this.setState({
-				modalShow: showModal
+				scheduleModal: showModal
 			});
-	}
+		} else if (selection === 'sameDay') {
+			this.setState({
+				sameDayModal: showModal
+			});
+		} else if (selection === 'priority') {
+			this.setState({
+				priorityModal: showModal
+			});
+		}
+	};
 
 	render() {
 		const dateError = this.state.dateError;
@@ -104,7 +167,7 @@ class Pricing extends React.Component {
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-4">
-							<div className="card mb-5 mb-lg-0">
+							<div id="pricing" className="card mb-5 mb-lg-0">
 								<div className="card-body card-container">
 									<h5 className="card-title text-muted text-uppercase text-center">Schedule Ahead</h5>
 									<h6 className="card-price text-center">${this.state.schedule.price}</h6>
@@ -116,7 +179,7 @@ class Pricing extends React.Component {
 												id="schedule"
 												onChange={this.drivewaySelect}
 											>
-												<option>Driveway?</option>
+												<option>No Driveway</option>
 												<option value="1">Single Driveway</option>
 												<option value="2">Double Driveway</option>
 											</select>
@@ -151,6 +214,7 @@ class Pricing extends React.Component {
 										<Button
 											className="btn btn-block btn-primary text-uppercase button"
 											id="scheduleButton"
+											onClick={() => this.setModalShow('schedule', true)}
 										>
 											Clear that snow!
 										</Button>
@@ -175,7 +239,7 @@ class Pricing extends React.Component {
 												id="sameDay"
 												onChange={this.drivewaySelect}
 											>
-												<option>Driveway?</option>
+												<option>No Driveway</option>
 												<option value="1">Single Driveway</option>
 												<option value="2">Double Driveway</option>
 											</select>
@@ -198,9 +262,13 @@ class Pricing extends React.Component {
 										</li>
 									</ul>
 									<div className="button-container">
-										<a href="#" className="btn btn-block btn-primary text-uppercase button">
+										<Button
+											className="btn btn-block btn-primary text-uppercase button"
+											id="scheduleButton"
+											onClick={() => this.setModalShow('sameDay', true)}
+										>
 											Clear that snow!
-										</a>
+										</Button>
 									</div>
 								</div>
 							</div>
@@ -222,7 +290,7 @@ class Pricing extends React.Component {
 												id="priority"
 												onChange={this.drivewaySelect}
 											>
-												<option>Driveway?</option>
+												<option>No Driveway</option>
 												<option value="1">Single Driveway</option>
 												<option value="2">Double Driveway</option>
 											</select>
@@ -236,7 +304,7 @@ class Pricing extends React.Component {
 												<i className="fas fa-check" />
 											</span>
 											<strong>
-												Given priority over other same day clients, snow removed ASAP
+												Given priority over other same day clients, snow cleared ASAP
 											</strong>
 										</li>
 										<li>
@@ -247,20 +315,56 @@ class Pricing extends React.Component {
 										</li>
 									</ul>
 									<div className="button-container">
-										<a href="#" className="btn btn-block btn-primary text-uppercase button">
+										<Button
+											className="btn btn-block btn-primary text-uppercase button"
+											id="scheduleButton"
+											onClick={() => this.setModalShow('priority', true)}
+										>
 											Clear that snow!
-										</a>
+										</Button>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<Button variant="primary" onClick={() => this.setModalShow(true)}>
-					{this.state.displayDate.toDateString()}
-				</Button>
 
-				<InfoModal chosendate={this.state.displayDate.toDateString()} show={this.state.modalShow} onHide={() => this.setModalShow(false)} />
+				<InfoModal
+					onUpdatePhone={this.updatePhone}
+					onPhoneNext={this.checkPhone}
+					phonecheck={this.state.phoneCheck}
+					validphone={this.state.validPhone}
+					onPayment={this.onPayment}
+					price={this.state.schedule.price}
+					label="Scheduled snow clearing"
+					chosendate={this.state.displayDate.toDateString()}
+					show={this.state.scheduleModal}
+					onHide={() => this.setModalShow('schedule', false)}
+				/>
+				<InfoModal
+					onUpdatePhone={this.updatePhone}
+					onPhoneNext={this.checkPhone}
+					phonecheck={this.state.phoneCheck}
+					validphone={this.state.validPhone}
+					onPayment={this.onPayment}
+					price={this.state.sameDay.price}
+					label="Same day clearing"
+					chosendate={this.state.today.toDateString()}
+					show={this.state.sameDayModal}
+					onHide={() => this.setModalShow('sameDay', false)}
+				/>
+				<InfoModal
+					onUpdatePhone={this.updatePhone}
+					onPhoneNext={this.checkPhone}
+					phonecheck={this.state.phoneCheck}
+					validphone={this.state.validPhone}
+					onPayment={this.onPayment}
+					price={this.state.priority.price}
+					label="Priority clearing"
+					chosendate={this.state.today.toDateString()}
+					show={this.state.priorityModal}
+					onHide={() => this.setModalShow('priority', false)}
+				/>
 			</section>
 		);
 	}
