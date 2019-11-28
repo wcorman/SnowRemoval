@@ -37,6 +37,7 @@ class Pricing extends React.Component {
 			isLoaded: false,
 			error: null,
 			validPhone: 1,
+			orderType: null,
 			customer: {
 				firstName: null,
 				lastName: null,
@@ -44,7 +45,9 @@ class Pricing extends React.Component {
 				phoneNumber: null,
 				city: 'Saskatoon',
 				province: 'Saskatchewan',
-				address: null
+				address: null,
+				numberOfOrders: null,
+				totalSpent: null
 			}
 		};
 	}
@@ -97,7 +100,13 @@ class Pricing extends React.Component {
 	};
 
 	onPayment = (amount) => {
-		console.log('PAID ' + amount + ' to Powder Hounds');
+		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
+
+		this.setState({
+			scheduleModal: false,
+			sameDayModal: false,
+			priorityModal: false
+		});
 	};
 
 	handleChange = (date) => {
@@ -167,15 +176,18 @@ class Pricing extends React.Component {
 	setModalShow = (selection, showModal) => {
 		if (selection === 'schedule') {
 			this.setState({
-				scheduleModal: showModal
+				scheduleModal: showModal,
+				orderType: 'Scheduled'
 			});
 		} else if (selection === 'sameDay') {
 			this.setState({
-				sameDayModal: showModal
+				sameDayModal: showModal,
+				orderType: 'Same Day'
 			});
 		} else if (selection === 'priority') {
 			this.setState({
-				priorityModal: showModal
+				priorityModal: showModal,
+				orderType: 'Priority'
 			});
 		}
 	};

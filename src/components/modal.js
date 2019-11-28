@@ -15,7 +15,7 @@ function InfoModal(props) {
 					<Modal.Body>
 						<Form>
 							<Form.Row>
-								<Form.Group style={{width: '100%'}} controlId="formGridPhone">
+								<Form.Group style={{width: '100%'}}>
 									<Form.Label />
 									<Form.Control
 										placeholder="ex: 306-555-5555"
@@ -43,26 +43,26 @@ function InfoModal(props) {
 					<Modal.Body>
 						<Form>
 							<Form.Row>
-								<Form.Group as={Col} controlId="formGridFirstName">
+								<Form.Group as={Col}>
 									<Form.Label>First Name</Form.Label>
 									<Form.Control placeholder="First name" id="firstName" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 								</Form.Group>
 
-								<Form.Group as={Col} controlId="formGridLastName">
+								<Form.Group as={Col}>
 									<Form.Label>Last Name</Form.Label>
 									<Form.Control placeholder="Last name" id="lastName" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 								</Form.Group>
 							</Form.Row>
 
 							<Form.Row>
-								<Form.Group as={Col} controlId="formGridEmail">
+								<Form.Group as={Col}>
 									<Form.Label>Email</Form.Label>
 									<Form.Control type="email" placeholder="Enter email" id="email" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 								</Form.Group>
 							</Form.Row>
 
 							<Form.Row>
-								<Form.Group as={Col} controlId="formGridCity">
+								<Form.Group as={Col}>
 									<Form.Label>City</Form.Label>
 									<Form.Control value="Saskatoon" as="select" readOnly>
 										<option>Saskatoon</option>
@@ -71,7 +71,7 @@ function InfoModal(props) {
 									</Form.Control>
 								</Form.Group>
 
-								<Form.Group as={Col} controlId="formGridProvince">
+								<Form.Group as={Col}>
 									<Form.Label>Province</Form.Label>
 									<Form.Control value="Saskatchewan" as="select" readOnly>
 										<option>Alberta</option>
@@ -80,7 +80,7 @@ function InfoModal(props) {
 								</Form.Group>
 							</Form.Row>
 
-							<Form.Group controlId="formGridAddress">
+							<Form.Group>
 								<Form.Label>Address</Form.Label>
 								<Form.Control placeholder="Enter Address" id="address" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 							</Form.Group>
