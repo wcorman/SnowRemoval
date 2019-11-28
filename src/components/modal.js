@@ -19,7 +19,8 @@ function InfoModal(props) {
 									<Form.Label />
 									<Form.Control
 										placeholder="ex: 306-555-5555"
-										onChange={(value) => props.onUpdatePhone(value.currentTarget.value)}
+										id="phoneNumber"
+										onChange={(value) => props.onUpdateField(value.currentTarget)}
 									/>
 								</Form.Group>
 							</Form.Row>
@@ -44,19 +45,19 @@ function InfoModal(props) {
 							<Form.Row>
 								<Form.Group as={Col} controlId="formGridFirstName">
 									<Form.Label>First Name</Form.Label>
-									<Form.Control placeholder="First name" />
+									<Form.Control placeholder="First name" id="firstName" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 								</Form.Group>
 
 								<Form.Group as={Col} controlId="formGridLastName">
 									<Form.Label>Last Name</Form.Label>
-									<Form.Control placeholder="Last name" />
+									<Form.Control placeholder="Last name" id="lastName" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 								</Form.Group>
 							</Form.Row>
 
 							<Form.Row>
 								<Form.Group as={Col} controlId="formGridEmail">
 									<Form.Label>Email</Form.Label>
-									<Form.Control type="email" placeholder="Enter email" />
+									<Form.Control type="email" placeholder="Enter email" id="email" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 								</Form.Group>
 							</Form.Row>
 
@@ -81,7 +82,7 @@ function InfoModal(props) {
 
 							<Form.Group controlId="formGridAddress">
 								<Form.Label>Address</Form.Label>
-								<Form.Control placeholder="Enter Address" />
+								<Form.Control placeholder="Enter Address" id="address" onChange={(value) => props.onUpdateField(value.currentTarget)} />
 							</Form.Group>
 
 							<Button variant="primary" onClick={() => props.onPayment(props.price)}>

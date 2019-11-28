@@ -37,7 +37,16 @@ class Pricing extends React.Component {
 			phoneNumber: null,
 			isLoaded: false,
 			error: null,
-			validPhone: 1
+			validPhone: 1,
+			customer: {
+				firstName: null,
+				lastName: null,
+				email: null,
+				phoneNumber: null,
+				city: 'Saskatoon',
+				province: 'Saskatchewan',
+				address: null
+			}
 		};
 	}
 
@@ -50,14 +59,27 @@ class Pricing extends React.Component {
 			.catch(console.log);
 	}
 
-	updatePhone = (number) => {
-		var pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g;
+	updateField = (input) => {
+		console.log(input.id);
+
+		const field = input.id;
 
 		this.setState({
-			phoneNumber: number
+			customer: {
+				...this.state.customer,
+				[field]: input.value
+			}
 		});
 
-		if (pattern.test(number)) {
+		if (field === 'phoneNumber') {
+			this.phoneValidation(input.value);
+		}
+	};
+
+	phoneValidation = (phoneNumber) => {
+		var pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g;
+
+		if (pattern.test(phoneNumber)) {
 			this.setState({
 				validPhone: 0
 			});
@@ -330,7 +352,7 @@ class Pricing extends React.Component {
 				</div>
 
 				<InfoModal
-					onUpdatePhone={this.updatePhone}
+					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
@@ -342,7 +364,7 @@ class Pricing extends React.Component {
 					onHide={() => this.setModalShow('schedule', false)}
 				/>
 				<InfoModal
-					onUpdatePhone={this.updatePhone}
+					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
@@ -354,7 +376,7 @@ class Pricing extends React.Component {
 					onHide={() => this.setModalShow('sameDay', false)}
 				/>
 				<InfoModal
-					onUpdatePhone={this.updatePhone}
+					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
