@@ -34,7 +34,6 @@ class Pricing extends React.Component {
 			priorityModal: false,
 			price: null,
 			phoneCheck: 0,
-			phoneNumber: null,
 			isLoaded: false,
 			error: null,
 			validPhone: 1,
