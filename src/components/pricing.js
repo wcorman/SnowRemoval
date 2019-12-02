@@ -4,8 +4,13 @@ import '../App.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
 import InfoModal from '../components/modal';
+
+const DOMAIN = 'localhost:4000';
+const API_PREFIX = '/orders';
+const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
 
 class Pricing extends React.Component {
 	constructor() {
@@ -14,9 +19,6 @@ class Pricing extends React.Component {
 		this.onPayment = this.onPayment.bind(this);
 
 		const today = new Date();
-
-		var moment = require('moment');
-		var now = moment();
 
 		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
 
@@ -34,11 +36,14 @@ class Pricing extends React.Component {
 			priorityModal: false,
 			price: null,
 			phoneCheck: 0,
+			displayUser: false,
 			isLoaded: false,
 			error: null,
 			validPhone: 1,
 			validForm: 1,
 			orderType: null,
+			firstTimer: false,
+			isLoading: false,
 			customer: {
 				firstName: '',
 				lastName: '',
@@ -54,13 +59,46 @@ class Pricing extends React.Component {
 	}
 
 	componentDidMount() {
-		fetch('http://localhost:4000/orders/phone/306')
+
+	}
+
+	findCustomerByPhone = () => {
+		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data);
+				console.log(data[0]);
+				this.setState({
+					isLoading: true
+				});
+				if (data.length > 0) {
+					this.setState({
+						firstTimer: false,
+						customer: {
+							...this.state.customer,
+							firstName: data[0].firstName,
+							lastName: data[0].lastName,
+							email: data[0].email,
+							address: data[0].address
+						}
+					});
+					setTimeout(() => {
+						this.setState({
+							isLoading: false,
+							displayUser: true
+						});
+					}, 1000);
+				} else {
+					setTimeout(() => {
+						this.setState({
+							isLoading: false,
+							firstTimer: true,
+							displayUser: true
+						});
+					}, 1000);
+				}
 			})
 			.catch(console.log);
-	}
+	};
 
 	updateField = (input) => {
 		console.log(input.id);
@@ -84,7 +122,7 @@ class Pricing extends React.Component {
 	fieldValidation = () => {
 		const { firstName, lastName, address, email } = this.state.customer;
 
-		var pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/igm;
+		var pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gim;
 
 		if (firstName === '' || lastName === '' || address === '' || !pattern.test(email)) {
 			this.setState({
@@ -127,19 +165,57 @@ class Pricing extends React.Component {
 
 	checkPhone = () => {
 		console.log('TESTING');
-		this.setState({
-			phoneCheck: 1
-		});
+
+		this.findCustomerByPhone();
 	};
 
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 
-		// this.setState({
-		// 	scheduleModal: false,
-		// 	sameDayModal: false,
-		// 	priorityModal: false
-		// });
+		const {
+			firstName,
+			lastName,
+			address,
+			email,
+			phoneNumber,
+			city,
+			province,
+			numberOfOrders,
+			totalSpent
+		} = this.state.customer;
+		const { orderType, startDate } = this.state;
+
+		const newOrder = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			city: city,
+			province: province,
+			address: address,
+			phoneNumber: phoneNumber,
+			numberOfOrders: numberOfOrders,
+			totalSpent: totalSpent,
+			orderType: orderType,
+			selectedDate: startDate,
+			createdDate: startDate
+		};
+
+		axios.post(`${BASE_URL}`, newOrder).then((res) => console.log(res.data));
+
+		this.setState({
+			customer: {
+				firstName: '',
+				lastName: '',
+				email: '',
+				phoneNumber: '',
+				city: 'Saskatoon',
+				province: 'Saskatchewan',
+				address: '',
+				numberOfOrders: null,
+				totalSpent: null
+			}
+		});
+		this.setModalShow(this.state.orderType, false);
 	};
 
 	handleChange = (date) => {
@@ -210,17 +286,17 @@ class Pricing extends React.Component {
 		if (selection === 'schedule') {
 			this.setState({
 				scheduleModal: showModal,
-				orderType: 'Scheduled'
+				orderType: 'schedule'
 			});
 		} else if (selection === 'sameDay') {
 			this.setState({
 				sameDayModal: showModal,
-				orderType: 'Same Day'
+				orderType: 'sameDay'
 			});
 		} else if (selection === 'priority') {
 			this.setState({
 				priorityModal: showModal,
-				orderType: 'Priority'
+				orderType: 'priority'
 			});
 		}
 	};
@@ -396,42 +472,55 @@ class Pricing extends React.Component {
 				</div>
 
 				<InfoModal
+					customer={this.state.customer}
 					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
+					orderType={this.state.orderType}
+					displayuser={this.state.displayUser}
 					validphone={this.state.validPhone}
+					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
 					onPayment={this.onPayment}
-					price={this.state.schedule.price}
+					options={this.state.schedule}
 					label="Scheduled snow clearing"
 					chosendate={this.state.displayDate.toDateString()}
 					show={this.state.scheduleModal}
+					loading={this.state.isLoading}
 					onHide={() => this.setModalShow('schedule', false)}
 				/>
 				<InfoModal
+					customer={this.state.customer}
 					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
+					displayuser={this.state.displayUser}
 					phonecheck={this.state.phoneCheck}
 					validphone={this.state.validPhone}
+					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
 					onPayment={this.onPayment}
-					price={this.state.sameDay.price}
+					options={this.state.sameDay}
 					label="Same day clearing"
 					chosendate={this.state.today.toDateString()}
 					show={this.state.sameDayModal}
+					loading={this.state.isLoading}
 					onHide={() => this.setModalShow('sameDay', false)}
 				/>
 				<InfoModal
+					customer={this.state.customer}
 					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
+					displayuser={this.state.displayUser}
 					validphone={this.state.validPhone}
+					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
 					onPayment={this.onPayment}
-					price={this.state.priority.price}
+					options={this.state.priority}
 					label="Priority clearing"
 					chosendate={this.state.today.toDateString()}
 					show={this.state.priorityModal}
+					loading={this.state.isLoading}
 					onHide={() => this.setModalShow('priority', false)}
 				/>
 			</section>

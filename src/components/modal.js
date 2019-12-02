@@ -3,32 +3,83 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
 
 function InfoModal(props) {
 	const modalScreen = () => {
 		if (props.phonecheck === 0) {
+			console.log(props);
 			return (
 				<div>
 					<Modal.Header closeButton>
-						<Modal.Title id="contained-modal-title-vcenter">What number can we text you at?</Modal.Title>
+						{!props.displayuser && (
+							<Modal.Title id="contained-modal-title-vcenter">
+								What number can we text you at?
+							</Modal.Title>
+						)}
+						{props.displayuser && props.firsttimer && (props.orderType === "schedule") && (
+							<Modal.Title id="contained-modal-title-vcenter">
+								Looks like your first time here, this one's on us!
+							</Modal.Title>
+						)}
+						{props.displayuser && props.firsttimer && (props.orderType !== "schedule") && (
+							<Modal.Title id="contained-modal-title-vcenter">
+								Looks like your first time here!
+							</Modal.Title>
+						)}
+						{props.displayuser && !props.firsttimer && (
+							<Modal.Title id="contained-modal-title-vcenter">
+								Welcome back, {props.customer.firstName}!
+							</Modal.Title>
+						)}
 					</Modal.Header>
 					<Modal.Body>
-						<Form>
-							<Form.Row>
-								<Form.Group style={{ width: '100%' }}>
-									<Form.Label />
-									<Form.Control
-										required
-										placeholder="ex: 306-555-5555"
-										id="phoneNumber"
-										onChange={(value) => props.onUpdateField(value.currentTarget)}
-									/>
-								</Form.Group>
-							</Form.Row>
-							<Button disabled={props.validphone} variant="primary" onClick={() => props.onPhoneNext()}>
-								Next
-							</Button>
-						</Form>
+						{!props.loading &&
+						!props.displayuser && (
+							<Form>
+								<Form.Row>
+									<Form.Group style={{ width: '100%' }}>
+										<Form.Label />
+										<Form.Control
+											required
+											size="lg"
+											placeholder="ex: 306-555-5555"
+											id="phoneNumber"
+											onChange={(value) => props.onUpdateField(value.currentTarget)}
+										/>
+									</Form.Group>
+								</Form.Row>
+
+								<Button
+									disabled={props.validphone}
+									variant="primary"
+									onClick={() => props.onPhoneNext()}
+								>
+									Next
+								</Button>
+							</Form>
+						)}
+						{!props.loading &&
+						props.displayuser && (props.orderType === "schedule") && (
+							<Form>
+								<Form.Row>
+									<Form.Group style={{ width: '100%' }}>
+										<Form.Label />
+										Powder Hounds is proud to be the most convienent, affordable snow clearing service in town. Click 'Next' to have your first snow clearing on the house, our gift to you!
+									</Form.Group>
+								</Form.Row>
+
+								<Button
+									disabled={props.validphone}
+									variant="primary"
+									onClick={() => props.onPhoneNext()}
+								>
+									Next
+								</Button>
+							</Form>
+						)}
+
+						{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
 					</Modal.Body>
 				</div>
 			);
@@ -49,6 +100,7 @@ function InfoModal(props) {
 										required
 										placeholder="First name"
 										id="firstName"
+										value={props.customer.firstName}
 										onChange={(value) => props.onUpdateField(value.currentTarget)}
 									/>
 								</Form.Group>
@@ -58,6 +110,7 @@ function InfoModal(props) {
 									<Form.Control
 										placeholder="Last name"
 										id="lastName"
+										value={props.customer.lastName}
 										onChange={(value) => props.onUpdateField(value.currentTarget)}
 									/>
 								</Form.Group>
@@ -71,6 +124,7 @@ function InfoModal(props) {
 										type="email"
 										placeholder="Enter email"
 										id="email"
+										value={props.customer.email}
 										onChange={(value) => props.onUpdateField(value.currentTarget)}
 									/>
 								</Form.Group>
@@ -101,17 +155,20 @@ function InfoModal(props) {
 									required
 									placeholder="Enter Address"
 									id="address"
+									value={props.customer.address}
 									onChange={(value) => props.onUpdateField(value.currentTarget)}
 								/>
+							</Form.Group>
+							<Form.Group controlId="formBasicCheckbox">
+								<Form.Check type="checkbox" label="Save information for faster" />
 							</Form.Group>
 
 							<Button
 								disabled={props.validform}
 								variant="primary"
-								type="submit"
 								onClick={() => props.onPayment(props.price)}
 							>
-								Pay {props.price}
+								Pay {props.options.price}
 							</Button>
 						</Form>
 					</Modal.Body>
