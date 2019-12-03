@@ -495,6 +495,7 @@ class Pricing extends React.Component {
 					onPhoneNext={this.checkPhone}
 					displayuser={this.state.displayUser}
 					phonecheck={this.state.phoneCheck}
+					orderType={this.state.orderType}
 					validphone={this.state.validPhone}
 					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
@@ -511,6 +512,7 @@ class Pricing extends React.Component {
 					onUpdateField={this.updateField}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
+					orderType={this.state.orderType}
 					displayuser={this.state.displayUser}
 					validphone={this.state.validPhone}
 					firsttimer={this.state.firstTimer}

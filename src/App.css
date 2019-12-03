@@ -20,3 +20,46 @@
 .App-link {
 	color: #09d3ac;
 }
+
+.contactForm {
+	background: white;
+	color: black;
+	border-radius: 25px;
+	padding: 0;
+	height: 375px;
+}
+
+.contactSectionBody {
+	height: 375px !important;
+	min-height: 355px !important;
+}
+
+.contactFormContainer {
+	margin: 24px;
+	padding: 24px;
+	border-radius: 18px;
+	margin: 0 auto;
+	display: flex;
+	color: white;
+	background: white;
+}
+
+.contactLabel {
+	color: black;
+}
+.contactHeading {
+	color: black;
+	font-size: 30px;
+}
+
+.column {
+	flex: 50%;
+}
+
+.contactInput {
+	height: 42px !important;
+}
+
+.footer {
+  color: white;
+}

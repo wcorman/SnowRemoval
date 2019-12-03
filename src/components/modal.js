@@ -60,12 +60,31 @@ function InfoModal(props) {
 							</Form>
 						)}
 						{!props.loading &&
-						props.displayuser && (props.orderType === "schedule") && (
+						props.displayuser && (props.orderType === "schedule") && props.firsttimer &&(
 							<Form>
 								<Form.Row>
 									<Form.Group style={{ width: '100%' }}>
 										<Form.Label />
-										Powder Hounds is proud to be the most convienent, affordable snow clearing service in town. Click 'Next' to have your first snow clearing on the house, our gift to you!
+										Powder Hounds is proud to be the most convienent, affordable snow clearing service in town. Click 'Next' to set up your first snow clearing on the house, our gift to you!
+									</Form.Group>
+								</Form.Row>
+
+								<Button
+									disabled={props.validphone}
+									variant="primary"
+									onClick={() => props.onPhoneNext()}
+								>
+									Next
+								</Button>
+							</Form>
+						)}
+						{!props.loading &&
+						props.displayuser && (props.orderType !== "schedule") && props.firsttimer &&(
+							<Form>
+								<Form.Row>
+									<Form.Group style={{ width: '100%' }}>
+										<Form.Label />
+										Powder Hounds is proud to be the most convienent, affordable snow clearing service in town. Click 'Next' to continue your order, or schedule ahead for a free first clearing!
 									</Form.Group>
 								</Form.Row>
 

@@ -5,6 +5,8 @@ import './App.css';
 import NavBar from './components/navBar';
 import Jumbotron from './components/hero';
 import Pricing from './components/pricing';
+import ContactSection from './components/contactSection';
+import Footer from './components/footer';
 
 function App() {
   return (
@@ -12,6 +14,9 @@ function App() {
       <NavBar />
       <Jumbotron />
       <Pricing />
+      <hr/>
+      <ContactSection />
+      <Footer />
     </div>
   );
 }

@@ -13,7 +13,7 @@ function NavBar() {
     <Image src={Logo} className="huskyNav"/>
     <Nav className="mr-auto">
       <Nav.Link href="#pricing">Pricing</Nav.Link>
-      <Nav.Link href="#contact">Contact</Nav.Link>
+      <Nav.Link href="#contactForm">Contact</Nav.Link>
     </Nav>
 
   </Navbar>
