@@ -71,7 +71,6 @@ class ContactSection extends Component {
 			}
 		}
 
-
 		console.log(document.getElementById('message'));
 	};
 
@@ -80,6 +79,16 @@ class ContactSection extends Component {
 			`mailto:powderhoundscontact@gmail.com?subject=${'Hey, this is ' + this.state.name}&body=${this.state
 				.message}`
 		);
+		this.setState({
+			name: '',
+			message: '',
+			showModal: false,
+			validForm: false,
+			validation: {
+				name: false,
+				message: false
+			}
+		});
 	};
 
 	render() {
@@ -131,7 +140,7 @@ class ContactSection extends Component {
 					onSend={this.submitForm}
 					onHide={() =>
 						this.setState({
-							showModal: false
+							showModal: false,
 						})}
 				/>
 			</div>

@@ -20,6 +20,7 @@ function ContactModal(props) {
 								placeholder="Your name..."
 								id="name"
 								isValid={props.validation.name}
+                defaultValue={props.name}
 								onChange={(value) => props.updateField(value.currentTarget)}
 							/>
 						</Form.Group>
@@ -35,6 +36,7 @@ function ContactModal(props) {
 								placeholder="Your message..."
 								id="message"
 								isValid={props.validation.message}
+                defaultValue={props.message}
 								onChange={(value) => props.updateField(value.currentTarget)}
 							/>
 							<Form.Control.Feedback type="invalid">Please enter a message.</Form.Control.Feedback>
