@@ -13,26 +13,20 @@ function ContactModal(props) {
 			<Modal.Body>
 				<Form>
 					<Form.Row>
-						<Form.Group as={Col}>
-							<Form.Label>First Name</Form.Label>
-							<Form.Control required placeholder="First name" id="firstName" />
-						</Form.Group>
-
-						<Form.Group as={Col}>
-							<Form.Label>Last Name</Form.Label>
-							<Form.Control placeholder="Last name" id="lastName" />
-						</Form.Group>
-					</Form.Row>
-
-					<Form.Row>
-						<Form.Group as={Col}>
-							<Form.Label>Email</Form.Label>
-							<Form.Control required type="email" placeholder="Enter email" id="email" />
+						<Form.Group as={Col} controlId="validationCustom01">
+							<Form.Label>Name</Form.Label>
+							<Form.Control
+								required
+								placeholder="Your name..."
+								id="name"
+								isValid={props.validation.name}
+								onChange={(value) => props.updateField(value.currentTarget)}
+							/>
 						</Form.Group>
 					</Form.Row>
 
 					<Form.Row>
-						<Form.Group as={Col}>
+						<Form.Group as={Col} controlId="validationCustom02">
 							<Form.Label>Message</Form.Label>
 							<Form.Control
 								required
@@ -40,11 +34,14 @@ function ContactModal(props) {
 								type="text"
 								placeholder="Your message..."
 								id="message"
+								isValid={props.validation.message}
+								onChange={(value) => props.updateField(value.currentTarget)}
 							/>
+							<Form.Control.Feedback type="invalid">Please enter a message.</Form.Control.Feedback>
 						</Form.Group>
 					</Form.Row>
 
-					<Button href="mailto:me@me.com" disabled={props.validform} variant="primary">
+					<Button onClick={props.onSend} disabled={!props.validation.name || !props.validation.message} variant="primary">
 						Send
 					</Button>
 				</Form>

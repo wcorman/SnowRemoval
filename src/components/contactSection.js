@@ -17,37 +17,70 @@ class ContactSection extends Component {
 			name: '',
 			message: '',
 			showModal: false,
-			validate: {
-				emailState: ''
+			validForm: false,
+			validation: {
+				name: false,
+				message: false
 			}
 		};
-		this.handleChange = this.handleChange.bind(this);
 	}
 
-	validateEmail(e) {
-		const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		const { validate } = this.state;
-		if (emailRex.test(e.target.value)) {
-			validate.emailState = 'has-success';
-		} else {
-			validate.emailState = 'has-danger';
-		}
-		this.setState({ validate });
-	}
+	updateField = (input) => {
+		console.log(input.value);
 
-	handleChange = async (event) => {
-		const { target } = event;
-		const value = target.type === 'checkbox' ? target.checked : target.value;
-		const { name } = target;
-		await this.setState({
-			[name]: value
+		const field = input.id;
+
+		this.setState({
+			...this.state,
+			[field]: input.value
 		});
+
+		if (field === 'name') {
+			if (field === 'name' && input.value.length > 1) {
+				this.setState({
+					validation: {
+						...this.state,
+						name: true
+					}
+				});
+			} else if (field === 'name' && input.value.length < 2) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state,
+						name: false
+					}
+				});
+			}
+		} else {
+			if (field === 'message' && input.value.length > 10) {
+				this.setState({
+					validation: {
+						...this.state,
+						message: true
+					}
+				});
+			} else if (field === 'message' && input.value.length < 11) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state,
+						message: false
+					}
+				});
+			}
+		}
+
+
+		console.log(document.getElementById('message'));
 	};
 
-	submitForm(e) {
-		e.preventDefault();
-		console.log(`Email: ${this.state.email}`);
-	}
+	submitForm = () => {
+		window.open(
+			`mailto:powderhoundscontact@gmail.com?subject=${'Hey, this is ' + this.state.name}&body=${this.state
+				.message}`
+		);
+	};
 
 	render() {
 		const { email, password } = this.state;
@@ -91,6 +124,11 @@ class ContactSection extends Component {
 				</div>
 				<ContactModal
 					show={this.state.showModal}
+					validation={this.state.validation}
+					name={this.state.name}
+					message={this.state.message}
+					updateField={this.updateField}
+					onSend={this.submitForm}
 					onHide={() =>
 						this.setState({
 							showModal: false
