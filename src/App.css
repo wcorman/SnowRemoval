@@ -26,12 +26,12 @@
 	color: black;
 	border-radius: 25px;
 	padding: 0;
-	height: 375px;
+	height: 305px;
 }
 
 .contactSectionBody {
-	height: 375px !important;
-	min-height: 355px !important;
+	height: 305px !important;
+	min-height: 205px !important;
 }
 
 .contactFormContainer {
@@ -62,4 +62,14 @@
 
 .footer {
   color: white;
+}
+
+.contactLogo {
+	width: 100%;
+	max-width: 305px;
+	height: auto;
+	margin-top: 24px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }

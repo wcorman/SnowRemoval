@@ -96,8 +96,8 @@ class ContactSection extends Component {
 		return (
 			<div className="container-fluid contactContainer">
 				<div className="row no-gutter">
-					<div className="d-none d-md-flex col-md-4 col-lg-6">
-						<Tilt className="husky Tilt" options={{ max: 25 }} style={{ height: 350, width: 350 }}>
+					<div className="d-none d-md-flex col-md-4 col-lg-6" id="contactForm">
+						<Tilt className="contactLogo Tilt" options={{ max: 25 }} style={{ height: 350, width: 350 }}>
 							<img
 								src={MailLogo}
 								alt="mail logo"
