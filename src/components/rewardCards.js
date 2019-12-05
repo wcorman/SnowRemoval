@@ -1,8 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
 
 import threeMore from '../3more.svg';
 import twoMore from '../2more.svg';
