@@ -114,10 +114,15 @@ class ContactSection extends Component {
 						<Card.Header as="h3">Any questions?</Card.Header>
 						<Card.Body className="contactSectionBody">
 							<Card.Title>
-								Not finding what you're looking for? Send us a message and we'd be happy to accomodate
+								<ul>
+									<li>Need more shoveled than your front sidewalk & driveway?</li>
+									<li>Need to pay cash?</li>
+									<li>Want to say hi? :)</li>
+								</ul>
 							</Card.Title>
+
 							<Card.Text>
-								With supporting text below as a natural lead-in to additional content.
+								Send us a message and we'll get back to you as soon as possible.
 							</Card.Text>
 							<Button
 								variant="primary"
@@ -140,7 +145,7 @@ class ContactSection extends Component {
 					onSend={this.submitForm}
 					onHide={() =>
 						this.setState({
-							showModal: false,
+							showModal: false
 						})}
 				/>
 			</div>

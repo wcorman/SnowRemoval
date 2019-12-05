@@ -32,6 +32,7 @@ class Pricing extends React.Component {
 			dateError: false,
 			modalShow: false,
 			scheduleModal: false,
+			numberOfOrders: null,
 			sameDayModal: false,
 			priorityModal: false,
 			price: null,
@@ -58,9 +59,7 @@ class Pricing extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-
-	}
+	componentDidMount() {}
 
 	findCustomerByPhone = () => {
 		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
@@ -68,7 +67,8 @@ class Pricing extends React.Component {
 			.then((data) => {
 				console.log(data[0]);
 				this.setState({
-					isLoading: true
+					isLoading: true,
+					numberOfOrders: data.length
 				});
 				if (data.length > 0) {
 					this.setState({
@@ -474,6 +474,7 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
+					numberOfOrders={this.state.numberOfOrders}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					orderType={this.state.orderType}
@@ -492,6 +493,7 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
+					numberOfOrders={this.state.numberOfOrders}
 					onPhoneNext={this.checkPhone}
 					displayuser={this.state.displayUser}
 					phonecheck={this.state.phoneCheck}
@@ -510,6 +512,7 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
+					numberOfOrders={this.state.numberOfOrders}
 					onPhoneNext={this.checkPhone}
 					phonecheck={this.state.phoneCheck}
 					orderType={this.state.orderType}

@@ -5,6 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
+import RewardCards from '../components/rewardCards';
+
+import threeMore from '../3more.svg';
+import twoMore from '../2more.svg';
+import oneMore from '../1more.svg';
+import free from '../free.svg';
+
 function InfoModal(props) {
 	const modalScreen = () => {
 		if (props.phonecheck === 0) {
@@ -17,17 +24,15 @@ function InfoModal(props) {
 								What number can we text you at?
 							</Modal.Title>
 						)}
-						{props.displayuser && props.firsttimer && (props.orderType === "schedule") && (
+						{props.displayuser &&
+						props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">
-								Looks like your first time here, this one's on us!
+								Looks like your first time here, welcome!
 							</Modal.Title>
 						)}
-						{props.displayuser && props.firsttimer && (props.orderType !== "schedule") && (
-							<Modal.Title id="contained-modal-title-vcenter">
-								Looks like your first time here!
-							</Modal.Title>
-						)}
-						{props.displayuser && !props.firsttimer && (
+
+						{props.displayuser &&
+						!props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">
 								Welcome back, {props.customer.firstName}!
 							</Modal.Title>
@@ -59,44 +64,13 @@ function InfoModal(props) {
 								</Button>
 							</Form>
 						)}
-						{!props.loading &&
-						props.displayuser && (props.orderType === "schedule") && props.firsttimer &&(
-							<Form>
-								<Form.Row>
-									<Form.Group style={{ width: '100%' }}>
-										<Form.Label />
-										Powder Hounds is proud to be the most convienent, affordable snow clearing service in town. Click 'Next' to set up your first snow clearing on the house, our gift to you!
-									</Form.Group>
-								</Form.Row>
 
-								<Button
-									disabled={props.validphone}
-									variant="primary"
-									onClick={() => props.onPhoneNext()}
-								>
-									Next
-								</Button>
-							</Form>
-						)}
-						{!props.loading &&
-						props.displayuser && (props.orderType !== "schedule") && props.firsttimer &&(
-							<Form>
-								<Form.Row>
-									<Form.Group style={{ width: '100%' }}>
-										<Form.Label />
-										Powder Hounds is proud to be the most convienent, affordable snow clearing service in town. Click 'Next' to continue your order, or schedule ahead for a free first clearing!
-									</Form.Group>
-								</Form.Row>
-
-								<Button
-									disabled={props.validphone}
-									variant="primary"
-									onClick={() => props.onPhoneNext()}
-								>
-									Next
-								</Button>
-							</Form>
-						)}
+						<RewardCards
+							loading={props.loading}
+							displayuser={props.displayuser}
+							firsttimer={props.firsttimer}
+							numberOfOrders={props.numberOfOrders}
+						/>
 
 						{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
 					</Modal.Body>
