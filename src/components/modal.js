@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
 import RewardCards from '../components/rewardCards';
+import PhoneCheck from '../components/phoneCheck';
 
 import threeMore from '../3more.svg';
 import twoMore from '../2more.svg';
@@ -39,32 +40,13 @@ function InfoModal(props) {
 						)}
 					</Modal.Header>
 					<Modal.Body>
-						{!props.loading &&
-						!props.displayuser && (
-							<Form>
-								<Form.Row>
-									<Form.Group style={{ width: '100%' }}>
-										<Form.Label />
-										<Form.Control
-											required
-											size="lg"
-											placeholder="ex: 306-555-5555"
-											id="phoneNumber"
-											onChange={(value) => props.onUpdateField(value.currentTarget)}
-										/>
-									</Form.Group>
-								</Form.Row>
-
-								<Button
-									disabled={props.validphone}
-									variant="primary"
-									onClick={() => props.onPhoneNext()}
-								>
-									Next
-								</Button>
-							</Form>
-						)}
-
+						<PhoneCheck
+							loading={props.loading}
+							displayuser={props.displayuser}
+							onUpdateField={props.onUpdateField}
+							validphone={props.validphone}
+							onPhoneNext={props.onPhoneNext}
+						/>
 						<RewardCards
 							loading={props.loading}
 							displayuser={props.displayuser}
