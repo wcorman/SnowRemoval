@@ -11,15 +11,14 @@ function RewardCards(props) {
 	return (
 		<div>
 			{!props.loading &&
-			props.displayuser &&
+			props.displayrewardcard &&
 			props.firsttimer && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
 							<Form.Label />
-							This is your reward card. For every 3 snow clearings, you get one for <strong>
-								FREE
-							</strong>{' '}
+							This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+							<strong>FREE</strong>
 							.
 							<hr />
 							<div className="text-center">
@@ -29,22 +28,21 @@ function RewardCards(props) {
 						</Form.Group>
 					</Form.Row>
 
-					<Button disabled={props.validphone} variant="primary" onClick={() => props.onPhoneNext()}>
+					<Button disabled={props.validphone} variant="primary" onClick={() => props.nextStage('rewardCard')}>
 						Next
 					</Button>
 				</Form>
 			)}
 
 			{!props.loading &&
-			props.displayuser &&
+			props.displayrewardcard &&
 			props.numberOfOrders === 1 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
 							<Form.Label />
-							This is your reward card. For every 3 snow clearings, you get one for <strong>
-								FREE
-							</strong>{' '}
+							This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+							<strong>FREE</strong>
 							.
 							<hr />
 							<div className="text-center">
@@ -54,22 +52,21 @@ function RewardCards(props) {
 						</Form.Group>
 					</Form.Row>
 
-					<Button disabled={props.validphone} variant="primary" onClick={() => props.onPhoneNext()}>
+					<Button disabled={props.validphone} variant="primary" onClick={() => props.nextStage('rewardCard')}>
 						Next
 					</Button>
 				</Form>
 			)}
 
 			{!props.loading &&
-			props.displayuser &&
+			props.displayrewardcard &&
 			props.numberOfOrders === 2 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
 							<Form.Label />
-							This is your reward card. For every 3 snow clearings, you get one for <strong>
-								FREE
-							</strong>{' '}
+							This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+							<strong>FREE</strong>
 							.
 							<hr />
 							<div className="text-center">
@@ -79,22 +76,20 @@ function RewardCards(props) {
 						</Form.Group>
 					</Form.Row>
 
-					<Button disabled={props.validphone} variant="primary" onClick={() => props.onPhoneNext()}>
+					<Button disabled={props.validphone} variant="primary" onClick={() => props.nextStage('rewardCard')}>
 						Next
 					</Button>
 				</Form>
 			)}
 
 			{!props.loading &&
-			props.displayuser &&
+			props.displayrewardcard &&
 			props.numberOfOrders === 3 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
 							<Form.Label />
-							This is your reward card. For every 3 snow clearings, you get one for <strong>
-								FREE
-							</strong>{' '}
+							This is your reward card. For every 3 snow clearings, you get one for <strong>FREE</strong>
 							.
 							<hr />
 							<div className="text-center">
@@ -104,7 +99,7 @@ function RewardCards(props) {
 						</Form.Group>
 					</Form.Row>
 
-					<Button disabled={props.validphone} variant="primary" onClick={() => props.onPhoneNext()}>
+					<Button disabled={props.validphone} variant="primary" onClick={() => props.nextStage('rewardCard')}>
 						Next
 					</Button>
 				</Form>

@@ -8,31 +8,26 @@ import Spinner from 'react-bootstrap/Spinner';
 import RewardCards from '../components/rewardCards';
 import PhoneCheck from '../components/phoneCheck';
 
-import threeMore from '../3more.svg';
-import twoMore from '../2more.svg';
-import oneMore from '../1more.svg';
-import free from '../free.svg';
-
 function InfoModal(props) {
 	const modalScreen = () => {
-		if (props.phonecheck === 0) {
+		if (props.showform === 0) {
 			console.log(props);
 			return (
 				<div>
 					<Modal.Header closeButton>
-						{!props.displayuser && (
+						{!props.displayrewardcard && (
 							<Modal.Title id="contained-modal-title-vcenter">
 								What number can we text you at?
 							</Modal.Title>
 						)}
-						{props.displayuser &&
+						{props.displayrewardcard &&
 						props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">
 								Looks like your first time here, welcome!
 							</Modal.Title>
 						)}
 
-						{props.displayuser &&
+						{props.displayrewardcard &&
 						!props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">
 								Welcome back, {props.customer.firstName}!
@@ -42,17 +37,17 @@ function InfoModal(props) {
 					<Modal.Body>
 						<PhoneCheck
 							loading={props.loading}
-							displayuser={props.displayuser}
+							displayrewardcard={props.displayrewardcard}
 							onUpdateField={props.onUpdateField}
 							validphone={props.validphone}
-							onPhoneNext={props.onPhoneNext}
+							nextStage={props.nextStage}
 						/>
 						<RewardCards
 							loading={props.loading}
-							displayuser={props.displayuser}
+							displayrewardcard={props.displayrewardcard}
 							firsttimer={props.firsttimer}
 							numberOfOrders={props.numberOfOrders}
-							onPhoneNext={props.onPhoneNext}
+							nextStage={props.nextStage}
 						/>
 
 						{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}

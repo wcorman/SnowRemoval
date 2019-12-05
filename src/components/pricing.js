@@ -33,11 +33,12 @@ class Pricing extends React.Component {
 			modalShow: false,
 			scheduleModal: false,
 			numberOfOrders: null,
+			freeClearing: false,
 			sameDayModal: false,
 			priorityModal: false,
 			price: null,
-			phoneCheck: 0,
-			displayUser: false,
+			showForm: 0,
+			displayRewardCard: false,
 			isLoaded: false,
 			error: null,
 			validPhone: 1,
@@ -58,47 +59,6 @@ class Pricing extends React.Component {
 			}
 		};
 	}
-
-	componentDidMount() {}
-
-	findCustomerByPhone = () => {
-		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data[0]);
-				this.setState({
-					isLoading: true,
-					numberOfOrders: data.length
-				});
-				if (data.length > 0) {
-					this.setState({
-						firstTimer: false,
-						customer: {
-							...this.state.customer,
-							firstName: data[0].firstName,
-							lastName: data[0].lastName,
-							email: data[0].email,
-							address: data[0].address
-						}
-					});
-					setTimeout(() => {
-						this.setState({
-							isLoading: false,
-							displayUser: true
-						});
-					}, 1000);
-				} else {
-					setTimeout(() => {
-						this.setState({
-							isLoading: false,
-							firstTimer: true,
-							displayUser: true
-						});
-					}, 1000);
-				}
-			})
-			.catch(console.log);
-	};
 
 	updateField = (input) => {
 		console.log(input.id);
@@ -163,10 +123,64 @@ class Pricing extends React.Component {
 		}
 	};
 
-	checkPhone = () => {
-		console.log('TESTING');
+	rewardCardNext = () => {
+		this.setState({
+			showForm: 1
+		});
+	};
 
-		this.findCustomerByPhone();
+	findCustomerByPhone = () => {
+		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data[0]);
+				this.setState({
+					isLoading: true,
+					numberOfOrders: data.length
+				});
+				if (data.length > 0) {
+					this.setState({
+						firstTimer: false,
+						customer: {
+							...this.state.customer,
+							firstName: data[0].firstName,
+							lastName: data[0].lastName,
+							email: data[0].email,
+							address: data[0].address
+						}
+					});
+					setTimeout(() => {
+						this.setState({
+							isLoading: false,
+							displayRewardCard: true
+						});
+					}, 1000);
+				} else {
+					setTimeout(() => {
+						this.setState({
+							isLoading: false,
+							firstTimer: true,
+							displayRewardCard: true
+						});
+					}, 1000);
+				}
+				if (data.length === 3) {
+						this.setState({
+							freeClearing: true
+						});
+				}
+			})
+			.catch(console.log);
+	};
+
+	nextStage = (stage) => {
+		console.log(stage);
+
+		if (stage === 'phoneCheck') {
+			this.findCustomerByPhone();
+		} else if (stage === 'rewardCard') {
+			this.rewardCardNext();
+		}
 	};
 
 	onPayment = (amount) => {
@@ -475,10 +489,10 @@ class Pricing extends React.Component {
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
 					numberOfOrders={this.state.numberOfOrders}
-					onPhoneNext={this.checkPhone}
-					phonecheck={this.state.phoneCheck}
+					nextStage={this.nextStage}
+					showform={this.state.showForm}
 					orderType={this.state.orderType}
-					displayuser={this.state.displayUser}
+					displayrewardcard={this.state.displayRewardCard}
 					validphone={this.state.validPhone}
 					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
@@ -494,9 +508,9 @@ class Pricing extends React.Component {
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
 					numberOfOrders={this.state.numberOfOrders}
-					onPhoneNext={this.checkPhone}
-					displayuser={this.state.displayUser}
-					phonecheck={this.state.phoneCheck}
+					nextStage={this.nextStage}
+					displayrewardcard={this.state.displayRewardCard}
+					showform={this.state.showForm}
 					orderType={this.state.orderType}
 					validphone={this.state.validPhone}
 					firsttimer={this.state.firstTimer}
@@ -513,10 +527,10 @@ class Pricing extends React.Component {
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
 					numberOfOrders={this.state.numberOfOrders}
-					onPhoneNext={this.checkPhone}
-					phonecheck={this.state.phoneCheck}
+					nextStage={this.nextStage}
+					showform={this.state.showForm}
 					orderType={this.state.orderType}
-					displayuser={this.state.displayUser}
+					displayrewardcard={this.state.displayRewardCard}
 					validphone={this.state.validPhone}
 					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}

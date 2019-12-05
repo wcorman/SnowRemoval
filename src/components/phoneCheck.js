@@ -6,7 +6,7 @@ function PhoneCheck(props) {
 	return (
 		<div>
 			{!props.loading &&
-			!props.displayuser && (
+			!props.displayrewardcard && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
@@ -21,7 +21,7 @@ function PhoneCheck(props) {
 						</Form.Group>
 					</Form.Row>
 
-					<Button disabled={props.validphone} variant="primary" onClick={() => props.onPhoneNext()}>
+					<Button disabled={props.validphone} variant="primary" onClick={() => props.nextStage('phoneCheck')}>
 						Next
 					</Button>
 				</Form>
