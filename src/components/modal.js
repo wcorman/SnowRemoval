@@ -70,6 +70,7 @@ function InfoModal(props) {
 							displayuser={props.displayuser}
 							firsttimer={props.firsttimer}
 							numberOfOrders={props.numberOfOrders}
+							onPhoneNext={props.onPhoneNext}
 						/>
 
 						{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
