@@ -131,6 +131,12 @@ class Pricing extends React.Component {
 		});
 	};
 
+	informationNext = () => {
+		this.setState({
+			showForm: 2
+		});
+	};
+
 	findCustomerByPhone = () => {
 		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
 			.then((res) => res.json())
@@ -187,6 +193,8 @@ class Pricing extends React.Component {
 			this.findCustomerByPhone();
 		} else if (stage === 'rewardCard') {
 			this.rewardCardNext();
+		} else if (stage === 'information') {
+			this.informationNext();
 		}
 	};
 

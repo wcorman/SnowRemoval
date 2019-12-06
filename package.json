@@ -12,6 +12,7 @@
     "react-datepicker": "^2.9.6",
     "react-dom": "^16.11.0",
     "react-lazy-hero": "^2.0.0",
+    "react-paypal-button-v2": "^2.6.1",
     "react-scripts": "3.2.0",
     "react-tilt": "^0.1.4",
     "styled-components": "^4.4.1"

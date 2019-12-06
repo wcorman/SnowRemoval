@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 
+import { PayPalButton } from 'react-paypal-button-v2';
+
 import RewardCards from '../components/rewardCards';
 import PhoneCheck from '../components/phoneCheck';
 
@@ -52,7 +54,7 @@ function InfoModal(props) {
 					</Modal.Body>
 				</div>
 			);
-		} else {
+		} else if (props.showform === 1) {
 			return (
 				<div>
 					<Modal.Header closeButton>
@@ -128,12 +130,42 @@ function InfoModal(props) {
 									onChange={(value) => props.onUpdateField(value.currentTarget)}
 								/>
 							</Form.Group>
-							<Form.Group controlId="formBasicCheckbox">
-								<Form.Check type="checkbox" label="Save information for faster" />
-							</Form.Group>
+							<Button
+								disabled={props.validform}
+								variant="primary"
+								onClick={() => props.nextStage('information')}
+							>
+								Next
+							</Button>
+						</Form>
+					</Modal.Body>
+				</div>
+			);
+		} else if (props.showform === 2) {
+			return (
+				<div>
+					<Modal.Header closeButton>
+						<Modal.Title id="contained-modal-title-vcenter">Order Details</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<Form>
+							
 
-							<div > </div>
-
+							<div className="payPalButtonContainer">
+								<PayPalButton
+									className="payPalButton"
+									amount={props.options.price.toString()}
+									shippingPreference="NO_SHIPPING"
+									options={{
+										clientId:
+											'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
+										currency: 'CAD'
+									}}
+									onSuccess={(details) => {
+										alert('Transaction completed by ' + details.payer.name.given_name);
+									}}
+								/>
+							</div>
 							<Button
 								disabled={props.validform}
 								variant="primary"
