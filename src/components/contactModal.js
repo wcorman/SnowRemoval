@@ -13,7 +13,7 @@ function ContactModal(props) {
 			<Modal.Body>
 				<Form>
 					<Form.Row>
-						<Form.Group as={Col} controlId="validationCustom01">
+						<Form.Group as={Col} >
 							<Form.Label>Name</Form.Label>
 							<Form.Control
 								required
@@ -27,7 +27,7 @@ function ContactModal(props) {
 					</Form.Row>
 
 					<Form.Row>
-						<Form.Group as={Col} controlId="validationCustom02">
+						<Form.Group as={Col} >
 							<Form.Label>Message</Form.Label>
 							<Form.Control
 								required

@@ -21,9 +21,7 @@ function InfoModal(props) {
 						)}
 						{props.displayrewardcard &&
 						props.firsttimer && (
-							<Modal.Title id="contained-modal-title-vcenter">
-								Welcome to Powder Hounds!
-							</Modal.Title>
+							<Modal.Title id="contained-modal-title-vcenter">Welcome to Powder Hounds!</Modal.Title>
 						)}
 
 						{props.displayrewardcard &&
@@ -133,6 +131,8 @@ function InfoModal(props) {
 							<Form.Group controlId="formBasicCheckbox">
 								<Form.Check type="checkbox" label="Save information for faster" />
 							</Form.Group>
+
+							<div > </div>
 
 							<Button
 								disabled={props.validform}
