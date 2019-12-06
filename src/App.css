@@ -64,6 +64,11 @@
   color: white;
 }
 
+.subFooter {
+	  color: white;
+font-size: 7.5px;
+}
+
 .contactLogo {
 	width: 100%;
 	max-width: 305px;

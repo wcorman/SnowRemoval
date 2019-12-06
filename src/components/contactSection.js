@@ -115,7 +115,7 @@ class ContactSection extends Component {
 						<Card.Body className="contactSectionBody">
 							<Card.Title>
 								<ul>
-									<li>Need more shoveled than your front sidewalk & driveway?</li>
+									<li>Need more shoveled than just your front sidewalk & driveway?</li>
 									<li>Need to pay cash?</li>
 									<li>Want to say hi? :)</li>
 								</ul>

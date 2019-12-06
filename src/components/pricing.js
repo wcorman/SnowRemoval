@@ -32,13 +32,14 @@ class Pricing extends React.Component {
 			dateError: false,
 			modalShow: false,
 			scheduleModal: false,
-			numberOfOrders: null,
+			numberOfOrders: 0,
 			freeClearing: false,
 			sameDayModal: false,
 			priorityModal: false,
 			price: null,
 			showForm: 0,
 			displayRewardCard: false,
+			rewardStatus: 0,
 			isLoaded: false,
 			error: null,
 			validPhone: 1,
@@ -54,8 +55,9 @@ class Pricing extends React.Component {
 				city: 'Saskatoon',
 				province: 'Saskatchewan',
 				address: '',
-				numberOfOrders: null,
-				totalSpent: null
+				numberOfOrders: 0,
+				totalSpent: null,
+				id: null
 			}
 		};
 	}
@@ -133,20 +135,25 @@ class Pricing extends React.Component {
 		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log(data[0]);
+				console.log('DATA', data[0]);
 				this.setState({
 					isLoading: true,
 					numberOfOrders: data.length
 				});
 				if (data.length > 0) {
+					const customer = data[0];
+
 					this.setState({
 						firstTimer: false,
+						rewardStatus: customer.rewardStatus,
+						numberOfOrders: customer.numberOfOrders,
 						customer: {
 							...this.state.customer,
-							firstName: data[0].firstName,
-							lastName: data[0].lastName,
-							email: data[0].email,
-							address: data[0].address
+							firstName: customer.firstName,
+							lastName: customer.lastName,
+							email: customer.email,
+							address: customer.address,
+							id: customer._id
 						}
 					});
 					setTimeout(() => {
@@ -165,9 +172,9 @@ class Pricing extends React.Component {
 					}, 1000);
 				}
 				if (data.length === 3) {
-						this.setState({
-							freeClearing: true
-						});
+					this.setState({
+						freeClearing: true
+					});
 				}
 			})
 			.catch(console.log);
@@ -199,6 +206,8 @@ class Pricing extends React.Component {
 		} = this.state.customer;
 		const { orderType, startDate } = this.state;
 
+		const rewardStatus = this.state.rewardStatus === 3 ? 0 : this.state.rewardStatus + 1;
+
 		const newOrder = {
 			firstName: firstName,
 			lastName: lastName,
@@ -207,14 +216,18 @@ class Pricing extends React.Component {
 			province: province,
 			address: address,
 			phoneNumber: phoneNumber,
+			rewardStatus: rewardStatus,
 			numberOfOrders: numberOfOrders,
 			totalSpent: totalSpent,
 			orderType: orderType,
 			selectedDate: startDate,
 			createdDate: startDate
 		};
-
-		axios.post(`${BASE_URL}`, newOrder).then((res) => console.log(res.data));
+		if (this.state.firstTimer) {
+			axios.post(`${BASE_URL}`, newOrder).then((res) => console.log(res.data));
+		} else {
+			axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, newOrder).then((res) => console.log(res.data));
+		}
 
 		this.setState({
 			customer: {
@@ -488,6 +501,7 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
+					rewardStatus={this.state.rewardStatus}
 					numberOfOrders={this.state.numberOfOrders}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
@@ -507,6 +521,7 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
+					rewardStatus={this.state.rewardStatus}
 					numberOfOrders={this.state.numberOfOrders}
 					nextStage={this.nextStage}
 					displayrewardcard={this.state.displayRewardCard}
@@ -526,6 +541,7 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
+					rewardStatus={this.state.rewardStatus}
 					numberOfOrders={this.state.numberOfOrders}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}

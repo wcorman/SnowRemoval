@@ -12,7 +12,7 @@ function RewardCards(props) {
 		<div>
 			{!props.loading &&
 			props.displayrewardcard &&
-			props.firsttimer && (
+			props.rewardStatus === 0 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
@@ -36,7 +36,7 @@ function RewardCards(props) {
 
 			{!props.loading &&
 			props.displayrewardcard &&
-			props.numberOfOrders === 1 && (
+			props.rewardStatus === 1 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
@@ -60,7 +60,7 @@ function RewardCards(props) {
 
 			{!props.loading &&
 			props.displayrewardcard &&
-			props.numberOfOrders === 2 && (
+			props.rewardStatus === 2 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
@@ -84,7 +84,7 @@ function RewardCards(props) {
 
 			{!props.loading &&
 			props.displayrewardcard &&
-			props.numberOfOrders === 3 && (
+			props.rewardStatus === 3 && (
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>

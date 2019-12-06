@@ -11,7 +11,6 @@ import PhoneCheck from '../components/phoneCheck';
 function InfoModal(props) {
 	const modalScreen = () => {
 		if (props.showform === 0) {
-			console.log(props);
 			return (
 				<div>
 					<Modal.Header closeButton>
@@ -23,7 +22,7 @@ function InfoModal(props) {
 						{props.displayrewardcard &&
 						props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">
-								Looks like your first time here, welcome!
+								Welcome to Powder Hounds!
 							</Modal.Title>
 						)}
 
@@ -46,6 +45,7 @@ function InfoModal(props) {
 							loading={props.loading}
 							displayrewardcard={props.displayrewardcard}
 							firsttimer={props.firsttimer}
+							rewardStatus={props.rewardStatus}
 							numberOfOrders={props.numberOfOrders}
 							nextStage={props.nextStage}
 						/>

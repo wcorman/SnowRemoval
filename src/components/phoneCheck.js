@@ -14,6 +14,7 @@ function PhoneCheck(props) {
 							<Form.Control
 								required
 								size="lg"
+								type="phone"
 								placeholder="ex: 306-555-5555"
 								id="phoneNumber"
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
