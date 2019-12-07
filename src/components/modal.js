@@ -153,7 +153,6 @@ function InfoModal(props) {
 
 							<div className="payPalButtonContainer">
 								<PayPalButton
-									className="payPalButton"
 									amount={props.options.price.toString()}
 									shippingPreference="NO_SHIPPING"
 									options={{
