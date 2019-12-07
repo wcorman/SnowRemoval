@@ -9,6 +9,7 @@ import { PayPalButton } from 'react-paypal-button-v2';
 
 import RewardCards from '../components/rewardCards';
 import PhoneCheck from '../components/phoneCheck';
+import Checkout from '../components/checkout';
 
 function InfoModal(props) {
 	const modalScreen = () => {
@@ -142,38 +143,7 @@ function InfoModal(props) {
 				</div>
 			);
 		} else if (props.showform === 2) {
-			return (
-				<div>
-					<Modal.Header closeButton>
-						<Modal.Title id="contained-modal-title-vcenter">Review your order</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						<Form>
-							
-
-							<div className="payPalButtonContainer">
-								<PayPalButton
-									amount={props.options.price.toString()}
-									shippingPreference="NO_SHIPPING"
-									options={{
-										clientId:
-											'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
-										currency: 'CAD'
-									}}
-									onSuccess={(details) => props.onPayment(props.price)}
-								/>
-							</div>
-							<Button
-								disabled={props.validform}
-								variant="primary"
-								onClick={() => props.onPayment(props.price)}
-							>
-								Pay {props.options.price}
-							</Button>
-						</Form>
-					</Modal.Body>
-				</div>
-			);
+			return <Checkout options={props.options} onPayment={props.onPayment}/>;
 		}
 	};
 
