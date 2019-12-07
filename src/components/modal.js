@@ -145,7 +145,7 @@ function InfoModal(props) {
 			return (
 				<div>
 					<Modal.Header closeButton>
-						<Modal.Title id="contained-modal-title-vcenter">Order Details</Modal.Title>
+						<Modal.Title id="contained-modal-title-vcenter">Review your order</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
 						<Form>
@@ -161,9 +161,7 @@ function InfoModal(props) {
 											'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
 										currency: 'CAD'
 									}}
-									onSuccess={(details) => {
-										alert('Transaction completed by ' + details.payer.name.given_name);
-									}}
+									onSuccess={(details) => props.onPayment(props.price)}
 								/>
 							</div>
 							<Button

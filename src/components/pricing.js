@@ -393,7 +393,7 @@ class Pricing extends React.Component {
 											id="scheduleButton"
 											onClick={() => this.setModalShow('schedule', true)}
 										>
-											Clear that snow!
+											Let's get started!
 										</Button>
 									</div>
 								</div>
@@ -444,7 +444,7 @@ class Pricing extends React.Component {
 											id="scheduleButton"
 											onClick={() => this.setModalShow('sameDay', true)}
 										>
-											Clear that snow!
+											Let's get started!
 										</Button>
 									</div>
 								</div>
@@ -497,7 +497,7 @@ class Pricing extends React.Component {
 											id="scheduleButton"
 											onClick={() => this.setModalShow('priority', true)}
 										>
-											Clear that snow!
+											Let's get started!
 										</Button>
 									</div>
 								</div>
