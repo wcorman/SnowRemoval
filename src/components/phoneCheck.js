@@ -16,13 +16,18 @@ function PhoneCheck(props) {
 								size="lg"
 								type="phone"
 								placeholder="ex: 306-555-5555"
+								isValid={props.validation.validPhone}
 								id="phoneNumber"
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
 							/>
 						</Form.Group>
 					</Form.Row>
 
-					<Button disabled={props.validphone} variant="primary" onClick={() => props.nextStage('phoneCheck')}>
+					<Button
+						disabled={!props.validation.validPhone}
+						variant="primary"
+						onClick={() => props.nextStage('phoneCheck')}
+					>
 						Next
 					</Button>
 				</Form>

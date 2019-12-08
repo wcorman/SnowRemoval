@@ -42,7 +42,10 @@ class Pricing extends React.Component {
 			rewardStatus: 0,
 			isLoaded: false,
 			error: null,
-			validPhone: 1,
+			validPhone: false,
+			validation: {
+				validPhone: false
+			},
 			validForm: 1,
 			orderType: null,
 			firstTimer: false,
@@ -116,11 +119,17 @@ class Pricing extends React.Component {
 
 		if (pattern.test(phoneNumber)) {
 			this.setState({
-				validPhone: 0
+				validation: {
+					...this.state,
+					validPhone: true
+				}
 			});
 		} else {
 			this.setState({
-				validPhone: 1
+				validation: {
+					...this.state,
+					validPhone: false
+				}
 			});
 		}
 	};
@@ -515,7 +524,7 @@ class Pricing extends React.Component {
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
 					displayrewardcard={this.state.displayRewardCard}
-					validphone={this.state.validPhone}
+					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
 					onPayment={this.onPayment}
@@ -535,7 +544,7 @@ class Pricing extends React.Component {
 					displayrewardcard={this.state.displayRewardCard}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
-					validphone={this.state.validPhone}
+					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
 					onPayment={this.onPayment}
@@ -555,7 +564,7 @@ class Pricing extends React.Component {
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
 					displayrewardcard={this.state.displayRewardCard}
-					validphone={this.state.validPhone}
+					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
 					validform={this.state.validForm}
 					onPayment={this.onPayment}

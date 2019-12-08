@@ -26,7 +26,6 @@ function InfoModal(props) {
 						props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">Welcome to Powder Hounds!</Modal.Title>
 						)}
-
 						{props.displayrewardcard &&
 						!props.firsttimer && (
 							<Modal.Title id="contained-modal-title-vcenter">
@@ -39,7 +38,7 @@ function InfoModal(props) {
 							loading={props.loading}
 							displayrewardcard={props.displayrewardcard}
 							onUpdateField={props.onUpdateField}
-							validphone={props.validphone}
+							validation={props.validation}
 							nextStage={props.nextStage}
 						/>
 						<RewardCards
