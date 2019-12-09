@@ -42,11 +42,13 @@ class Pricing extends React.Component {
 			rewardStatus: 0,
 			isLoaded: false,
 			error: null,
-			validPhone: false,
 			validation: {
-				validPhone: false
+				phone: false,
+				firstName: false,
+				lastName: false,
+				email: false,
+				address: false
 			},
-			validForm: 1,
 			orderType: null,
 			firstTimer: false,
 			isLoading: false,
@@ -65,41 +67,6 @@ class Pricing extends React.Component {
 		};
 	}
 
-	updateField = (input) => {
-		console.log(input.id);
-
-		const field = input.id;
-
-		if (field === 'phoneNumber') {
-			this.phoneValidation(input.value);
-		} else {
-			this.fieldValidation(input.id);
-		}
-
-		this.setState({
-			customer: {
-				...this.state.customer,
-				[field]: input.value
-			}
-		});
-	};
-
-	fieldValidation = () => {
-		const { firstName, lastName, address, email } = this.state.customer;
-
-		var pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gim;
-
-		if (firstName === '' || lastName === '' || address === '' || !pattern.test(email)) {
-			this.setState({
-				validForm: 1
-			});
-		} else {
-			this.setState({
-				validForm: 0
-			});
-		}
-	};
-
 	emailValidation = (email) => {
 		var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g;
 
@@ -114,6 +81,113 @@ class Pricing extends React.Component {
 		}
 	};
 
+	updateField = (input) => {
+		console.log(input.id);
+
+		const field = input.id;
+
+		if (field === 'phoneNumber') {
+			this.phoneValidation(input.value);
+		} else {
+			this.fieldValidation(input);
+		}
+
+		this.setState({
+			customer: {
+				...this.state.customer,
+				[field]: input.value
+			}
+		});
+	};
+
+	fieldValidation = (input) => {
+		const field = input.id;
+
+		this.setState({
+			...this.state,
+			customer: {
+				...this.state.customer,
+				[field]: input.value
+			}
+		});
+
+		if (field === 'firstName') {
+			if (input.value.length > 1) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						firstName: true
+					}
+				});
+			} else {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						firstName: false
+					}
+				});
+			}
+		} else if (field === 'lastName') {
+			if (input.value.length > 1) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						lastName: true
+					}
+				});
+			} else if (input.value.length < 2) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						lastName: false
+					}
+				});
+			}
+		} else if (field === 'email') {
+			var emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+			if (emailPattern.test(input.value)) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						email: true
+					}
+				});
+			} else {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						email: false
+					}
+				});
+			}
+		} else if (field === 'address') {
+			if (input.value.length > 5) {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						address: true
+					}
+				});
+			} else {
+				this.setState({
+					...this.state,
+					validation: {
+						...this.state.validation,
+						address: false
+					}
+				});
+			}
+		}
+	};
+
 	phoneValidation = (phoneNumber) => {
 		var pattern = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/g;
 
@@ -121,14 +195,14 @@ class Pricing extends React.Component {
 			this.setState({
 				validation: {
 					...this.state,
-					validPhone: true
+					phone: true
 				}
 			});
 		} else {
 			this.setState({
 				validation: {
 					...this.state,
-					validPhone: false
+					phone: false
 				}
 			});
 		}
@@ -176,7 +250,7 @@ class Pricing extends React.Component {
 							isLoading: false,
 							displayRewardCard: true
 						});
-					}, 1000);
+					}, 900);
 				} else {
 					setTimeout(() => {
 						this.setState({
@@ -184,7 +258,7 @@ class Pricing extends React.Component {
 							firstTimer: true,
 							displayRewardCard: true
 						});
-					}, 1000);
+					}, 900);
 				}
 				if (data.length === 3) {
 					this.setState({
@@ -526,7 +600,6 @@ class Pricing extends React.Component {
 					displayrewardcard={this.state.displayRewardCard}
 					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
-					validform={this.state.validForm}
 					onPayment={this.onPayment}
 					options={this.state.schedule}
 					label="Scheduled snow clearing"
@@ -546,7 +619,6 @@ class Pricing extends React.Component {
 					orderType={this.state.orderType}
 					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
-					validform={this.state.validForm}
 					onPayment={this.onPayment}
 					options={this.state.sameDay}
 					label="Same day clearing"
@@ -566,7 +638,6 @@ class Pricing extends React.Component {
 					displayrewardcard={this.state.displayRewardCard}
 					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
-					validform={this.state.validForm}
 					onPayment={this.onPayment}
 					options={this.state.priority}
 					label="Priority clearing"

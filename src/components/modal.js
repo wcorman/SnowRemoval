@@ -1,15 +1,11 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
-
-import { PayPalButton } from 'react-paypal-button-v2';
 
 import RewardCards from '../components/rewardCards';
 import PhoneCheck from '../components/phoneCheck';
 import Checkout from '../components/checkout';
+import InfoForm from '../components/infoForm';
 
 function InfoModal(props) {
 	const modalScreen = () => {
@@ -56,93 +52,17 @@ function InfoModal(props) {
 			);
 		} else if (props.showform === 1) {
 			return (
-				<div>
-					<Modal.Header closeButton>
-						<Modal.Title id="contained-modal-title-vcenter">
-							{props.label} - {props.chosendate}
-						</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						<Form>
-							<Form.Row>
-								<Form.Group as={Col}>
-									<Form.Label>First Name</Form.Label>
-									<Form.Control
-										required
-										placeholder="First name"
-										id="firstName"
-										value={props.customer.firstName}
-										onChange={(value) => props.onUpdateField(value.currentTarget)}
-									/>
-								</Form.Group>
-
-								<Form.Group as={Col}>
-									<Form.Label>Last Name</Form.Label>
-									<Form.Control
-										placeholder="Last name"
-										id="lastName"
-										value={props.customer.lastName}
-										onChange={(value) => props.onUpdateField(value.currentTarget)}
-									/>
-								</Form.Group>
-							</Form.Row>
-
-							<Form.Row>
-								<Form.Group as={Col}>
-									<Form.Label>Email</Form.Label>
-									<Form.Control
-										required
-										type="email"
-										placeholder="Enter email"
-										id="email"
-										value={props.customer.email}
-										onChange={(value) => props.onUpdateField(value.currentTarget)}
-									/>
-								</Form.Group>
-							</Form.Row>
-
-							<Form.Row>
-								<Form.Group as={Col}>
-									<Form.Label>City</Form.Label>
-									<Form.Control value="Saskatoon" as="select" readOnly>
-										<option>Saskatoon</option>
-										<option>Regina</option>
-										<option>Prince Albert</option>
-									</Form.Control>
-								</Form.Group>
-
-								<Form.Group as={Col}>
-									<Form.Label>Province</Form.Label>
-									<Form.Control value="Saskatchewan" as="select" readOnly>
-										<option>Alberta</option>
-										<option>Saskatchewan</option>
-									</Form.Control>
-								</Form.Group>
-							</Form.Row>
-
-							<Form.Group>
-								<Form.Label>Address</Form.Label>
-								<Form.Control
-									required
-									placeholder="Enter Address"
-									id="address"
-									value={props.customer.address}
-									onChange={(value) => props.onUpdateField(value.currentTarget)}
-								/>
-							</Form.Group>
-							<Button
-								disabled={props.validform}
-								variant="primary"
-								onClick={() => props.nextStage('information')}
-							>
-								Next
-							</Button>
-						</Form>
-					</Modal.Body>
-				</div>
+				<InfoForm
+					label={props.label}
+					chosendate={props.chosendate}
+					onUpdateField={props.onUpdateField}
+					nextStage={props.nextStage}
+					customer={props.customer}
+					validation={props.validation}
+				/>
 			);
 		} else if (props.showform === 2) {
-			return <Checkout options={props.options} onPayment={props.onPayment}/>;
+			return <Checkout options={props.options} onPayment={props.onPayment} />;
 		}
 	};
 

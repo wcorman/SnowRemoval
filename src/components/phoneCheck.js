@@ -16,7 +16,7 @@ function PhoneCheck(props) {
 								size="lg"
 								type="phone"
 								placeholder="ex: 306-555-5555"
-								isValid={props.validation.validPhone}
+								isValid={props.validation.phone}
 								id="phoneNumber"
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
 							/>
@@ -24,7 +24,7 @@ function PhoneCheck(props) {
 					</Form.Row>
 
 					<Button
-						disabled={!props.validation.validPhone}
+						disabled={!props.validation.phone}
 						variant="primary"
 						onClick={() => props.nextStage('phoneCheck')}
 					>

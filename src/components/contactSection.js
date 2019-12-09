@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ContactModal from '../components/contactModal';
 
-import Col from 'react-bootstrap/Col';
 import MailLogo from '../contactLogo.svg';
 import Tilt from 'react-tilt';
 
@@ -17,7 +16,6 @@ class ContactSection extends Component {
 			name: '',
 			message: '',
 			showModal: false,
-			validForm: false,
 			validation: {
 				name: false,
 				message: false
@@ -36,14 +34,14 @@ class ContactSection extends Component {
 		});
 
 		if (field === 'name') {
-			if (field === 'name' && input.value.length > 1) {
+			if (input.value.length > 1) {
 				this.setState({
 					validation: {
 						...this.state,
 						name: true
 					}
 				});
-			} else if (field === 'name' && input.value.length < 2) {
+			} else if (input.value.length < 2) {
 				this.setState({
 					...this.state,
 					validation: {
@@ -83,7 +81,6 @@ class ContactSection extends Component {
 			name: '',
 			message: '',
 			showModal: false,
-			validForm: false,
 			validation: {
 				name: false,
 				message: false
