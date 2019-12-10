@@ -222,7 +222,13 @@ class Pricing extends React.Component {
 	findCustomerByPhone = () => {
 		let typedNumber = this.state.customer.phoneNumber;
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
-
+		this.setState({
+			...this.state,
+			customer: {
+				...this.state.customer,
+				phoneNumber: formattedNumber,
+			}
+		});
 		fetch(`${BASE_URL}/phone/${formattedNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
@@ -233,6 +239,7 @@ class Pricing extends React.Component {
 					const customer = data[0];
 
 					this.setState({
+						...this.state,
 						firstTimer: false,
 						rewardStatus: customer.rewardStatus,
 						numberOfOrders: customer.numberOfOrders,
