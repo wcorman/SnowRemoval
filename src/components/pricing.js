@@ -42,7 +42,6 @@ class Pricing extends React.Component {
 			price: null,
 			showForm: 0,
 			displayRewardCard: false,
-			rewardStatus: 0,
 			validation: {
 				phone: false,
 				firstName: false,
@@ -61,8 +60,9 @@ class Pricing extends React.Component {
 				city: 'Saskatoon',
 				province: 'Saskatchewan',
 				address: '',
+				rewardStatus: 0,
 				numberOfOrders: 0,
-				totalSpent: null,
+				totalSpent: 0,
 				id: null
 			}
 		};
@@ -226,7 +226,7 @@ class Pricing extends React.Component {
 			...this.state,
 			customer: {
 				...this.state.customer,
-				phoneNumber: formattedNumber,
+				phoneNumber: formattedNumber
 			}
 		});
 		fetch(`${BASE_URL}/phone/${formattedNumber}`)
@@ -241,14 +241,14 @@ class Pricing extends React.Component {
 					this.setState({
 						...this.state,
 						firstTimer: false,
-						rewardStatus: customer.rewardStatus,
-						numberOfOrders: customer.numberOfOrders,
 						customer: {
 							...this.state.customer,
 							firstName: customer.firstName,
 							lastName: customer.lastName,
 							email: customer.email,
 							address: customer.address,
+							rewardStatus: customer.rewardStatus,
+							numberOfOrders: customer.numberOfOrders,
 							id: customer._id
 						}
 					});
@@ -298,20 +298,12 @@ class Pricing extends React.Component {
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 
-		const {
-			firstName,
-			lastName,
-			address,
-			email,
-			phoneNumber,
-			city,
-			province,
-			numberOfOrders,
-			totalSpent
-		} = this.state.customer;
+		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
 		const { orderType, startDate } = this.state;
 
-		const rewardStatus = this.state.rewardStatus === 3 ? 0 : this.state.rewardStatus + 1;
+		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.rewardStatus + 1;
+		const numberOfOrders = this.state.customer.numberOfOrders + 1;
+		const totalSpent = this.state.customer.totalSpent;
 
 		const newOrder = {
 			firstName: firstName,
@@ -608,8 +600,8 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
-					rewardStatus={this.state.rewardStatus}
-					numberOfOrders={this.state.numberOfOrders}
+					rewardStatus={this.state.customer.rewardStatus}
+					numberOfOrders={this.state.customer.numberOfOrders}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
@@ -627,8 +619,8 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
-					rewardStatus={this.state.rewardStatus}
-					numberOfOrders={this.state.numberOfOrders}
+					rewardStatus={this.state.customer.rewardStatus}
+					numberOfOrders={this.state.customer.numberOfOrders}
 					nextStage={this.nextStage}
 					displayrewardcard={this.state.displayRewardCard}
 					showform={this.state.showForm}
@@ -646,8 +638,8 @@ class Pricing extends React.Component {
 				<InfoModal
 					customer={this.state.customer}
 					onUpdateField={this.updateField}
-					rewardStatus={this.state.rewardStatus}
-					numberOfOrders={this.state.numberOfOrders}
+					rewardStatus={this.state.customer.rewardStatus}
+					numberOfOrders={this.state.customer.numberOfOrders}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
