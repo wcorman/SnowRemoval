@@ -14,7 +14,7 @@ function PhoneCheck(props) {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<Form autocomplete="off">
+				<Form>
 					<Form.Row>
 						<Form.Group as={Col}>
 							<Form.Label>First Name</Form.Label>
@@ -23,7 +23,6 @@ function PhoneCheck(props) {
 								placeholder="First name"
 								id="firstName"
 								name="firstName"
-								defaultValue={props.customer.firstName}
 								isValid={props.validation.firstName}
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
 							/>
@@ -36,7 +35,6 @@ function PhoneCheck(props) {
 								placeholder="Last name"
 								id="lastName"
 								name="lastName"
-								defaultValue={props.customer.lastName}
 								isValid={props.validation.lastName}
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
 							/>
@@ -51,7 +49,6 @@ function PhoneCheck(props) {
 								type="email"
 								placeholder="Enter email"
 								id="email"
-								defaultValue={props.customer.email}
 								isValid={props.validation.email}
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
 							/>
@@ -83,7 +80,6 @@ function PhoneCheck(props) {
 							required
 							placeholder="Enter Address"
 							id="address"
-							value={props.customer.address}
 							isValid={props.validation.address}
 							onChange={(value) => props.onUpdateField(value.currentTarget)}
 						/>

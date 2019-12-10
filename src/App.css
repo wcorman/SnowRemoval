@@ -65,7 +65,7 @@
 }
 
 .subFooter {
-	color: #1A88F3;
+	color: #1a88f3;
 	font-size: 7.5px;
 }
 
@@ -80,7 +80,19 @@
 }
 
 .payPalButtonContainer {
-	width: 60%;
+	width: 100%;
 	text-align: center;
 	margin: 0 auto;
+}
+
+.checkoutText {
+	font-size: 18px;
+}
+
+.checkoutTitle {
+		font-size: 26px;
+}
+
+.grandTotal {
+	font-size: 20px;
 }

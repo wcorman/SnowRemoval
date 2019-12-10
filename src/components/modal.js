@@ -5,6 +5,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import RewardCards from '../components/rewardCards';
 import PhoneCheck from '../components/phoneCheck';
 import Checkout from '../components/checkout';
+import Success from '../components/success';
 import InfoForm from '../components/infoForm';
 
 function InfoModal(props) {
@@ -62,7 +63,27 @@ function InfoModal(props) {
 				/>
 			);
 		} else if (props.showform === 2) {
-			return <Checkout options={props.options} onPayment={props.onPayment} />;
+			return (
+				<Checkout
+					orderType={props.orderType}
+					options={props.options}
+					onPayment={props.onPayment}
+					customer={props.customer}
+					chosendate={props.chosendate}
+					loading={props.loading}
+					onPayPalPress={props.onPayPalPress}
+				/>
+			);
+		} else if (props.showform === 3) {
+			return (
+				<Success
+					orderType={props.orderType}
+					options={props.options}
+					onPayment={props.onPayment}
+					customer={props.customer}
+					chosendate={props.chosendate}
+				/>
+			);
 		}
 	};
 

@@ -20,6 +20,9 @@ class Pricing extends React.Component {
 
 		const today = new Date();
 
+		var moment = require('moment');
+		let todayNew = moment().format('MMMM Do YYYY');
+
 		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
 
 		this.state = {
@@ -28,7 +31,7 @@ class Pricing extends React.Component {
 			priority: { price: 45, driveways: 0 },
 			startDate: today.setDate(today.getDate() + 0.5),
 			displayDate: displayDate,
-			today: today,
+			today: todayNew,
 			dateError: false,
 			modalShow: false,
 			scheduleModal: false,
@@ -40,8 +43,6 @@ class Pricing extends React.Component {
 			showForm: 0,
 			displayRewardCard: false,
 			rewardStatus: 0,
-			isLoaded: false,
-			error: null,
 			validation: {
 				phone: false,
 				firstName: false,
@@ -82,8 +83,6 @@ class Pricing extends React.Component {
 	};
 
 	updateField = (input) => {
-		console.log(input.id);
-
 		const field = input.id;
 
 		if (field === 'phoneNumber') {
@@ -221,13 +220,14 @@ class Pricing extends React.Component {
 	};
 
 	findCustomerByPhone = () => {
-		fetch(`${BASE_URL}/phone/${this.state.customer.phoneNumber}`)
+		let typedNumber = this.state.customer.phoneNumber;
+		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
+
+		fetch(`${BASE_URL}/phone/${formattedNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log('DATA', data[0]);
 				this.setState({
-					isLoading: true,
-					numberOfOrders: data.length
+					isLoading: true
 				});
 				if (data.length > 0) {
 					const customer = data[0];
@@ -281,6 +281,13 @@ class Pricing extends React.Component {
 		}
 	};
 
+	onPayPalPress = () => {
+		console.log('PAYPAL PRESS');
+		this.setState({
+			isLoading: true
+		});
+	};
+
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 
@@ -321,25 +328,27 @@ class Pricing extends React.Component {
 		}
 
 		this.setState({
-			customer: {
-				firstName: '',
-				lastName: '',
-				email: '',
-				phoneNumber: '',
-				city: 'Saskatoon',
-				province: 'Saskatchewan',
-				address: '',
-				numberOfOrders: null,
-				totalSpent: null
-			}
+			...this.state,
+			showForm: 3,
+			isLoading: false
+			// customer: {
+			// 	firstName: '',
+			// 	lastName: '',
+			// 	email: '',
+			// 	phoneNumber: '',
+			// 	city: 'Saskatoon',
+			// 	province: 'Saskatchewan',
+			// 	address: '',
+			// 	numberOfOrders: null,
+			// 	totalSpent: null
+			// }
 		});
-		this.setModalShow(this.state.orderType, false);
+		// this.setModalShow(this.state.orderType, false);
 	};
 
 	handleChange = (date) => {
 		var moment = require('moment');
 		var now = moment();
-		console.log(date);
 
 		if (date < now) {
 			const button = document.getElementById('scheduleButton');
@@ -622,7 +631,7 @@ class Pricing extends React.Component {
 					onPayment={this.onPayment}
 					options={this.state.sameDay}
 					label="Same day clearing"
-					chosendate={this.state.today.toDateString()}
+					chosendate={this.state.today}
 					show={this.state.sameDayModal}
 					loading={this.state.isLoading}
 					onHide={() => this.setModalShow('sameDay', false)}
@@ -639,9 +648,10 @@ class Pricing extends React.Component {
 					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
 					onPayment={this.onPayment}
+					onPayPalPress={this.onPayPalPress}
 					options={this.state.priority}
 					label="Priority clearing"
-					chosendate={this.state.today.toDateString()}
+					chosendate={this.state.today}
 					show={this.state.priorityModal}
 					loading={this.state.isLoading}
 					onHide={() => this.setModalShow('priority', false)}

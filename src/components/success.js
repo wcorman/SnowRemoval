@@ -1,12 +1,11 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
 
 import Logo from '../huskyLogo.svg';
 
 import { PayPalButton } from 'react-paypal-button-v2';
 
-function Checkout(props) {
+function Success(props) {
 	const chooseType = (type) => {
 		if (type === 'schedule') {
 			return 'Scheduled Snow Clearing';
@@ -23,15 +22,14 @@ function Checkout(props) {
 	return (
 		<div>
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">Review your order</Modal.Title>
+				<Modal.Title id="contained-modal-title-vcenter">Order Successful</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<div className="container-fluid contactContainer">
 					<div className="row no-gutter">
-						<div className="d-none d-md-flex col-md-0 hidden-md-down col-lg-5 col-sm-2 " id="contactForm">
-							<img src={Logo} alt="" className="husky" />
-						</div>
 						<div className="col-sm-12 col-md-12 col-lg-7">
+							<img src={Logo} alt="" className="husky" />
+
 							<div>
 								<p className="checkoutTitle">
 									<strong>{displayType}</strong>
@@ -69,7 +67,6 @@ function Checkout(props) {
 									buyerCountry: 'CA'
 								}}
 								onSuccess={(details) => props.onPayment(props.options.price)}
-								catchError={(err) => console.log(err)}
 							/>
 
 							{/* <Button
@@ -82,10 +79,9 @@ function Checkout(props) {
 						</div>
 					</div>
 				</div>
-				{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
 			</Modal.Body>
 		</div>
 	);
 }
 
-export default Checkout;
+export default Success;
