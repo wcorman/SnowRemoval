@@ -104,7 +104,7 @@ section {
 	text-align: center;
 }
 
-.disabled {
+.btn:disabled {
 	background-color: #ced4d9 !important;
 	border-color: #ced4d9 !important;
 }
@@ -274,5 +274,5 @@ section {
 }
 
 .rewardCard {
-  width: 82%;
+	width: 82%;
 }

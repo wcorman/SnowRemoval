@@ -22,20 +22,29 @@ class Pricing extends React.Component {
 
 		var moment = require('moment');
 		let todayNew = moment().format('MMMM Do YYYY');
+		let currentTime = moment().format('LT');
+		let sameDayCutoff = moment().format('5:00 PM');
+		let priorityCutoff = moment().format('7:00 PM');
+		const sameDayOpen = currentTime > sameDayCutoff;
+		const priorityOpen = currentTime > priorityCutoff;
+
+		console.log(currentTime < sameDayCutoff);
+
+		console.log(currentTime);
+		console.log(sameDayCutoff);
 
 		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
 
 		this.state = {
-			schedule: { price: 25, driveways: 0 },
-			sameDay: { price: 35, driveways: 0 },
-			priority: { price: 45, driveways: 0 },
+			schedule: { price: 25, driveways: 0, disabled: false },
+			sameDay: { price: 35, driveways: 0, disabled: sameDayOpen },
+			priority: { price: 45, driveways: 0, disabled: priorityOpen },
 			startDate: today.setDate(today.getDate() + 0.5),
 			displayDate: displayDate,
 			today: todayNew,
 			dateError: false,
 			modalShow: false,
 			scheduleModal: false,
-			numberOfOrders: 0,
 			freeClearing: false,
 			sameDayModal: false,
 			priorityModal: false,
@@ -60,6 +69,7 @@ class Pricing extends React.Component {
 				city: 'Saskatoon',
 				province: 'Saskatchewan',
 				address: '',
+				orders: [],
 				rewardStatus: 0,
 				numberOfOrders: 0,
 				totalSpent: 0,
@@ -229,14 +239,20 @@ class Pricing extends React.Component {
 				phoneNumber: formattedNumber
 			}
 		});
+		console.log(formattedNumber);
+
+		// axios.get(`${BASE_URL}/phone/${formattedNumber}`).then((res) => console.log(res.data));
+
 		fetch(`${BASE_URL}/phone/${formattedNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
 				this.setState({
 					isLoading: true
 				});
+				console.log('DATA: ', data);
 				if (data.length > 0) {
 					const customer = data[0];
+					console.log('customer: ', customer);
 
 					this.setState({
 						...this.state,
@@ -246,9 +262,14 @@ class Pricing extends React.Component {
 							firstName: customer.firstName,
 							lastName: customer.lastName,
 							email: customer.email,
+							city: customer.city,
+							province: customer.province,
+							phoneNumber: customer.phoneNumber,
 							address: customer.address,
 							rewardStatus: customer.rewardStatus,
 							numberOfOrders: customer.numberOfOrders,
+							totalSpent: customer.totalSpent,
+							orders: customer.orders,
 							id: customer._id
 						}
 					});
@@ -301,10 +322,32 @@ class Pricing extends React.Component {
 		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
 		const { orderType, startDate } = this.state;
 
-		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.rewardStatus + 1;
+		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.customer.rewardStatus + 1;
 		const numberOfOrders = this.state.customer.numberOfOrders + 1;
 		const totalSpent = this.state.customer.totalSpent;
+		console.log('rewardStatus: ', rewardStatus);
+		const newOrder2 = {
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			city: city,
+			province: province,
+			address: address,
+			phoneNumber: phoneNumber,
+			orderType: orderType,
+			selectedDate: startDate
+		};
 
+		this.setState({
+			...this.state,
+			customer: {
+				...this.state.customer,
+				orders: [ ...this.state.customer.orders, newOrder2 ]
+			}
+		});
+
+		const newOrders = this.state.customer.orders;
+		console.log('New Orders: ', newOrders);
 		const newOrder = {
 			firstName: firstName,
 			lastName: lastName,
@@ -315,11 +358,11 @@ class Pricing extends React.Component {
 			phoneNumber: phoneNumber,
 			rewardStatus: rewardStatus,
 			numberOfOrders: numberOfOrders,
-			totalSpent: totalSpent,
-			orderType: orderType,
-			selectedDate: startDate,
+			totalSpent: totalSpent + amount,
+			orders: this.state.customer.orders,
 			createdDate: startDate
 		};
+		console.log(newOrder);
 		if (this.state.firstTimer) {
 			axios.post(`${BASE_URL}`, newOrder).then((res) => console.log(res.data));
 		} else {
@@ -351,10 +394,13 @@ class Pricing extends React.Component {
 
 		if (date < now) {
 			const button = document.getElementById('scheduleButton');
-			button.setAttribute('disabled', true);
-			button.classList.add('disabled');
 			button.style.pointerEvents = 'none';
 			this.setState({
+				...this.state,
+				schedule: {
+					...this.state.schedule,
+					disabled: true
+				},
 				dateError: true
 			});
 		} else {
@@ -363,6 +409,11 @@ class Pricing extends React.Component {
 			button.classList.remove('disabled');
 			button.style.pointerEvents = '';
 			this.setState({
+				...this.state,
+				schedule: {
+					...this.state.schedule,
+					disabled: false
+				},
 				dateError: false,
 				displayDate: date
 			});
@@ -379,31 +430,31 @@ class Pricing extends React.Component {
 
 		if (plan === 'schedule') {
 			if (driveways === '1') {
-				this.setState({ [plan]: { price: 30, driveways: 1 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 30, driveways: 1 } });
 			} else if (driveways === '2') {
-				this.setState({ [plan]: { price: 35, driveways: 2 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 35, driveways: 2 } });
 			} else {
-				this.setState({ [plan]: { price: 25, driveways: 0 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 25, driveways: 0 } });
 			}
 		}
 
 		if (plan === 'sameDay') {
 			if (driveways === '1') {
-				this.setState({ [plan]: { price: 40, driveways: 1 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 40, driveways: 1 } });
 			} else if (driveways === '2') {
-				this.setState({ [plan]: { price: 45, driveways: 2 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 45, driveways: 2 } });
 			} else {
-				this.setState({ [plan]: { price: 35, driveways: 0 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 35, driveways: 0 } });
 			}
 		}
 
 		if (plan === 'priority') {
 			if (driveways === '1') {
-				this.setState({ [plan]: { price: 50, driveways: 1 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 50, driveways: 1 } });
 			} else if (driveways === '2') {
-				this.setState({ [plan]: { price: 55, driveways: 2 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 55, driveways: 2 } });
 			} else {
-				this.setState({ [plan]: { price: 45, driveways: 0 } });
+				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 45, driveways: 0 } });
 			}
 		}
 	};
@@ -482,6 +533,7 @@ class Pricing extends React.Component {
 										<Button
 											className="btn btn-block btn-primary text-uppercase button"
 											id="scheduleButton"
+											disabled={this.state.schedule.disabled}
 											onClick={() => this.setModalShow('schedule', true)}
 										>
 											Let's get started!
@@ -526,13 +578,14 @@ class Pricing extends React.Component {
 											<span className="fa-li">
 												<i className="fas fa-check" />
 											</span>
-											<strong>4pm</strong> deadline for payment
+											<strong>5pm</strong> deadline for payment
 										</li>
 									</ul>
 									<div className="button-container">
 										<Button
 											className="btn btn-block btn-primary text-uppercase button"
 											id="scheduleButton"
+											disabled={this.state.sameDay.disabled}
 											onClick={() => this.setModalShow('sameDay', true)}
 										>
 											Let's get started!
@@ -586,6 +639,7 @@ class Pricing extends React.Component {
 										<Button
 											className="btn btn-block btn-primary text-uppercase button"
 											id="scheduleButton"
+											disabled={this.state.priority.disabled}
 											onClick={() => this.setModalShow('priority', true)}
 										>
 											Let's get started!
