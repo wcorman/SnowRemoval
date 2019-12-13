@@ -1,4 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Powder Hounds Residential Snow Clearing
+Powder Hounds aims to be the most convienent, affordable residential snow clearing service available.
+
+### Backend:
+https://github.com/wcorman/PowderHoundsBackend
 
 ## Available Scripts
 
