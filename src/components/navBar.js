@@ -5,7 +5,7 @@ import '../App.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Image from 'react-bootstrap/Image';
-import Logo from '../navLogo.svg';
+import Logo from '../media/navLogo.svg';
 
 function NavBar() {
   return (

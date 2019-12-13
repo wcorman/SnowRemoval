@@ -1,9 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 
-import Logo from '../huskyLogo.svg';
-
-import { PayPalButton } from 'react-paypal-button-v2';
+import Logo from '../media/huskyLogo.svg';
 
 function Success(props) {
 	const chooseType = (type) => {

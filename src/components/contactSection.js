@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ContactModal from '../components/contactModal';
 
-import MailLogo from '../contactLogo.svg';
+import MailLogo from '../media/contactLogo.svg';
 import Tilt from 'react-tilt';
 
 import '../App.css';

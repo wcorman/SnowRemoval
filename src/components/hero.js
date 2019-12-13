@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 
-import Logo from '../mainLogo.svg'
+import Logo from '../media/mainLogo.svg'
 
 
 function Hero() {

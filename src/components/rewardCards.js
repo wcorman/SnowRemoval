@@ -2,10 +2,10 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-import threeMore from '../3more.svg';
-import twoMore from '../2more.svg';
-import oneMore from '../1more.svg';
-import free from '../free.svg';
+import threeMore from '../media/loyaltyCards/3more.svg';
+import twoMore from '../media/loyaltyCards/2more.svg';
+import oneMore from '../media/loyaltyCards/1more.svg';
+import free from '../media/loyaltyCards/free.svg';
 
 function RewardCards(props) {
 	return (

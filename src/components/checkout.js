@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 
-import Logo from '../huskyLogo.svg';
+import Logo from '../media/huskyLogo.svg';
 
 import { PayPalButton } from 'react-paypal-button-v2';
 
