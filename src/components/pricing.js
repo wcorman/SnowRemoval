@@ -25,8 +25,8 @@ class Pricing extends React.Component {
 		let currentTime = moment().format('LT');
 		let sameDayCutoff = moment().format('5:00 PM');
 		let priorityCutoff = moment().format('7:00 PM');
-		const sameDayOpen = currentTime > sameDayCutoff;
-		const priorityOpen = currentTime > priorityCutoff;
+		const sameDayOpen = currentTime < sameDayCutoff;
+		const priorityOpen = currentTime < priorityCutoff;
 
 		console.log(currentTime < sameDayCutoff);
 
