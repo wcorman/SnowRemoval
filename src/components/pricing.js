@@ -80,12 +80,12 @@ class Pricing extends React.Component {
 	}
 
 	componentDidMount() {
-		const checkTime = () => {
 			var moment = require('moment');
+			const sameDayCutoff = moment().format('5:00 PM');
+			const priorityCutoff = moment().format('7:00 PM');
 
+		const checkTime = () => {
 			let currentTime = moment().format('LT');
-			let sameDayCutoff = moment().format('5:00 PM');
-			let priorityCutoff = moment().format('7:00 PM');
 			const sameDayOpen = currentTime > sameDayCutoff;
 			const priorityOpen = currentTime > priorityCutoff;
 
@@ -96,7 +96,7 @@ class Pricing extends React.Component {
 			});
 		};
 
-		setInterval(checkTime, 240000);
+		setInterval(checkTime, 10000);
 	}
 
 	emailValidation = (email) => {
