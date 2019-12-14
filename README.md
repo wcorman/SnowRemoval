@@ -1,4 +1,4 @@
-## Powder Hounds Residential Snow Clearing
+# Powder Hounds Residential Snow Clearing
 Powder Hounds aims to be the most convienent, affordable residential snow clearing service available.
 
 ### Backend:
