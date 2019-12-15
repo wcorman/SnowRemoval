@@ -599,7 +599,7 @@ class Pricing extends React.Component {
 											<span className="fa-li">
 												<i className="fas fa-check" />
 											</span>
-											<strong>5pm</strong> deadline for payment
+											<strong>5pm</strong> cuttoff
 										</li>
 									</ul>
 									<div className="button-container">
@@ -653,7 +653,7 @@ class Pricing extends React.Component {
 											<span className="fa-li">
 												<i className="fas fa-check" />
 											</span>
-											<strong>7pm</strong> deadline for payment
+											<strong>7pm</strong> cutoff
 										</li>
 									</ul>
 									<div className="button-container">
