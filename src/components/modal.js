@@ -71,7 +71,8 @@ function InfoModal(props) {
 					customer={props.customer}
 					chosendate={props.chosendate}
 					loading={props.loading}
-					onPayPalPress={props.onPayPalPress}
+					nextStage={props.nextStage}
+					isFree={props.isFree}
 				/>
 			);
 		} else if (props.showform === 3) {

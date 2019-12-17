@@ -90,9 +90,17 @@
 }
 
 .checkoutTitle {
-		font-size: 26px;
+	font-size: 26px;
 }
 
 .grandTotal {
 	font-size: 20px;
+}
+
+#payPalButton {
+	display: block;
+}
+
+#payPalButton:hidden {
+	display: none;
 }

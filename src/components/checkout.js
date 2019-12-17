@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+import Button from 'react-bootstrap/Button';
 
 import Logo from '../media/huskyLogo.svg';
 
@@ -28,7 +29,7 @@ function Checkout(props) {
 			<Modal.Body>
 				<div className="container-fluid contactContainer">
 					<div className="row no-gutter">
-						<div className="d-none d-md-flex col-md-0 hidden-md-down col-lg-5 col-sm-2 " id="contactForm">
+						<div className="d-none d-lg-flex  col-md-0 col-lg-5" id="contactForm">
 							<img src={Logo} alt="" className="husky" />
 						</div>
 						<div className="col-sm-12 col-md-12 col-lg-7">
@@ -59,18 +60,44 @@ function Checkout(props) {
 								</p>
 							</div>
 							<hr />
-							<PayPalButton
-								amount={props.options.price.toString()}
-								shippingPreference="NO_SHIPPING"
-								options={{
-									clientId:
-										'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
-									currency: 'CAD',
-									buyerCountry: 'CA'
-								}}
-								onSuccess={(details) => props.onPayment(props.options.price)}
-								catchError={(err) => console.log(err)}
-							/>
+							<div>
+								{!props.isFree && (
+									<PayPalButton
+										id="payPalButton"
+										amount={props.options.price.toString()}
+										createOrder={(data, actions) => {
+											console.log(data);
+											props.nextStage('checkout');
+											return actions.order.create({
+												purchase_units: [
+													{
+														amount: {
+															currency_code: 'CAD',
+															value: `${props.options.price.toString()}`
+														}
+													}
+												]
+											});
+										}}
+										shippingPreference="NO_SHIPPING"
+										options={{
+											clientId:
+												'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
+											currency: 'CAD',
+											buyerCountry: 'CA'
+										}}
+										onSuccess={(details) => props.onPayment(props.options.price)}
+										catchError={(err) => console.log(err)}
+									/>
+								)}
+								{props.isFree && <Button onClick={() => {props.onPayment(0);}}>FREE SNOW CLEARING</Button>}
+							</div>
+
+							{props.loading && (
+								<div>
+									<Spinner id="spinner" animation="border" variant="primary" />
+								</div>
+							)}
 
 							{/* <Button
 								disabled={props.validform}
@@ -82,7 +109,6 @@ function Checkout(props) {
 						</div>
 					</div>
 				</div>
-				{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
 			</Modal.Body>
 		</div>
 	);

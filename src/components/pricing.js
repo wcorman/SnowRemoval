@@ -80,9 +80,9 @@ class Pricing extends React.Component {
 	}
 
 	componentDidMount() {
-			var moment = require('moment');
-			const sameDayCutoff = moment().format('5:00 PM');
-			const priorityCutoff = moment().format('7:00 PM');
+		var moment = require('moment');
+		const sameDayCutoff = moment().format('5:00 PM');
+		const priorityCutoff = moment().format('7:00 PM');
 
 		const checkTime = () => {
 			let currentTime = moment().format('LT');
@@ -250,6 +250,18 @@ class Pricing extends React.Component {
 		});
 	};
 
+	setLoading = (status) => {
+		console.log('status: ', status);
+		this.setState({
+			...this.state,
+			isLoading: status
+		});
+	};
+
+	checkoutNext = () => {
+		this.setLoading(true);
+	};
+
 	findCustomerByPhone = () => {
 		let typedNumber = this.state.customer.phoneNumber;
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
@@ -260,19 +272,20 @@ class Pricing extends React.Component {
 				phoneNumber: formattedNumber
 			}
 		});
-		console.log(formattedNumber);
 
 		// axios.get(`${BASE_URL}/phone/${formattedNumber}`).then((res) => console.log(res.data));
 
 		fetch(`${BASE_URL}/phone/${formattedNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
-				this.setState({
-					isLoading: true
-				});
+				this.setLoading(true);
+				const customer = data[0];
+
+				// this.setState({
+				// 	isLoading: true
+				// });
 				console.log('DATA: ', data);
 				if (data.length > 0) {
-					const customer = data[0];
 					console.log('customer: ', customer);
 
 					this.setState({
@@ -309,7 +322,7 @@ class Pricing extends React.Component {
 						});
 					}, 900);
 				}
-				if (data.length === 3) {
+				if (customer.rewardStatus === 3) {
 					this.setState({
 						freeClearing: true
 					});
@@ -327,18 +340,14 @@ class Pricing extends React.Component {
 			this.rewardCardNext();
 		} else if (stage === 'information') {
 			this.informationNext();
+		} else if (stage === 'checkout') {
+			this.checkoutNext();
 		}
-	};
-
-	onPayPalPress = () => {
-		console.log('PAYPAL PRESS');
-		this.setState({
-			isLoading: true
-		});
 	};
 
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
+		this.setLoading(false);
 
 		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
 		const { orderType, startDate } = this.state;
@@ -484,17 +493,17 @@ class Pricing extends React.Component {
 		if (selection === 'schedule') {
 			this.setState({
 				scheduleModal: showModal,
-				orderType: 'schedule'
+				orderType: 'Scheduled'
 			});
 		} else if (selection === 'sameDay') {
 			this.setState({
 				sameDayModal: showModal,
-				orderType: 'sameDay'
+				orderType: 'Same Day'
 			});
 		} else if (selection === 'priority') {
 			this.setState({
 				priorityModal: showModal,
-				orderType: 'priority'
+				orderType: 'Priority'
 			});
 		}
 	};
@@ -689,6 +698,8 @@ class Pricing extends React.Component {
 					chosendate={this.state.displayDate.toDateString()}
 					show={this.state.scheduleModal}
 					loading={this.state.isLoading}
+					setLoading={this.setLoading}
+					isFree={this.state.freeClearing}
 					onHide={() => this.setModalShow('schedule', false)}
 				/>
 				<InfoModal
@@ -708,6 +719,8 @@ class Pricing extends React.Component {
 					chosendate={this.state.today}
 					show={this.state.sameDayModal}
 					loading={this.state.isLoading}
+					setLoading={this.setLoading}
+					isFree={this.state.freeClearing}
 					onHide={() => this.setModalShow('sameDay', false)}
 				/>
 				<InfoModal
@@ -722,12 +735,13 @@ class Pricing extends React.Component {
 					validation={this.state.validation}
 					firsttimer={this.state.firstTimer}
 					onPayment={this.onPayment}
-					onPayPalPress={this.onPayPalPress}
 					options={this.state.priority}
 					label="Priority clearing"
 					chosendate={this.state.today}
 					show={this.state.priorityModal}
 					loading={this.state.isLoading}
+					setLoading={this.setLoading}
+					isFree={this.state.freeClearing}
 					onHide={() => this.setModalShow('priority', false)}
 				/>
 			</section>
