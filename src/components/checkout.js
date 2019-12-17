@@ -90,7 +90,15 @@ function Checkout(props) {
 										catchError={(err) => console.log(err)}
 									/>
 								)}
-								{props.isFree && <Button onClick={() => {props.onPayment(0);}}>FREE SNOW CLEARING</Button>}
+								{props.isFree && (
+									<Button
+										onClick={() => {
+											props.onPayment(0);
+										}}
+									>
+										FREE SNOW CLEARING
+									</Button>
+								)}
 							</div>
 
 							{props.loading && (
@@ -98,14 +106,6 @@ function Checkout(props) {
 									<Spinner id="spinner" animation="border" variant="primary" />
 								</div>
 							)}
-
-							{/* <Button
-								disabled={props.validform}
-								variant="primary"
-								onClick={() => props.onPayment(props.options.price)}
-							>
-								Pay {props.options.price}
-							</Button> */}
 						</div>
 					</div>
 				</div>
