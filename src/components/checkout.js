@@ -9,16 +9,16 @@ import { PayPalButton } from 'react-paypal-button-v2';
 
 function Checkout(props) {
 	const chooseType = (type) => {
-		if (type === 'schedule') {
+		if (type === 'Scheduled') {
 			return 'Scheduled Snow Clearing';
-		} else if (type === 'sameDay') {
+		} else if (type === 'Same Day') {
 			return 'Same Day Snow Clearing';
 		} else {
 			return 'Priority Snow Clearing';
 		}
 	};
 
-	let displayToday = props.orderType !== 'schedule' ? '(today)' : '';
+	let displayToday = props.orderType !== 'Scheduled' ? '(today)' : '';
 	let displayType = chooseType(props.orderType);
 
 	return (
@@ -103,7 +103,7 @@ function Checkout(props) {
 
 							{props.loading && (
 								<div>
-									<Spinner id="spinner" animation="border" variant="primary" />
+									{/* <Spinner id="spinner" animation="border" variant="primary" /> */}
 								</div>
 							)}
 						</div>

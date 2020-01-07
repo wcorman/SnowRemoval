@@ -30,17 +30,19 @@ class Pricing extends React.Component {
 		const priorityOpen = currentTime > priorityCutoff;
 
 		console.log(currentTime < sameDayCutoff);
-
 		console.log(currentTime);
 		console.log(sameDayCutoff);
 
 		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
+		let tomorrow = moment().add(1, 'days').format('ll');
 
 		this.state = {
 			schedule: { price: 25, driveways: 0, disabled: false },
 			sameDay: { price: 35, driveways: 0, disabled: sameDayOpen },
 			priority: { price: 45, driveways: 0, disabled: priorityOpen },
-			startDate: today.setDate(today.getDate() + 0.5),
+			driveways: null,
+			calendarDate: today.setDate(today.getDate() + 0.5),
+			chosenDate: tomorrow,
 			displayDate: displayDate,
 			today: todayNew,
 			dateError: false,
@@ -273,6 +275,8 @@ class Pricing extends React.Component {
 			}
 		});
 
+		// console.log(driveways);
+
 		// axios.get(`${BASE_URL}/phone/${formattedNumber}`).then((res) => console.log(res.data));
 
 		fetch(`${BASE_URL}/phone/${formattedNumber}`)
@@ -349,13 +353,40 @@ class Pricing extends React.Component {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 		this.setLoading(false);
 
+		switch (this.state.orderType) {
+			case 'Scheduled':
+				this.setState({
+					...this.state,
+					driveways: this.state.schedule.driveways,
+					price: this.state.schedule.price
+				});
+				break;
+			case 'Same Day':
+				this.setState({
+					...this.state,
+					driveways: this.state.sameDay.driveways,
+					price: this.state.sameDay.price
+				});
+				break;
+			case 'Priority':
+				this.setState({
+					...this.state,
+					driveways: this.state.priority.driveways,
+					price: this.state.priority.price
+				});
+				break;
+			default:
+				break;
+		}
+
 		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
-		const { orderType, startDate } = this.state;
+		const { orderType, calendarDate, driveways, price } = this.state;
 
 		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.customer.rewardStatus + 1;
 		const numberOfOrders = this.state.customer.numberOfOrders + 1;
 		const totalSpent = this.state.customer.totalSpent;
 		console.log('rewardStatus: ', rewardStatus);
+
 		const newOrder2 = {
 			firstName: firstName,
 			lastName: lastName,
@@ -365,7 +396,9 @@ class Pricing extends React.Component {
 			address: address,
 			phoneNumber: phoneNumber,
 			orderType: orderType,
-			selectedDate: startDate
+			driveways: driveways,
+			totalCost: price,
+			selectedDate: calendarDate
 		};
 
 		this.setState({
@@ -378,7 +411,8 @@ class Pricing extends React.Component {
 
 		const newOrders = this.state.customer.orders;
 		console.log('New Orders: ', newOrders);
-		const newOrder = {
+
+		const customer = {
 			firstName: firstName,
 			lastName: lastName,
 			email: email,
@@ -390,13 +424,14 @@ class Pricing extends React.Component {
 			numberOfOrders: numberOfOrders,
 			totalSpent: totalSpent + amount,
 			orders: this.state.customer.orders,
-			createdDate: startDate
+			createdDate: calendarDate
 		};
-		console.log(newOrder);
+
+		console.log(customer);
 		if (this.state.firstTimer) {
-			axios.post(`${BASE_URL}`, newOrder).then((res) => console.log(res.data));
+			axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
 		} else {
-			axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, newOrder).then((res) => console.log(res.data));
+			axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, customer).then((res) => console.log(res.data));
 		}
 
 		this.setState({
@@ -421,18 +456,20 @@ class Pricing extends React.Component {
 	handleChange = (date) => {
 		var moment = require('moment');
 		var now = moment();
+		let selectedDate = moment(date, 'x').format('DD MMM YYYY');
 
 		if (date < now) {
 			const button = document.getElementById('scheduleButton');
 			button.style.pointerEvents = 'none';
 			this.setState({
 				...this.state,
+				dateError: true,
 				schedule: {
 					...this.state.schedule,
 					disabled: true
-				},
-				dateError: true
+				}
 			});
+			console.log(this.state.schedule.disabled);
 		} else {
 			const button = document.getElementById('scheduleButton');
 			button.removeAttribute('disabled');
@@ -449,8 +486,11 @@ class Pricing extends React.Component {
 			});
 		}
 
+		console.log(selectedDate);
+
 		this.setState({
-			startDate: date
+			calendarDate: date,
+			chosenDate: selectedDate,
 		});
 	};
 
@@ -460,31 +500,67 @@ class Pricing extends React.Component {
 
 		if (plan === 'schedule') {
 			if (driveways === '1') {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 30, driveways: 1 } });
+				this.setState({
+					...this.state,
+					driveways: 1,
+					[plan]: { ...this.state[plan], price: 30, driveways: 1 }
+				});
 			} else if (driveways === '2') {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 35, driveways: 2 } });
+				this.setState({
+					...this.state,
+					driveways: 2,
+					[plan]: { ...this.state[plan], price: 35, driveways: 2 }
+				});
 			} else {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 25, driveways: 0 } });
+				this.setState({
+					...this.state,
+					driveways: 0,
+					[plan]: { ...this.state[plan], price: 25, driveways: 0 }
+				});
 			}
 		}
 
 		if (plan === 'sameDay') {
 			if (driveways === '1') {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 40, driveways: 1 } });
+				this.setState({
+					...this.state,
+					driveways: 1,
+					[plan]: { ...this.state[plan], price: 40, driveways: 1 }
+				});
 			} else if (driveways === '2') {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 45, driveways: 2 } });
+				this.setState({
+					...this.state,
+					driveways: 2,
+					[plan]: { ...this.state[plan], price: 45, driveways: 2 }
+				});
 			} else {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 35, driveways: 0 } });
+				this.setState({
+					...this.state,
+					driveways: 0,
+					[plan]: { ...this.state[plan], price: 35, driveways: 0 }
+				});
 			}
 		}
 
 		if (plan === 'priority') {
 			if (driveways === '1') {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 50, driveways: 1 } });
+				this.setState({
+					...this.state,
+					driveways: 1,
+					[plan]: { ...this.state[plan], price: 50, driveways: 1 }
+				});
 			} else if (driveways === '2') {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 55, driveways: 2 } });
+				this.setState({
+					...this.state,
+					driveways: 2,
+					[plan]: { ...this.state[plan], price: 55, driveways: 2 }
+				});
 			} else {
-				this.setState({ ...this.state, [plan]: { ...this.state[plan], price: 45, driveways: 0 } });
+				this.setState({
+					...this.state,
+					driveways: 0,
+					[plan]: { ...this.state[plan], price: 45, driveways: 0 }
+				});
 			}
 		}
 	};
@@ -536,9 +612,10 @@ class Pricing extends React.Component {
 									</div>
 									<div className="d-flex justify-content-center">
 										<DatePicker
-											selected={this.state.startDate}
+											selected={this.state.calendarDate}
 											onChange={this.handleChange}
 											className="datePicker d-flex justify-content-center"
+											dateFormat="MMM dd yyyy"
 										/>
 									</div>
 									<p className="dateError">
@@ -695,7 +772,7 @@ class Pricing extends React.Component {
 					onPayment={this.onPayment}
 					options={this.state.schedule}
 					label="Scheduled snow clearing"
-					chosendate={this.state.displayDate.toDateString()}
+					chosendate={this.state.chosenDate}
 					show={this.state.scheduleModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
