@@ -29,11 +29,7 @@ class Pricing extends React.Component {
 		const sameDayOpen = currentTime > sameDayCutoff;
 		const priorityOpen = currentTime > priorityCutoff;
 
-		console.log(currentTime < sameDayCutoff);
-		console.log(currentTime);
-		console.log(sameDayCutoff);
-
-		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10));
+		var displayDate = new Date(parseInt(today.setDate(today.getDate() + 1), 10)).toString().slice(0, -33);
 		let tomorrow = moment().add(1, 'days').format('ll');
 
 		this.state = {
@@ -43,7 +39,7 @@ class Pricing extends React.Component {
 			driveways: null,
 			calendarDate: today.setDate(today.getDate() + 0.5),
 			chosenDate: tomorrow,
-			displayDate: displayDate,
+			displayDate: displayDate.toString(),
 			today: todayNew,
 			dateError: false,
 			modalShow: false,
@@ -253,7 +249,6 @@ class Pricing extends React.Component {
 	};
 
 	setLoading = (status) => {
-		console.log('status: ', status);
 		this.setState({
 			...this.state,
 			isLoading: status
@@ -275,23 +270,13 @@ class Pricing extends React.Component {
 			}
 		});
 
-		// console.log(driveways);
-
-		// axios.get(`${BASE_URL}/phone/${formattedNumber}`).then((res) => console.log(res.data));
-
 		fetch(`${BASE_URL}/phone/${formattedNumber}`)
 			.then((res) => res.json())
 			.then((data) => {
 				this.setLoading(true);
 				const customer = data[0];
 
-				// this.setState({
-				// 	isLoading: true
-				// });
-				console.log('DATA: ', data);
 				if (data.length > 0) {
-					console.log('customer: ', customer);
-
 					this.setState({
 						...this.state,
 						firstTimer: false,
@@ -336,8 +321,6 @@ class Pricing extends React.Component {
 	};
 
 	nextStage = (stage) => {
-		console.log(stage);
-
 		if (stage === 'phoneCheck') {
 			this.findCustomerByPhone();
 		} else if (stage === 'rewardCard') {
@@ -385,7 +368,6 @@ class Pricing extends React.Component {
 		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.customer.rewardStatus + 1;
 		const numberOfOrders = this.state.customer.numberOfOrders + 1;
 		const totalSpent = this.state.customer.totalSpent;
-		console.log('rewardStatus: ', rewardStatus);
 
 		const newOrder2 = {
 			firstName: firstName,
@@ -410,7 +392,6 @@ class Pricing extends React.Component {
 		});
 
 		const newOrders = this.state.customer.orders;
-		console.log('New Orders: ', newOrders);
 
 		const customer = {
 			firstName: firstName,
@@ -427,7 +408,6 @@ class Pricing extends React.Component {
 			createdDate: calendarDate
 		};
 
-		console.log(customer);
 		if (this.state.firstTimer) {
 			axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
 		} else {
@@ -469,7 +449,6 @@ class Pricing extends React.Component {
 					disabled: true
 				}
 			});
-			console.log(this.state.schedule.disabled);
 		} else {
 			const button = document.getElementById('scheduleButton');
 			button.removeAttribute('disabled');
@@ -485,8 +464,6 @@ class Pricing extends React.Component {
 				displayDate: date
 			});
 		}
-
-		console.log(selectedDate);
 
 		this.setState({
 			calendarDate: date,
