@@ -4,16 +4,6 @@ import Modal from 'react-bootstrap/Modal';
 import Logo from '../media/huskyLogo.svg';
 
 function Success(props) {
-	const chooseType = (type) => {
-		if (type === 'schedule') {
-			return 'Scheduled Snow Clearing';
-		} else if (type === 'sameDay') {
-			return 'Same Day Snow Clearing';
-		} else {
-			return 'Priority Snow Clearing';
-		}
-	};
-
 	return (
 		<div>
 			<Modal.Header closeButton>
