@@ -53,9 +53,11 @@ function Checkout(props) {
 									</strong>
 								</p>
 								<p className="checkoutText">
-									<i>Grand total:</i> <strong className="grandTotal">
+									<i>Grand total:</i>{' '}
+									<strong className="grandTotal">
 										{' '}
-										${props.options.price}
+										{!props.isFree && `${props.options.price}`}
+										{props.isFree && `FREE`}
 									</strong>{' '}
 								</p>
 							</div>
@@ -102,9 +104,7 @@ function Checkout(props) {
 							</div>
 
 							{props.loading && (
-								<div>
-									{/* <Spinner id="spinner" animation="border" variant="primary" /> */}
-								</div>
+								<div>{/* <Spinner id="spinner" animation="border" variant="primary" /> */}</div>
 							)}
 						</div>
 					</div>

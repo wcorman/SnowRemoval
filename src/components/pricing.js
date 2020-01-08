@@ -341,21 +341,21 @@ class Pricing extends React.Component {
 				this.setState({
 					...this.state,
 					driveways: this.state.schedule.driveways,
-					price: this.state.schedule.price
+					price: this.state.freeClearing ? 0 : this.state.schedule.price
 				});
 				break;
 			case 'Same Day':
 				this.setState({
 					...this.state,
 					driveways: this.state.sameDay.driveways,
-					price: this.state.sameDay.price
+					price: this.state.freeClearing ? 0 : this.state.sameDay.price
 				});
 				break;
 			case 'Priority':
 				this.setState({
 					...this.state,
 					driveways: this.state.priority.driveways,
-					price: this.state.priority.price
+					price: this.state.freeClearing ? 0 : this.state.priority.price
 				});
 				break;
 			default:
@@ -365,9 +365,13 @@ class Pricing extends React.Component {
 		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
 		const { orderType, calendarDate, driveways, price } = this.state;
 
+
 		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.customer.rewardStatus + 1;
 		const numberOfOrders = this.state.customer.numberOfOrders + 1;
 		const totalSpent = this.state.customer.totalSpent;
+
+		var moment = require('moment');
+
 
 		const newOrder2 = {
 			firstName: firstName,
@@ -380,7 +384,7 @@ class Pricing extends React.Component {
 			orderType: orderType,
 			driveways: driveways,
 			totalCost: price,
-			selectedDate: calendarDate
+			selectedDate: moment(calendarDate, "x").format("DD MMM YYYY hh:mm a")
 		};
 
 		this.setState({
@@ -390,8 +394,6 @@ class Pricing extends React.Component {
 				orders: [ ...this.state.customer.orders, newOrder2 ]
 			}
 		});
-
-		const newOrders = this.state.customer.orders;
 
 		const customer = {
 			firstName: firstName,
@@ -467,7 +469,7 @@ class Pricing extends React.Component {
 
 		this.setState({
 			calendarDate: date,
-			chosenDate: selectedDate,
+			chosenDate: selectedDate
 		});
 	};
 

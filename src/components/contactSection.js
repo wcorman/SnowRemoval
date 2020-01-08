@@ -89,7 +89,6 @@ class ContactSection extends Component {
 	};
 
 	render() {
-		const { email, password } = this.state;
 		return (
 			<div className="container-fluid contactContainer">
 				<div className="row no-gutter">
