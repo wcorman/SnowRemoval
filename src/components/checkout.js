@@ -18,8 +18,9 @@ function Checkout(props) {
 		}
 	};
 
-	let displayToday = props.orderType !== 'Scheduled' ? '(today)' : '';
+	let displayToday = props.orderType !== 'Scheduled' ? `${props.chosendate} (today)` : '';
 	let displayType = chooseType(props.orderType);
+	var moment = require('moment');
 
 	return (
 		<div>
@@ -49,14 +50,17 @@ function Checkout(props) {
 								<p className="checkoutText">
 									<i>Scheduled for:</i>{' '}
 									<strong>
-										{props.chosendate} {displayToday}
+										{props.orderType === 'Scheduled' &&
+											moment(props.chosendate).format('MMMM Do[,] YYYY')}
+
+										{displayToday}
 									</strong>
 								</p>
 								<p className="checkoutText">
 									<i>Grand total:</i>{' '}
 									<strong className="grandTotal">
 										{' '}
-										{!props.isFree && `${props.options.price}`}
+										{!props.isFree && `$${props.options.price}`}
 										{props.isFree && `FREE`}
 									</strong>{' '}
 								</p>

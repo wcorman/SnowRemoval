@@ -372,7 +372,6 @@ class Pricing extends React.Component {
 
 		var moment = require('moment');
 
-
 		const newOrder2 = {
 			firstName: firstName,
 			lastName: lastName,
@@ -384,7 +383,7 @@ class Pricing extends React.Component {
 			orderType: orderType,
 			driveways: driveways,
 			totalCost: price,
-			selectedDate: moment(calendarDate, "x").format("DD MMM YYYY hh:mm a")
+			selectedDate: (this.state.orderType === "Same Day" || this.state.orderType === "Priority") ? moment().format('MMM Do YYYY, h:mm a') : moment(calendarDate, "x").format("MMM Do YYYY"),
 		};
 
 		this.setState({
@@ -420,19 +419,7 @@ class Pricing extends React.Component {
 			...this.state,
 			showForm: 3,
 			isLoading: false
-			// customer: {
-			// 	firstName: '',
-			// 	lastName: '',
-			// 	email: '',
-			// 	phoneNumber: '',
-			// 	city: 'Saskatoon',
-			// 	province: 'Saskatchewan',
-			// 	address: '',
-			// 	numberOfOrders: null,
-			// 	totalSpent: null
-			// }
 		});
-		// this.setModalShow(this.state.orderType, false);
 	};
 
 	handleChange = (date) => {
