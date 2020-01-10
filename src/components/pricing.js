@@ -42,7 +42,7 @@ class Pricing extends React.Component {
 			schedule: { price: 25, driveways: 0, disabled: false },
 			sameDay: { price: 35, driveways: 0, disabled: sameDayOpen },
 			priority: { price: 45, driveways: 0, disabled: priorityOpen },
-			driveways: null,
+			driveways: 0,
 			calendarDate: today.setDate(today.getDate() + 0.5),
 			chosenDate: tomorrow,
 			displayDate: displayDate.toString(),
@@ -84,11 +84,10 @@ class Pricing extends React.Component {
 	}
 
 	componentDidMount() {
-
 		const checkTime = () => {
-					var moment = require('moment');
-		const sameDayCutoff = moment().format('5:00 PM');
-		const priorityCutoff = moment().format('7:00 PM');
+			var moment = require('moment');
+			const sameDayCutoff = moment().format('5:00 PM');
+			const priorityCutoff = moment().format('7:00 PM');
 
 			let currentTime = moment().format('LT');
 			const sameDayOpen = currentTime < sameDayCutoff;
@@ -100,7 +99,7 @@ class Pricing extends React.Component {
 				priority: { ...this.state.priority, disabled: priorityOpen }
 			});
 		};
-		
+
 		checkTime();
 
 		setInterval(checkTime, 10000);

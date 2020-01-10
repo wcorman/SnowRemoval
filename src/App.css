@@ -104,3 +104,7 @@
 #payPalButton:hidden {
 	display: none;
 }
+
+.policy {
+	cursor: pointer;
+}
