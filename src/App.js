@@ -2,7 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import NavBar from './components/navBar';
 import Jumbotron from './components/hero';
 import Pricing from './components/pricing';
 import ContactSection from './components/contactSection';
@@ -11,7 +10,6 @@ import Footer from './components/footer';
 function App() {
   return (
     <div className="App">
-      <NavBar />
       <Jumbotron />
       <Pricing />
       <hr/>

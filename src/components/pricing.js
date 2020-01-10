@@ -1,10 +1,16 @@
 import React from 'react';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Button from 'react-bootstrap/Button';
+
+import DatePicker from 'react-datepicker';
+
 import axios from 'axios';
+
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import InfoModal from '../components/modal';
 
@@ -47,7 +53,7 @@ class Pricing extends React.Component {
 			freeClearing: false,
 			sameDayModal: false,
 			priorityModal: false,
-			price: null,
+			price: 0,
 			showForm: 0,
 			displayRewardCard: false,
 			validation: {
@@ -78,14 +84,15 @@ class Pricing extends React.Component {
 	}
 
 	componentDidMount() {
-		var moment = require('moment');
+
+		const checkTime = () => {
+					var moment = require('moment');
 		const sameDayCutoff = moment().format('5:00 PM');
 		const priorityCutoff = moment().format('7:00 PM');
 
-		const checkTime = () => {
 			let currentTime = moment().format('LT');
-			const sameDayOpen = currentTime > sameDayCutoff;
-			const priorityOpen = currentTime > priorityCutoff;
+			const sameDayOpen = currentTime < sameDayCutoff;
+			const priorityOpen = currentTime < priorityCutoff;
 
 			this.setState({
 				...this.state,
@@ -93,6 +100,8 @@ class Pricing extends React.Component {
 				priority: { ...this.state.priority, disabled: priorityOpen }
 			});
 		};
+		
+		checkTime();
 
 		setInterval(checkTime, 10000);
 	}
@@ -336,26 +345,28 @@ class Pricing extends React.Component {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 		this.setLoading(false);
 
+		const free = this.state.freeClearing;
+
 		switch (this.state.orderType) {
 			case 'Scheduled':
 				this.setState({
 					...this.state,
 					driveways: this.state.schedule.driveways,
-					price: this.state.freeClearing ? 0 : this.state.schedule.price
+					price: free ? 0 : this.state.schedule.price
 				});
 				break;
 			case 'Same Day':
 				this.setState({
 					...this.state,
 					driveways: this.state.sameDay.driveways,
-					price: this.state.freeClearing ? 0 : this.state.sameDay.price
+					price: free ? 0 : this.state.sameDay.price
 				});
 				break;
 			case 'Priority':
 				this.setState({
 					...this.state,
 					driveways: this.state.priority.driveways,
-					price: this.state.freeClearing ? 0 : this.state.priority.price
+					price: free ? 0 : this.state.priority.price
 				});
 				break;
 			default:
@@ -365,10 +376,11 @@ class Pricing extends React.Component {
 		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
 		const { orderType, calendarDate, driveways, price } = this.state;
 
-
-		const rewardStatus = this.state.customer.rewardStatus === 3 ? 0 : this.state.customer.rewardStatus + 1;
+		const rewardStatus = this.state.freeClearing ? 0 : this.state.customer.rewardStatus + 1;
 		const numberOfOrders = this.state.customer.numberOfOrders + 1;
 		const totalSpent = this.state.customer.totalSpent;
+		console.log('Amount: ', amount);
+		console.log('Price: ', price);
 
 		var moment = require('moment');
 
@@ -382,17 +394,17 @@ class Pricing extends React.Component {
 			phoneNumber: phoneNumber,
 			orderType: orderType,
 			driveways: driveways,
-			totalCost: price,
-			selectedDate: (this.state.orderType === "Same Day" || this.state.orderType === "Priority") ? moment().format('MMM Do YYYY, h:mm a') : moment(calendarDate, "x").format("MMM Do YYYY"),
+			totalCost: amount,
+			selectedDate:
+				this.state.orderType === 'Same Day' || this.state.orderType === 'Priority'
+					? moment().format('MMM Do YYYY, h:mm a')
+					: moment(calendarDate, 'x').format('MMM Do YYYY')
 		};
 
-		this.setState({
-			...this.state,
-			customer: {
-				...this.state.customer,
-				orders: [ ...this.state.customer.orders, newOrder2 ]
-			}
-		});
+		console.log('orders state: ', this.state.customer.orders);
+
+		let newOrdersList = this.state.customer.orders;
+		newOrdersList.push(newOrder2);
 
 		const customer = {
 			firstName: firstName,
@@ -405,9 +417,11 @@ class Pricing extends React.Component {
 			rewardStatus: rewardStatus,
 			numberOfOrders: numberOfOrders,
 			totalSpent: totalSpent + amount,
-			orders: this.state.customer.orders,
+			orders: newOrdersList,
 			createdDate: calendarDate
 		};
+		console.log('Customer...');
+		console.log(this.state.customer);
 
 		if (this.state.firstTimer) {
 			axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
@@ -576,14 +590,20 @@ class Pricing extends React.Component {
 											</select>
 										</form>
 									</div>
-									<div className="d-flex justify-content-center">
-										<DatePicker
-											selected={this.state.calendarDate}
-											onChange={this.handleChange}
-											className="datePicker d-flex justify-content-center"
-											dateFormat="MMM dd yyyy"
-										/>
-									</div>
+									<OverlayTrigger
+										placement="bottom"
+										overlay={<Tooltip id={`tooltip-bottom`}>Open calendar to pick a date</Tooltip>}
+									>
+										<div className="d-flex justify-content-center">
+											<DatePicker
+												selected={this.state.calendarDate}
+												onChange={this.handleChange}
+												className="datePicker d-flex justify-content-center"
+												dateFormat="MMM dd yyyy"
+												withPortal
+											/>
+										</div>
+									</OverlayTrigger>{' '}
 									<p className="dateError">
 										<b>{dateError ? 'Please choose a future date' : ''}</b>
 									</p>

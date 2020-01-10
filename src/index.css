@@ -98,10 +98,13 @@ section {
 	border-width: thin;
 	border-color: #ced4d9;
 	text-align: center;
+	pointer-events: auto;
+	cursor: pointer;
 }
 
 .custom-select {
 	text-align: center;
+	cursor: pointer;
 }
 
 .btn:disabled {

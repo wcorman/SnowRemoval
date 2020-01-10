@@ -1,6 +1,5 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 
 import Logo from '../media/huskyLogo.svg';
@@ -66,38 +65,44 @@ function Checkout(props) {
 								</p>
 							</div>
 							<hr />
-							<div>
+							<div className="text-center">
 								{!props.isFree && (
-									<PayPalButton
-										id="payPalButton"
-										amount={props.options.price.toString()}
-										createOrder={(data, actions) => {
-											console.log(data);
-											props.nextStage('checkout');
-											return actions.order.create({
-												purchase_units: [
-													{
-														amount: {
-															currency_code: 'CAD',
-															value: `${props.options.price.toString()}`
+									<div>
+										<PayPalButton
+											id="payPalButton"
+											amount={props.options.price.toString()}
+											createOrder={(data, actions) => {
+												console.log(data);
+												props.nextStage('checkout');
+												return actions.order.create({
+													purchase_units: [
+														{
+															amount: {
+																currency_code: 'CAD',
+																value: `${props.options.price.toString()}`
+															}
 														}
-													}
-												]
-											});
-										}}
-										shippingPreference="NO_SHIPPING"
-										options={{
-											clientId:
-												'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
-											currency: 'CAD',
-											buyerCountry: 'CA'
-										}}
-										onSuccess={(details) => props.onPayment(props.options.price)}
-										catchError={(err) => console.log(err)}
-									/>
+													]
+												});
+											}}
+											shippingPreference="NO_SHIPPING"
+											options={{
+												clientId:
+													'AWbvQ193KQ7EUUtVpG8Fvse4r5du26yzy6tH_rIf55vkNPbp-obKDCdfHOHZIsNv4EM_8Q5rEyf4mCKd',
+												currency: 'CAD',
+												buyerCountry: 'CA'
+											}}
+											onSuccess={(details) => props.onPayment(props.options.price)}
+											catchError={(err) => console.log(err)}
+										/>
+										<p className="text-center small">
+											*Payments take a moment to process, please be patient*
+										</p>
+									</div>
 								)}
 								{props.isFree && (
 									<Button
+										style={{ marginBottom: '8px' }}
 										onClick={() => {
 											props.onPayment(0);
 										}}
@@ -106,10 +111,6 @@ function Checkout(props) {
 									</Button>
 								)}
 							</div>
-
-							{props.loading && (
-								<div>{/* <Spinner id="spinner" animation="border" variant="primary" /> */}</div>
-							)}
 						</div>
 					</div>
 				</div>

@@ -11,7 +11,7 @@ function NavBar() {
   return (
   <Navbar bg="light" variant="light" style={{backgroundColor: '#e3f2fd'}}>
     <Image src={Logo} className="huskyNav"/>
-    <Nav className="mr-auto">
+    <Nav className="mr-auto" >
       <Nav.Link href="#pricing">Pricing</Nav.Link>
       <Nav.Link href="#contactForm">Contact</Nav.Link>
     </Nav>

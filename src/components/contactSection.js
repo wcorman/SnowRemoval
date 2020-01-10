@@ -112,7 +112,7 @@ class ContactSection extends Component {
 							<Card.Title>
 								<ul>
 									<li>Need more shoveled than just your front sidewalk & driveway?</li>
-									<li>Need to pay cash?</li>
+									<li>Need to pay with cash?</li>
 									<li>Want to say hi? :)</li>
 								</ul>
 							</Card.Title>
