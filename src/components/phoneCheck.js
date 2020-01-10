@@ -14,6 +14,7 @@ function PhoneCheck(props) {
 							<Form.Control
 								required
 								size="lg"
+								inputMode="numeric"
 								type="phone"
 								placeholder="ex: 306-555-5555"
 								isValid={props.validation.phone}

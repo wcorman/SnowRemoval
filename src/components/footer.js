@@ -21,7 +21,6 @@ class Footer extends Component {
 				>
 					Privacy Policy
 				</div>{' '}
-				<div className="text-center subFooter"> *NOT a cocaine delivery service</div>
 				<PrivacyPolicy
 					show={this.state.showModal}
 					onHide={() =>

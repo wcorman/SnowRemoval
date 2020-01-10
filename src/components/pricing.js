@@ -90,8 +90,8 @@ class Pricing extends React.Component {
 			const priorityCutoff = moment().format('7:00 PM');
 
 			let currentTime = moment().format('LT');
-			const sameDayOpen = currentTime < sameDayCutoff;
-			const priorityOpen = currentTime < priorityCutoff;
+			const sameDayOpen = currentTime > sameDayCutoff;
+			const priorityOpen = currentTime > priorityCutoff;
 
 			this.setState({
 				...this.state,

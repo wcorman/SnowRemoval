@@ -110,8 +110,7 @@ function PrivacyPolicy(props) {
 					<p>
 						The Company considers the protection of children's privacy, especially online, to be of the
 						utmost importance. We do not knowingly collect or solicit personal information from children nor
-						do we allow them to become registered users of, or to request information through, our Sites or
-						help-seeking information lines.
+						do we allow them to become registered users of, or to request information through, our Sites.
 					</p>
 
 					<p>ADDITIONAL TERMS FOR CERTAIN WEBSITES</p>

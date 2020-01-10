@@ -26,7 +26,14 @@
 	color: black;
 	border-radius: 25px;
 	padding: 0;
-	height: 305px;
+	max-height: 300px;
+}
+
+
+@media only screen and (max-width: 991px) {
+	.contactForm {
+		max-height: 350px;
+	}
 }
 
 .contactSectionBody {
@@ -62,11 +69,6 @@
 
 .footer {
 	color: white;
-}
-
-.subFooter {
-	color: #1a88f3;
-	font-size: 7.5px;
 }
 
 .contactLogo {
