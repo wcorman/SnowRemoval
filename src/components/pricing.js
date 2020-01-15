@@ -14,7 +14,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 import InfoModal from '../components/modal';
 
-const DOMAIN = 'localhost:4000';
+const DOMAIN = 'http://ec2-35-182-126-254.ca-central-1.compute.amazonaws.com:4000';
 const API_PREFIX = '/orders';
 const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
 
