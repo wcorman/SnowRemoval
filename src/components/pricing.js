@@ -14,9 +14,9 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 import InfoModal from '../components/modal';
 
-const DOMAIN = 'ec2-3-84-150-230.compute-1.amazonaws.com:4000';
+const DOMAIN = 'localhost:4000';
 const API_PREFIX = '/orders';
-const BASE_URL = `https://${DOMAIN}${API_PREFIX}`;
+const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
 
 class Pricing extends React.Component {
 	constructor() {
