@@ -12,20 +12,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-
-function Copyright() {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://www.powderhoundscanada.com/">
-				Anicca Development
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		height: '100vh'
@@ -60,89 +46,78 @@ export default function SignUp(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid container component="main" className={classes.root}>
-			<CssBaseline />
-			<Grid item xs={false} sm={4} md={7} className={classes.image} />
-			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-				<div className={classes.paper}>
-					<Avatar className={classes.avatar}>{/* <LockOutlinedIcon /> */}</Avatar>
-					<Typography component="h1" variant="h5">
+		<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+			<div className={classes.paper}>
+				<Avatar className={classes.avatar}>{/* <LockOutlinedIcon /> */}</Avatar>
+				<Typography component="h1" variant="h5">
+					Sign Up
+				</Typography>
+				<form className={classes.form} noValidate>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						id="email"
+						label="Email Address"
+						name="email"
+						autoFocus
+						onChange={(value) => props.updateField(value.currentTarget)}
+					/>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						id="name"
+						label="Name"
+						name="name"
+						onChange={(value) => props.updateField(value.currentTarget)}
+					/>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						name="password"
+						label="Password"
+						type="password"
+						id="password"
+						onChange={(value) => props.updateField(value.currentTarget)}
+					/>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						name="password-confirm"
+						label="Confirm Password"
+						type="password-confirm"
+						id="password-confirm"
+						onChange={(value) => props.updateField(value.currentTarget)}
+					/>
+					<p style={{ color: 'red' }}>{props.errorMessage}</p>
+					<Button
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={classes.submit}
+						onClick={() => props.signUp()}
+					>
 						Sign Up
-					</Typography>
-					<form className={classes.form} noValidate>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="email"
-							label="Email Address"
-							name="email"
-							autoFocus
-							onChange={(value) => props.updateField(value.currentTarget)}
-						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="name"
-							label="Name"
-							name="name"
-							autoFocus
-							onChange={(value) => props.updateField(value.currentTarget)}
-						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							name="password"
-							label="Password"
-							type="password"
-							id="password"
-							onChange={(value) => props.updateField(value.currentTarget)}
-						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							name="password-confirm"
-							label="Confirm Password"
-							type="password-confirm"
-							id="password-confirm"
-							onChange={(value) => props.updateField(value.currentTarget)}
-						/>
-						<p style={{ color: 'red' }}>{props.errorMessage}</p>
-						<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-						<Button
-							fullWidth
-							variant="contained"
-							color="primary"
-							className={classes.submit}
-							onClick={() => props.signUp()}
-						>
-							Sign Up
-						</Button>
-						<Grid container>
-							<Grid item xs>
-								<Link href="#" variant="body2">
-									Forgot password?
-								</Link>
-							</Grid>
-							<Grid item>
-								<Link href="#" variant="body2" onClick={() => props.toggleScreen()}>
-									{"Already have an account? Sign In"}
-								</Link>
-							</Grid>
+					</Button>
+					<Grid container>
+						<Grid item xs>
 						</Grid>
-						<Box mt={5}>
-							<Copyright />
-						</Box>
-					</form>
-				</div>
-			</Grid>
+						<Grid item>
+							<Link href="#" variant="body2" onClick={() => props.toggle()}>
+								{'Already have an account? Sign In'}
+							</Link>
+						</Grid>
+					</Grid>
+					<Box mt={5}>{props.copyright()}</Box>
+				</form>
+			</div>
 		</Grid>
 	);
 }

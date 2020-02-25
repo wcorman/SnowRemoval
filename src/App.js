@@ -8,7 +8,7 @@ import { withAuthenticator } from 'aws-amplify-react';
 import { Auth } from 'aws-amplify';
 
 import Jumbotron from './components/hero';
-import Login from './components/login';
+import Entry from './components/entry';
 import Pricing from './components/pricing';
 import ContactSection from './components/contactSection';
 import Footer from './components/footer';
@@ -33,7 +33,7 @@ const signUpConfig = {
 function App(props) {
 	return (
 		<div className="App">
-			<Login />
+			<Entry />
 			<Jumbotron />
 			<Pricing />
 			<hr />

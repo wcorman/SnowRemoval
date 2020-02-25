@@ -1,35 +1,21 @@
 import React, { Component } from 'react';
 
-import { Auth, Hub } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 
-import SignIn from '../components/signIn';
-import SignUp from '../components/signUp';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import EntryPage from './entryPage';
 
 import '../App.css';
 
-// async function signIn(event) {
-// 	console.log(event);
-// 	event.preventDefault();
-//   try {
-//     await Auth.signIn(this.state.email, this.state.password)
-//     console.log('sign in success!')
-//   } catch (err) {
-//     console.log('error signing in...', err)
-//   }
-// }
-
-class Login extends Component {
+class Entry extends Component {
 	constructor() {
 		super();
 
 		this.state = {
-			toggleScreen: true,
+			signInScreen: true,
 			name: '',
 			email: '',
 			password: '',
+			passwordConfirm: '',
 			errorMessage: '',
 			authenticated: null,
 			loading: false,
@@ -103,17 +89,10 @@ class Login extends Component {
 			.catch((err) => console.log(err));
 	};
 
-	// facebookLogin = () => {
-	// 	Auth.federatedSignIn({ provider: 'Facebook' });
-	// };
-
-	// googleLogin = () => {
-	// 	Auth.federatedSignIn({ provider: 'Google' });
-	// };
-
 	toggleScreen = () => {
 		this.setState({
-			toggleScreen: !this.state.toggleScreen
+			signInScreen: !this.state.signInScreen,
+			errorMessage: ''
 		});
 	};
 
@@ -166,32 +145,21 @@ class Login extends Component {
 
 	render() {
 		const isLoggedOut = !this.state.authenticated;
-		const signInScreen = this.state.toggleScreen;
+
 		return (
 			<div>
 				{isLoggedOut ? (
-					<div>
-						{signInScreen ? (
-							<SignIn
-								facebookLogin={this.facebookLogin}
-								errorMessage={this.state.errorMessage}
-								signIn={this.signIn}
-								updateField={this.updateField}
-								validation={this.state.validation}
-								loading={this.state.loading}
-								toggleScreen={this.toggleScreen}
-							/>
-						) : (
-							<SignUp
-								errorMessage={this.state.errorMessage}
-								signUp={this.signUp}
-								updateField={this.updateField}
-								validation={this.state.validation}
-								loading={this.state.loading}
-								toggleScreen={this.toggleScreen}
-							/>
-						)}
-					</div>
+					<EntryPage
+						facebookLogin={this.facebookLogin}
+						errorMessage={this.state.errorMessage}
+						signIn={this.signIn}
+						signUp={this.signUp}
+						updateField={this.updateField}
+						validation={this.state.validation}
+						loading={this.state.loading}
+						toggleScreen={this.toggleScreen}
+						signInScreen= {this.state.signInScreen}
+					/>
 				) : (
 					<div />
 				)}
@@ -200,4 +168,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default Entry;
