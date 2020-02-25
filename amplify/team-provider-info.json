@@ -1,0 +1,22 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-snowremoval-test-232413-authRole",
+            "UnauthRoleArn": "arn:aws:iam::711842167178:role/amplify-snowremoval-test-232413-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::711842167178:role/amplify-snowremoval-test-232413-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-snowremoval-test-232413-deployment",
+            "UnauthRoleName": "amplify-snowremoval-test-232413-unauthRole",
+            "StackName": "amplify-snowremoval-test-232413",
+            "StackId": "arn:aws:cloudformation:us-west-2:711842167178:stack/amplify-snowremoval-test-232413/66d1e640-546a-11ea-9254-0220ef6e1d1c",
+            "AmplifyAppId": "d3tdr0d1t3autt"
+        },
+        "categories": {
+            "auth": {
+                "snowremoval3203d8b5": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"181225493160812\",\"client_secret\":\"c392bd6454be16fd9ca1d5a088625d74\"},{\"ProviderName\":\"Google\",\"client_id\":\"377403418372-c8v9p5kesdpm5i63rgoe6k6ha5l3pgop.apps.googleusercontent.com\",\"client_secret\":\"Mgi7tudYHMbWrWwo0KwlhCdb\"}]"
+                }
+            }
+        }
+    }
+}

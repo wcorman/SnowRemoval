@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"snowremoval3203d8b5": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}

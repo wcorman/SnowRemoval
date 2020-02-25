@@ -11,7 +11,7 @@ function PrivacyPolicy(props) {
 					<Modal.Title id="contained-modal-title-vcenter">Privacy Policy</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<p> LAST UPDATE OF THIS PRIVACY POLICY - January 10, 2020</p>
+					<p> LAST UPDATE OF THIS PRIVACY POLICY - January, 2020</p>
 
 					<p> BEFORE USING OUR SITES, PLEASE READ THIS PRIVACY POLICY CAREFULLY.</p>
 
