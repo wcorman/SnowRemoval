@@ -10,6 +10,22 @@ class Entry extends Component {
 	constructor() {
 		super();
 
+		function checkUser() {
+			console.log('Will/Did Mount...');
+
+			const checkStatus = (user) => {
+				console.log('THIS IS THE USER: ', user);
+
+				return true;
+			};
+			const noUser = (error) => {
+				console.log('ERROR: ', error);
+				return false;
+			};
+			Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => noUser(err));
+			// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
+		}
+
 		this.state = {
 			signInScreen: true,
 			name: '',
@@ -17,7 +33,7 @@ class Entry extends Component {
 			password: '',
 			passwordConfirm: '',
 			errorMessage: '',
-			authenticated: null,
+			authenticated: checkUser(),
 			loading: false,
 			validation: {
 				name: false,
@@ -25,33 +41,35 @@ class Entry extends Component {
 				password: false
 			}
 		};
+
+		// async function checkUser() {
+		// 	console.log('Will/Did Mount...');
+
+		// 	const checkStatus = (user) => {
+		// 		console.log('THIS IS THE USER: ', user);
+
+		// 		if (user) {
+		// 			this.setState({
+		// 				authenticated: true
+		// 			});
+		// 		} else {
+		// 			this.setState({
+		// 				authenticated: false
+		// 			});
+		// 		}
+		// 	};
+		// 	Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
+		// 	// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
+		// }
 	}
 
-	componentWillMount() {
-		this.checkUser();
-	}
+	// componentWillMount() {
+	// this.checkUser();
+	// }
 
-	componentDidMount() {
-		this.checkUser();
-	}
-
-	checkUser = () => {
-		const checkStatus = (user) => {
-			console.log('THIS IS THE USER: ', user);
-
-			if (user) {
-				this.setState({
-					authenticated: true
-				});
-			} else {
-				this.setState({
-					authenticated: false
-				});
-			}
-		};
-
-		Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
-	};
+	// componentDidMount() {
+	// 	this.checkUser();
+	// }
 
 	signIn = async () => {
 		try {
@@ -67,11 +85,12 @@ class Entry extends Component {
 				authenticated: true,
 				loading: false
 			});
+			window.location.reload();
 		} catch (err) {
-			console.log('error signing in...', err);
+			console.log('error signing in...', err.message);
 			this.setState({
 				...this.state,
-				errorMessage: 'Please make sure email and password are correct.',
+				errorMessage: err.message,
 				loading: false
 			});
 		}
@@ -145,10 +164,20 @@ class Entry extends Component {
 
 	render() {
 		const isLoggedOut = !this.state.authenticated;
+		const checkUser = () => {
+			Auth.currentAuthenticatedUser().then((user) => console.log({ user })).catch((err) => console.log(err));
+		};
 
+		const signOut = () => {
+			Auth.signOut().then((data) => console.log(data)).catch((err) => console.log(err));
+			window.location.reload();
+		};
 		return (
 			<div>
-				{isLoggedOut ? (
+				<button onClick={() => Auth.federatedSignIn()}>Sign In</button>
+				<button onClick={checkUser}>Check User</button>
+				<button onClick={signOut}>Sign Out</button>
+
 					<EntryPage
 						facebookLogin={this.facebookLogin}
 						errorMessage={this.state.errorMessage}
@@ -158,11 +187,8 @@ class Entry extends Component {
 						validation={this.state.validation}
 						loading={this.state.loading}
 						toggleScreen={this.toggleScreen}
-						signInScreen= {this.state.signInScreen}
+						signInScreen={this.state.signInScreen}
 					/>
-				) : (
-					<div />
-				)}
 			</div>
 		);
 	}

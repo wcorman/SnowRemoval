@@ -4,8 +4,9 @@ import './App.css';
 
 import Amplify from 'aws-amplify';
 import aws_exports from './aws-exports';
-import { withAuthenticator } from 'aws-amplify-react';
+import { withAuthenticator, Authenticator } from 'aws-amplify-react';
 import { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports'; // if you are using Amplify CLI
 
 import Jumbotron from './components/hero';
 import Entry from './components/entry';
@@ -13,7 +14,7 @@ import Pricing from './components/pricing';
 import ContactSection from './components/contactSection';
 import Footer from './components/footer';
 
-Amplify.configure(aws_exports);
+Amplify.configure(awsconfig);
 
 const signUpConfig = {
 	header: 'My Customized Sign Up',
@@ -33,7 +34,6 @@ const signUpConfig = {
 function App(props) {
 	return (
 		<div className="App">
-			<Entry />
 			<Jumbotron />
 			<Pricing />
 			<hr />
@@ -43,4 +43,4 @@ function App(props) {
 	);
 }
 
-export default App;
+export default withAuthenticator(App, false, [ <Entry /> ]);
