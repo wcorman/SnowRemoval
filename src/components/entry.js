@@ -11,7 +11,6 @@ class Entry extends Component {
 		super();
 
 		function checkUser() {
-			console.log('Will/Did Mount...');
 
 			const checkStatus = (user) => {
 				console.log('THIS IS THE USER: ', user);

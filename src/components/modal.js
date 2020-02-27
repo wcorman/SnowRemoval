@@ -14,7 +14,7 @@ function InfoModal(props) {
 			return (
 				<div>
 					<Modal.Header closeButton>
-						{!props.displayrewardcard && (
+						{!props.phoneNumber && (
 							<Modal.Title id="contained-modal-title-vcenter">
 								What number can we text you at?
 							</Modal.Title>

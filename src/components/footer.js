@@ -10,7 +10,7 @@ class Footer extends Component {
 	}
 	render() {
 		return (
-			<div>
+			<div id="policy">
 				<div className="text-center footer">©{new Date().getFullYear()} Powder Hounds</div>{' '}
 				<div
 					onClick={() =>

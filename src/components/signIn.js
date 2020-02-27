@@ -16,8 +16,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { Auth, Hub } from 'aws-amplify';
 
-import { FacebookLoginButton } from 'react-social-login-buttons';
-import { GoogleLoginButton } from 'react-social-login-buttons';
+import Logo from '../media/navLogo.svg';
+import Image from 'react-bootstrap/Image';
+
+import SignInWithFacebook from './facebookButton';
+import SignInWithGoogle from './googleButton';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -55,7 +58,9 @@ export default function SignIn2(props) {
 	return (
 		<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 			<div className={classes.paper}>
-				<Avatar className={classes.avatar}>{/* <LockOutlinedIcon /> */}</Avatar>
+				{/* <Avatar className={classes.avatar} /> */}
+				<Image src={Logo} className="signInLogo" />
+
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
@@ -121,18 +126,13 @@ export default function SignIn2(props) {
 					<hr style={{ marginTop: '24px' }} />
 
 					<div className="socialButtons">
-						<FacebookLoginButton
-							style={{ height: '43px', fontSize: '18px' }}
-							onClick={() => Auth.federatedSignIn({ provider: 'Facebook' })}
-						>
-							<span>Continue with Facebook</span>
-						</FacebookLoginButton>
-						<GoogleLoginButton
+						<SignInWithFacebook />
+						<SignInWithGoogle
 							style={{ height: '43px', fontSize: '18px' }}
 							onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
 						>
 							<span>Continue with Google</span>
-						</GoogleLoginButton>
+						</SignInWithGoogle>
 					</div>
 					<Box mt={5}>{props.copyright()}</Box>
 				</form>

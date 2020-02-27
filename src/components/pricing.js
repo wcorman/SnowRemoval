@@ -3,6 +3,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Auth } from 'aws-amplify';
 
 import DatePicker from 'react-datepicker';
 
@@ -56,6 +57,7 @@ class Pricing extends React.Component {
 			price: 0,
 			showForm: 0,
 			displayRewardCard: false,
+			testUser: {},
 			validation: {
 				phone: false,
 				firstName: false,
@@ -103,6 +105,26 @@ class Pricing extends React.Component {
 		checkTime();
 
 		setInterval(checkTime, 10000);
+
+		const getUser = () => {
+			const setAttributes = (user) => {
+				console.log('THIS IS THE USER: ', user);
+				this.setState({
+					...this.state,
+					testUser: user.attributes
+				});
+
+				return true;
+			};
+			const noUser = (error) => {
+				console.log('ERROR: ', error);
+				return false;
+			};
+			Auth.currentUserInfo().then((user) => setAttributes(user)).catch((err) => noUser(err));
+			// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
+		};
+
+		getUser();
 	}
 
 	emailValidation = (email) => {
@@ -269,63 +291,81 @@ class Pricing extends React.Component {
 
 	findCustomerByPhone = () => {
 		let typedNumber = this.state.customer.phoneNumber;
+		const prefix = '+1';
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
+		let finalNumber = prefix.concat(formattedNumber);
+		console.log(finalNumber);
 		this.setState({
 			...this.state,
 			customer: {
 				...this.state.customer,
-				phoneNumber: formattedNumber
+				phoneNumber: finalNumber
 			}
 		});
+		this.setLoading(true);
 
-		fetch(`${BASE_URL}/phone/${formattedNumber}`)
-			.then((res) => res.json())
-			.then((data) => {
-				this.setLoading(true);
-				const customer = data[0];
-
-				if (data.length > 0) {
-					this.setState({
-						...this.state,
-						firstTimer: false,
-						customer: {
-							...this.state.customer,
-							firstName: customer.firstName,
-							lastName: customer.lastName,
-							email: customer.email,
-							city: customer.city,
-							province: customer.province,
-							phoneNumber: customer.phoneNumber,
-							address: customer.address,
-							rewardStatus: customer.rewardStatus,
-							numberOfOrders: customer.numberOfOrders,
-							totalSpent: customer.totalSpent,
-							orders: customer.orders,
-							id: customer._id
-						}
-					});
-					setTimeout(() => {
-						this.setState({
-							isLoading: false,
-							displayRewardCard: true
-						});
-					}, 900);
-				} else {
-					setTimeout(() => {
-						this.setState({
-							isLoading: false,
-							firstTimer: true,
-							displayRewardCard: true
-						});
-					}, 900);
-				}
-				if (customer.rewardStatus === 3) {
-					this.setState({
-						freeClearing: true
-					});
-				}
+		Auth.currentAuthenticatedUser()
+			.then((user) => {
+				return Auth.updateUserAttributes(user, { phone_number: finalNumber });
 			})
-			.catch(console.log);
+			.then((data) => console.log(data))
+			.then(() => {
+				console.log('Artichoke Platinum');
+				this.setLoading(false);
+				// if (!this.state.testUser.phone_number) {
+				// 	const
+				// }
+			})
+			.catch((err) => console.log(err));
+
+		// fetch(`${BASE_URL}/phone/${formattedNumber}`)
+		// 	.then((res) => res.json())
+		// 	.then((data) => {
+		// 		this.setLoading(true);
+		// 		const customer = data[0];
+
+		// 		if (data.length > 0) {
+		// 			this.setState({
+		// 				...this.state,
+		// 				firstTimer: false,
+		// 				customer: {
+		// 					...this.state.customer,
+		// 					firstName: customer.firstName,
+		// 					lastName: customer.lastName,
+		// 					email: customer.email,
+		// 					city: customer.city,
+		// 					province: customer.province,
+		// 					phoneNumber: customer.phoneNumber,
+		// 					address: customer.address,
+		// 					rewardStatus: customer.rewardStatus,
+		// 					numberOfOrders: customer.numberOfOrders,
+		// 					totalSpent: customer.totalSpent,
+		// 					orders: customer.orders,
+		// 					id: customer._id
+		// 				}
+		// 			});
+		// 			setTimeout(() => {
+		// 				this.setState({
+		// 					isLoading: false,
+		// 					displayRewardCard: true
+		// 				});
+		// 			}, 900);
+		// 		} else {
+		// 			setTimeout(() => {
+		// 				this.setState({
+		// 					isLoading: false,
+		// 					firstTimer: true,
+		// 					displayRewardCard: true
+		// 				});
+		// 			}, 900);
+		// 		}
+		// 		if (customer.rewardStatus === 3) {
+		// 			this.setState({
+		// 				freeClearing: true
+		// 			});
+		// 		}
+		// 	})
+		// 	.catch(console.log);
 	};
 
 	nextStage = (stage) => {
@@ -748,6 +788,7 @@ class Pricing extends React.Component {
 					onUpdateField={this.updateField}
 					rewardStatus={this.state.customer.rewardStatus}
 					numberOfOrders={this.state.customer.numberOfOrders}
+					phoneNumber={this.state.testUser.phone_number}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}

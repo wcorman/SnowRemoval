@@ -10,6 +10,9 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Image from 'react-bootstrap/Image';
+import Logo from '../media/navLogo.svg';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +51,9 @@ export default function SignUp(props) {
 	return (
 		<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 			<div className={classes.paper}>
-				<Avatar className={classes.avatar}>{/* <LockOutlinedIcon /> */}</Avatar>
+				{/* <Avatar className={classes.avatar} /> */}
+				<Image src={Logo} className="signInLogo" />
+
 				<Typography component="h1" variant="h5">
 					Sign Up
 				</Typography>
@@ -107,8 +112,7 @@ export default function SignUp(props) {
 						Sign Up
 					</Button>
 					<Grid container>
-						<Grid item xs>
-						</Grid>
+						<Grid item xs />
 						<Grid item>
 							<Link href="#" variant="body2" onClick={() => props.toggle()}>
 								{'Already have an account? Sign In'}
