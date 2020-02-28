@@ -320,7 +320,7 @@ class Pricing extends React.Component {
 			})
 			.then((data) => console.log(data))
 			.then(() => {
-				console.log('Artichoke Platinum');
+				console.log('Phone Number Updated...');
 				this.setLoading(false);
 			})
 			.catch((err) => console.log(err));
@@ -338,11 +338,39 @@ class Pricing extends React.Component {
 		}
 	};
 
+	makeOrder = () => {
+		Auth.currentSession().then((data) => console.log('DATA: ', data)).catch((err) => console.log(err));
+
+		Auth.currentAuthenticatedUser({ bypassCache: true })
+			.then((user) => {
+				console.log('USER: ', user);
+				let rewardStatus = parseInt(user.attributes['custom:rewardStatus'], 10);
+				let numberOfOrders = parseInt(user.attributes['custom:numberOfOrders'], 10);
+				console.log('rewardStatus: ', rewardStatus);
+				console.log('Number of Orders: ', numberOfOrders);
+
+				if (rewardStatus < 3) {
+					return Auth.updateUserAttributes(user, {
+						'custom:rewardStatus': (rewardStatus + 1).toString(),
+						'custom:numberOfOrders': (numberOfOrders + 1).toString()
+					});
+				} else {
+					return Auth.updateUserAttributes(user, {
+						'custom:rewardStatus': '0',
+						'custom:numberOfOrders': (numberOfOrders + 1).toString()
+					});
+				}
+			})
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
+	};
+
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 		this.setLoading(false);
 
-		const free = this.state.freeClearing;
+		const free = this.state.testUser['custom:rewardStatus'] === 3;
+		const firstTimer = this.state.testUser['custom:numberOfOrders'] === 0;
 
 		switch (this.state.orderType) {
 			case 'Scheduled':
@@ -370,7 +398,6 @@ class Pricing extends React.Component {
 				break;
 		}
 
-		const { firstName, lastName, address, email, phoneNumber, city, province } = this.state.customer;
 		const { orderType, calendarDate, driveways, price } = this.state;
 
 		const rewardStatus = this.state.freeClearing ? 0 : this.state.customer.rewardStatus + 1;
@@ -382,16 +409,6 @@ class Pricing extends React.Component {
 		var moment = require('moment');
 
 		const newOrder2 = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			city: city,
-			province: province,
-			address: address,
-			phoneNumber: phoneNumber,
-			orderType: orderType,
-			driveways: driveways,
-			totalCost: amount,
 			selectedDate:
 				this.state.orderType === 'Same Day' || this.state.orderType === 'Priority'
 					? moment().format('MMM Do YYYY, h:mm a')
@@ -403,27 +420,14 @@ class Pricing extends React.Component {
 		let newOrdersList = this.state.customer.orders;
 		newOrdersList.push(newOrder2);
 
-		const customer = {
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			city: city,
-			province: province,
-			address: address,
-			phoneNumber: phoneNumber,
-			rewardStatus: rewardStatus,
-			numberOfOrders: numberOfOrders,
-			totalSpent: totalSpent + amount,
-			orders: newOrdersList,
-			createdDate: calendarDate
-		};
-		console.log('Customer...');
-		console.log(this.state.customer);
+		const customer = {};
 
-		if (this.state.firstTimer) {
-			axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
+		if (firstTimer) {
+			this.makeOrder();
+			// axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
 		} else {
-			axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, customer).then((res) => console.log(res.data));
+			this.makeOrder();
+			// axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, customer).then((res) => console.log(res.data));
 		}
 
 		this.setState({
@@ -760,7 +764,7 @@ class Pricing extends React.Component {
 					show={this.state.scheduleModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
-					isFree={this.state.freeClearing}
+					isFree={this.state.testUser['custom:rewardStatus'] === 3}
 					onHide={() => this.setModalShow('schedule', false)}
 				/>
 				<InfoModal
@@ -782,7 +786,7 @@ class Pricing extends React.Component {
 					show={this.state.sameDayModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
-					isFree={this.state.freeClearing}
+					isFree={this.state.testUser['custom:rewardStatus'] === 3}
 					onHide={() => this.setModalShow('sameDay', false)}
 				/>
 				<InfoModal
@@ -804,7 +808,7 @@ class Pricing extends React.Component {
 					show={this.state.priorityModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
-					isFree={this.state.freeClearing}
+					isFree={this.state.testUser['custom:rewardStatus'] === 3}
 					onHide={() => this.setModalShow('priority', false)}
 				/>
 			</section>

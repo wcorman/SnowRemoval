@@ -13,7 +13,7 @@ function PrivacyPolicy(props) {
 				<Modal.Body>
 					<p> LAST UPDATE OF THIS PRIVACY POLICY - January, 2020</p>
 
-					<p> BEFORE USING OUR SITES, PLEASE READ THIS PRIVACY POLICY CAREFULLY.</p>
+					<p> BEFORE USING OUR WEBSITE, PLEASE READ THIS PRIVACY POLICY CAREFULLY.</p>
 
 					<p>
 						This Privacy Policy is applicable to [Powder Hounds Snow Clearing]("Company") and sets out our
