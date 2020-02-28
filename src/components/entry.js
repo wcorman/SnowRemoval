@@ -11,7 +11,6 @@ class Entry extends Component {
 		super();
 
 		function checkUser() {
-
 			const checkStatus = (user) => {
 				console.log('THIS IS THE USER: ', user);
 
@@ -21,7 +20,7 @@ class Entry extends Component {
 				console.log('ERROR: ', error);
 				return false;
 			};
-			Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => noUser(err));
+			Auth.currentAuthenticatedUser({ bypassCache: true }).then((user) => checkStatus(user)).catch((err) => noUser(err));
 			// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
 		}
 
@@ -96,14 +95,35 @@ class Entry extends Component {
 	};
 
 	signUp = async () => {
+		let fullName = this.state.name;
+		const regex = /(\w.+\s).+/i;
+		const test = regex.test(fullName);
+		let firstName;
+		let lastName;
+		if (test) {
+			let nameArray = fullName.split(/(\s+)/).filter(function(e) {
+				return e.trim().length > 0;
+			});
+			console.log(nameArray);
+			firstName = nameArray[0];
+			lastName = nameArray.slice(-1)[0];
+		}
+
 		await Auth.signUp({
 			username: this.state.email,
 			password: this.state.password,
 			attributes: {
-				name: this.state.name // optional
+				name: this.state.name,
+				'custom:firstName':  firstName,
+				'custom:lastName':  lastName,
+				'custom:rewardStatus':  '0',
+				'custom:totalSpent':  '0',
+				'custom:numberOfOrders':  '0',
 			}
 		})
-			.then((data) => console.log(data))
+			.then((data) => {
+				console.log(data);
+			})
 			.catch((err) => console.log(err));
 	};
 
@@ -164,7 +184,7 @@ class Entry extends Component {
 	render() {
 		const isLoggedOut = !this.state.authenticated;
 		const checkUser = () => {
-			Auth.currentAuthenticatedUser().then((user) => console.log({ user })).catch((err) => console.log(err));
+			Auth.currentAuthenticatedUser({ bypassCache: true }).then((user) => console.log({ user })).catch((err) => console.log(err));
 		};
 
 		const signOut = () => {
@@ -177,17 +197,17 @@ class Entry extends Component {
 				<button onClick={checkUser}>Check User</button>
 				<button onClick={signOut}>Sign Out</button>
 
-					<EntryPage
-						facebookLogin={this.facebookLogin}
-						errorMessage={this.state.errorMessage}
-						signIn={this.signIn}
-						signUp={this.signUp}
-						updateField={this.updateField}
-						validation={this.state.validation}
-						loading={this.state.loading}
-						toggleScreen={this.toggleScreen}
-						signInScreen={this.state.signInScreen}
-					/>
+				<EntryPage
+					facebookLogin={this.facebookLogin}
+					errorMessage={this.state.errorMessage}
+					signIn={this.signIn}
+					signUp={this.signUp}
+					updateField={this.updateField}
+					validation={this.state.validation}
+					loading={this.state.loading}
+					toggleScreen={this.toggleScreen}
+					signInScreen={this.state.signInScreen}
+				/>
 			</div>
 		);
 	}

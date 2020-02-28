@@ -17,46 +17,6 @@ function PhoneCheck(props) {
 				<Form>
 					<Form.Row>
 						<Form.Group as={Col}>
-							<Form.Label>First Name</Form.Label>
-							<Form.Control
-								required
-								placeholder="First name"
-								id="firstName"
-								name="firstName"
-								isValid={props.validation.firstName}
-								onChange={(value) => props.onUpdateField(value.currentTarget)}
-							/>
-						</Form.Group>
-
-						<Form.Group as={Col}>
-							<Form.Label>Last Name</Form.Label>
-							<Form.Control
-								required
-								placeholder="Last name"
-								id="lastName"
-								name="lastName"
-								isValid={props.validation.lastName}
-								onChange={(value) => props.onUpdateField(value.currentTarget)}
-							/>
-						</Form.Group>
-					</Form.Row>
-
-					<Form.Row>
-						<Form.Group as={Col}>
-							<Form.Label>Email</Form.Label>
-							<Form.Control
-								required
-								type="email"
-								placeholder="Enter email"
-								id="email"
-								isValid={props.validation.email}
-								onChange={(value) => props.onUpdateField(value.currentTarget)}
-							/>
-						</Form.Group>
-					</Form.Row>
-
-					<Form.Row>
-						<Form.Group as={Col}>
 							<Form.Label>City</Form.Label>
 							<Form.Control value="Saskatoon" as="select" readOnly>
 								<option>Saskatoon</option>
@@ -86,9 +46,6 @@ function PhoneCheck(props) {
 					</Form.Group>
 					<Button
 						disabled={
-							!props.validation.firstName ||
-							!props.validation.lastName ||
-							!props.validation.email ||
 							!props.validation.address
 						}
 						variant="primary"

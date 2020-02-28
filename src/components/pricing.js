@@ -111,7 +111,17 @@ class Pricing extends React.Component {
 				console.log('THIS IS THE USER: ', user);
 				this.setState({
 					...this.state,
-					testUser: user.attributes
+					firstTimer: !parseInt(user.attributes['custom:numberOfOrders'], 10),
+					testUser: {
+						email: user.attributes.email,
+						name: user.attributes.name,
+						phone_number: user.attributes.phone_number,
+						'custom:firstName': user.attributes['custom:firstName'],
+						'custom:lastName': user.attributes['custom:lastName'],
+						'custom:numberOfOrders': parseInt(user.attributes['custom:numberOfOrders'], 10),
+						'custom:rewardStatus': parseInt(user.attributes['custom:rewardStatus'], 10),
+						'custom:totalSpent': parseInt(user.attributes['custom:totalSpent'], 10)
+					}
 				});
 
 				return true;
@@ -121,7 +131,6 @@ class Pricing extends React.Component {
 				return false;
 			};
 			Auth.currentUserInfo().then((user) => setAttributes(user)).catch((err) => noUser(err));
-			// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
 		};
 
 		getUser();
@@ -304,7 +313,7 @@ class Pricing extends React.Component {
 		});
 		this.setLoading(true);
 
-		Auth.currentAuthenticatedUser()
+		Auth.currentAuthenticatedUser({ bypassCache: true })
 			.then((user) => {
 				return Auth.updateUserAttributes(user, { phone_number: finalNumber });
 			})
@@ -312,60 +321,8 @@ class Pricing extends React.Component {
 			.then(() => {
 				console.log('Artichoke Platinum');
 				this.setLoading(false);
-				// if (!this.state.testUser.phone_number) {
-				// 	const
-				// }
 			})
 			.catch((err) => console.log(err));
-
-		// fetch(`${BASE_URL}/phone/${formattedNumber}`)
-		// 	.then((res) => res.json())
-		// 	.then((data) => {
-		// 		this.setLoading(true);
-		// 		const customer = data[0];
-
-		// 		if (data.length > 0) {
-		// 			this.setState({
-		// 				...this.state,
-		// 				firstTimer: false,
-		// 				customer: {
-		// 					...this.state.customer,
-		// 					firstName: customer.firstName,
-		// 					lastName: customer.lastName,
-		// 					email: customer.email,
-		// 					city: customer.city,
-		// 					province: customer.province,
-		// 					phoneNumber: customer.phoneNumber,
-		// 					address: customer.address,
-		// 					rewardStatus: customer.rewardStatus,
-		// 					numberOfOrders: customer.numberOfOrders,
-		// 					totalSpent: customer.totalSpent,
-		// 					orders: customer.orders,
-		// 					id: customer._id
-		// 				}
-		// 			});
-		// 			setTimeout(() => {
-		// 				this.setState({
-		// 					isLoading: false,
-		// 					displayRewardCard: true
-		// 				});
-		// 			}, 900);
-		// 		} else {
-		// 			setTimeout(() => {
-		// 				this.setState({
-		// 					isLoading: false,
-		// 					firstTimer: true,
-		// 					displayRewardCard: true
-		// 				});
-		// 			}, 900);
-		// 		}
-		// 		if (customer.rewardStatus === 3) {
-		// 			this.setState({
-		// 				freeClearing: true
-		// 			});
-		// 		}
-		// 	})
-		// 	.catch(console.log);
 	};
 
 	nextStage = (stage) => {
@@ -785,16 +742,16 @@ class Pricing extends React.Component {
 
 				<InfoModal
 					customer={this.state.customer}
+					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
 					rewardStatus={this.state.customer.rewardStatus}
 					numberOfOrders={this.state.customer.numberOfOrders}
-					phoneNumber={this.state.testUser.phone_number}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
 					displayrewardcard={this.state.displayRewardCard}
 					validation={this.state.validation}
-					firsttimer={this.state.firstTimer}
+					firstTimer={this.state.firstTimer}
 					onPayment={this.onPayment}
 					options={this.state.schedule}
 					label="Scheduled snow clearing"
@@ -807,6 +764,7 @@ class Pricing extends React.Component {
 				/>
 				<InfoModal
 					customer={this.state.customer}
+					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
 					rewardStatus={this.state.customer.rewardStatus}
 					numberOfOrders={this.state.customer.numberOfOrders}
@@ -815,7 +773,7 @@ class Pricing extends React.Component {
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
 					validation={this.state.validation}
-					firsttimer={this.state.firstTimer}
+					firstTimer={this.state.firstTimer}
 					onPayment={this.onPayment}
 					options={this.state.sameDay}
 					label="Same day clearing"
@@ -828,6 +786,7 @@ class Pricing extends React.Component {
 				/>
 				<InfoModal
 					customer={this.state.customer}
+					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
 					rewardStatus={this.state.customer.rewardStatus}
 					numberOfOrders={this.state.customer.numberOfOrders}
@@ -836,7 +795,7 @@ class Pricing extends React.Component {
 					orderType={this.state.orderType}
 					displayrewardcard={this.state.displayRewardCard}
 					validation={this.state.validation}
-					firsttimer={this.state.firstTimer}
+					firstTimer={this.state.firstTimer}
 					onPayment={this.onPayment}
 					options={this.state.priority}
 					label="Priority clearing"

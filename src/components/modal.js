@@ -13,42 +13,30 @@ function InfoModal(props) {
 		if (props.showform === 0) {
 			return (
 				<div>
-					<Modal.Header closeButton>
-						{!props.phoneNumber && (
-							<Modal.Title id="contained-modal-title-vcenter">
-								What number can we text you at?
-							</Modal.Title>
-						)}
-						{props.displayrewardcard &&
-						props.firsttimer && (
-							<Modal.Title id="contained-modal-title-vcenter">Welcome to Powder Hounds!</Modal.Title>
-						)}
-						{props.displayrewardcard &&
-						!props.firsttimer && (
-							<Modal.Title id="contained-modal-title-vcenter">
-								Welcome back, {props.customer.firstName}!
-							</Modal.Title>
-						)}
-					</Modal.Header>
-					<Modal.Body>
+					{!props.testCustomer.phone_number && (
 						<PhoneCheck
+							phoneNumber={props.testCustomer.phone_number}
 							loading={props.loading}
 							displayrewardcard={props.displayrewardcard}
 							onUpdateField={props.onUpdateField}
 							validation={props.validation}
 							nextStage={props.nextStage}
 						/>
+					)}
+					{props.testCustomer.phone_number && (
 						<RewardCards
+							phoneNumber={props.testCustomer.phone_number}
+							testCustomer={props.testCustomer}
 							loading={props.loading}
 							displayrewardcard={props.displayrewardcard}
-							firsttimer={props.firsttimer}
+							firstTimer={props.firstTimer}
 							rewardStatus={props.rewardStatus}
 							numberOfOrders={props.numberOfOrders}
 							nextStage={props.nextStage}
 						/>
+					)}
 
-						{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
-					</Modal.Body>
+					{props.loading && <Spinner id="spinner" animation="border" variant="primary" />}
 				</div>
 			);
 		} else if (props.showform === 1) {

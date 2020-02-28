@@ -1,12 +1,15 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function PhoneCheck(props) {
 	return (
 		<div>
-			{!props.loading &&
-			!props.displayrewardcard && (
+			<Modal.Header closeButton>
+				<Modal.Title id="contained-modal-title-vcenter">What number can we text you at?</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
 				<Form>
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
@@ -32,7 +35,7 @@ function PhoneCheck(props) {
 						Next
 					</Button>
 				</Form>
-			)}
+			</Modal.Body>
 		</div>
 	);
 }
