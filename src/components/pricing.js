@@ -300,9 +300,10 @@ class Pricing extends React.Component {
 
 	findCustomerByPhone = () => {
 		let typedNumber = this.state.customer.phoneNumber;
+		console.log(typedNumber);
 		const prefix = '+1';
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
-		let finalNumber = prefix.concat(formattedNumber);
+		let finalNumber = prefix.concat(formattedNumber).replace(/\s/g, '');
 		console.log(finalNumber);
 		this.setState({
 			...this.state,

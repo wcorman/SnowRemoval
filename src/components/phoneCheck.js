@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
+import InputMask from 'react-input-mask';
+import MaterialInput from '@material-ui/core/Input';
+
 function PhoneCheck(props) {
 	return (
 		<div>
@@ -14,16 +17,24 @@ function PhoneCheck(props) {
 					<Form.Row>
 						<Form.Group style={{ width: '100%' }}>
 							<Form.Label />
-							<Form.Control
-								required
-								size="lg"
-								inputMode="numeric"
-								type="phone"
-								placeholder="ex: 306-555-5555"
-								isValid={props.validation.phone}
-								id="phoneNumber"
+							<InputMask
+								mask="(999) 999-9999"
+								value={props.value}
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
-							/>
+							>
+								{(inputProps) => (
+									<Form.Control
+										{...inputProps}
+										required
+										placeholder="Phone #"
+										id="phoneNumber"
+										inputMode="numeric"
+										isValid={props.validation.phone}
+										type="tel"
+										size="lg"
+									/>
+								)}
+							</InputMask>
 						</Form.Group>
 					</Form.Row>
 
