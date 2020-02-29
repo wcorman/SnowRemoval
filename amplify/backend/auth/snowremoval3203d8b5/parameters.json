@@ -1,6 +1,6 @@
 {
     "identityPoolName": "snowremoval3203d8b5_identitypool_3203d8b5",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "snowre3203d8b5",
     "userPoolName": "snowremoval3203d8b5_userpool_3203d8b5",
     "autoVerifiedAttributes": [

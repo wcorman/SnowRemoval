@@ -1,0 +1,48 @@
+{
+    "paths": [
+        {
+            "name": "/items",
+            "lambdaFunction": "powderHoundsResource",
+            "privacy": {
+                "protected": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ],
+                "unauth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "powderHoundsAPI",
+    "apiName": "powderHoundsAPI",
+    "functionArns": [
+        {
+            "lambdaFunction": "powderHoundsResource"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 1,
+        "authRoleName": "amplify-snowremoval-test-232413-authRole",
+        "unAuthRoleName": "amplify-snowremoval-test-232413-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "powderHoundsResource",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

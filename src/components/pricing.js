@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Auth } from 'aws-amplify';
+import Amplify, { Analytics, Storage, API } from 'aws-amplify';
 
 import DatePicker from 'react-datepicker';
 
@@ -565,11 +566,38 @@ class Pricing extends React.Component {
 		}
 	};
 
+	post = async () => {
+		console.log('calling api');
+		const response = await API.post('powderHoundsAPI', '/items', {
+			body: {
+				id: '1',
+				name: 'hello amplify!'
+			}
+		});
+		alert(JSON.stringify(response, null, 2));
+	};
+
+	get = async () => {
+		console.log('calling api');
+		const response = await API.get('powderHoundsAPI', '/items/object/1');
+		alert(JSON.stringify(response, null, 2));
+	};
+
+	list = async () => {
+		console.log('calling api');
+		const response = await API.get('powderHoundsAPI', '/items/1');
+		alert(JSON.stringify(response, null, 2));
+	};
+
 	render() {
 		const dateError = this.state.dateError;
 
 		return (
 			<section className="pricing py-5">
+				<button onClick={this.post}>POST</button>
+				<button onClick={this.get}>GET</button>
+				<button onClick={this.list}>LIST</button>
+
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-4">
