@@ -8,7 +8,7 @@ import awsconfig from './aws-exports'; // if you are using Amplify CLI
 
 import Jumbotron from './components/hero';
 import Entry from './components/entry';
-import Pricing from './components/pricing';
+import Main from './components/main';
 import ContactSection from './components/contactSection';
 import Footer from './components/footer';
 
@@ -18,7 +18,7 @@ function App() {
 	return (
 		<div className="App">
 			<Jumbotron />
-			<Pricing />
+			<Main />
 			<hr />
 			<ContactSection />
 			<Footer />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
 
 import EntryPage from './entryPage';
 
@@ -20,7 +20,9 @@ class Entry extends Component {
 				console.log('ERROR: ', error);
 				return false;
 			};
-			Auth.currentAuthenticatedUser({ bypassCache: true }).then((user) => checkStatus(user)).catch((err) => noUser(err));
+			Auth.currentAuthenticatedUser({ bypassCache: true })
+				.then((user) => checkStatus(user))
+				.catch((err) => noUser(err));
 			// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
 		}
 
@@ -114,15 +116,25 @@ class Entry extends Component {
 			password: this.state.password,
 			attributes: {
 				name: this.state.name,
-				'custom:firstName':  firstName,
-				'custom:lastName':  lastName,
-				'custom:rewardStatus':  '0',
-				'custom:totalSpent':  '0',
-				'custom:numberOfOrders':  '0',
+				'custom:firstName': firstName,
+				'custom:lastName': lastName,
+				'custom:rewardStatus': '0',
+				'custom:totalSpent': '0',
+				'custom:numberOfOrders': '0'
 			}
 		})
 			.then((data) => {
-				console.log(data);
+				console.log('SIGNUP DATA: ', data);
+
+				API.post('powderHoundsAPI', '/items', {
+					body: {
+						customerId: `${data.userSub}`,
+						orders: []
+					}
+				})
+					.then((res) => console.log('Res: ', res))
+					.catch((err) => console.log('Error: ', err));
+					this.toggleScreen();
 			})
 			.catch((err) => console.log(err));
 	};
@@ -184,7 +196,9 @@ class Entry extends Component {
 	render() {
 		const isLoggedOut = !this.state.authenticated;
 		const checkUser = () => {
-			Auth.currentAuthenticatedUser({ bypassCache: true }).then((user) => console.log({ user })).catch((err) => console.log(err));
+			Auth.currentAuthenticatedUser({ bypassCache: true })
+				.then((user) => console.log({ user }))
+				.catch((err) => console.log(err));
 		};
 
 		const signOut = () => {

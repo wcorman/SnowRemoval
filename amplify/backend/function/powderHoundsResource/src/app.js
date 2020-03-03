@@ -165,6 +165,7 @@ app.put(path, function(req, res) {
 *************************************/
 
 app.post(path, function(req, res) {
+      console.log('REQ: ', req);
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -178,6 +179,7 @@ app.post(path, function(req, res) {
     if(err) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
+      console.log('Body: ', req.body);
     } else{
       res.json({success: 'post call succeed!', url: req.url, data: data})
     }

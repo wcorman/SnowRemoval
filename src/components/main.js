@@ -14,13 +14,13 @@ import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import InfoModal from '../components/modal';
+import InfoModal from './modal';
 
 const DOMAIN = 'localhost:4000';
 const API_PREFIX = '/orders';
 const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
 
-class Pricing extends React.Component {
+class Main extends React.Component {
 	constructor() {
 		super();
 
@@ -114,7 +114,10 @@ class Pricing extends React.Component {
 					...this.state,
 					firstTimer: !parseInt(user.attributes['custom:numberOfOrders'], 10),
 					testUser: {
+						id: user.username,
 						email: user.attributes.email,
+						address: '',
+						city: 'Saskatoon',
 						name: user.attributes.name,
 						phone_number: user.attributes.phone_number,
 						'custom:firstName': user.attributes['custom:firstName'],
@@ -161,8 +164,8 @@ class Pricing extends React.Component {
 		}
 
 		this.setState({
-			customer: {
-				...this.state.customer,
+			testUser: {
+				...this.state.testUser,
 				[field]: input.value
 			}
 		});
@@ -300,7 +303,7 @@ class Pricing extends React.Component {
 	};
 
 	findCustomerByPhone = () => {
-		let typedNumber = this.state.customer.phoneNumber;
+		let typedNumber = this.state.testUser.phoneNumber;
 		console.log(typedNumber);
 		const prefix = '+1';
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
@@ -370,6 +373,8 @@ class Pricing extends React.Component {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 		this.setLoading(false);
 
+		const customerId = this.state.testUser.id;
+
 		const free = this.state.testUser['custom:rewardStatus'] === 3;
 		const firstTimer = this.state.testUser['custom:numberOfOrders'] === 0;
 
@@ -424,10 +429,10 @@ class Pricing extends React.Component {
 		const customer = {};
 
 		if (firstTimer) {
-			this.makeOrder();
+			this.post(customerId);
 			// axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
 		} else {
-			this.makeOrder();
+			this.post(customerId);
 			// axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, customer).then((res) => console.log(res.data));
 		}
 
@@ -566,37 +571,84 @@ class Pricing extends React.Component {
 		}
 	};
 
-	post = async () => {
+	post = async (customerId) => {
 		console.log('calling api');
-		const response = await API.post('powderHoundsAPI', '/items', {
-			body: {
-				id: '1',
-				name: 'hello amplify!'
-			}
+
+		let orderList;
+		let newOrder = {
+			type: this.state.orderType,
+			price: this.state.price,
+			driveways: this.state.driveways,
+			date: 'Aug 23, 2020'
+		};
+
+		await this.get(customerId).then((oldOrders) => {
+			console.log('TESTING BUTES: ', oldOrders);
+			orderList = oldOrders.orders;
+			console.log('oldOrders.orders: ', oldOrders.orders);
+
+			orderList.push(newOrder);
+			console.log(' Old Array: ', orderList);
+			API.post('powderHoundsAPI', '/items', {
+				body: {
+					customerId: `${customerId}`,
+					firstName: `${this.state.testUser['custom:firstName']}`,
+					lastName: `${this.state.testUser['custom:lastName']}`,
+					orders: orderList
+				}
+			})
+				.then((res) => console.log('Res: ', res))
+				.catch((err) => console.log('Error: ', err));
 		});
-		alert(JSON.stringify(response, null, 2));
+
+		Auth.currentAuthenticatedUser({ bypassCache: true })
+			.then((user) => {
+				console.log('USER: ', user);
+				let rewardStatus = parseInt(user.attributes['custom:rewardStatus'], 10);
+				let numberOfOrders = parseInt(user.attributes['custom:numberOfOrders'], 10);
+				console.log('rewardStatus: ', rewardStatus);
+				console.log('Number of Orders: ', numberOfOrders);
+
+				if (rewardStatus < 3) {
+					return Auth.updateUserAttributes(user, {
+						'custom:rewardStatus': (rewardStatus + 1).toString(),
+						'custom:numberOfOrders': (numberOfOrders + 1).toString()
+					});
+				} else {
+					return Auth.updateUserAttributes(user, {
+						'custom:rewardStatus': '0',
+						'custom:numberOfOrders': (numberOfOrders + 1).toString()
+					});
+				}
+			})
+			.then((data) => console.log(data))
+			.catch((err) => console.log(err));
 	};
 
-	get = async () => {
+	get = async (customerId) => {
 		console.log('calling api');
-		const response = await API.get('powderHoundsAPI', '/items/object/1');
-		alert(JSON.stringify(response, null, 2));
+		const response = await API.get('powderHoundsAPI', `/items/object/${customerId}`);
+		console.log(response.orders);
+		return response;
 	};
 
-	list = async () => {
+	list = async (customerId) => {
 		console.log('calling api');
-		const response = await API.get('powderHoundsAPI', '/items/1');
-		alert(JSON.stringify(response, null, 2));
+		const response = await API.get('powderHoundsAPI', `/items/${customerId}`);
+		console.log(response);
+		return response;
+		// console.log(JSON.stringify(response, null, 2));
 	};
 
 	render() {
 		const dateError = this.state.dateError;
+		const customerId = this.state.testUser.id;
 
 		return (
 			<section className="pricing py-5">
-				<button onClick={this.post}>POST</button>
-				<button onClick={this.get}>GET</button>
-				<button onClick={this.list}>LIST</button>
+				<button onClick={() => this.post(customerId)}>POST</button>
+				<button onClick={() => this.get(customerId)}>GET</button>
+				<button onClick={() => this.list(customerId)}>LIST</button>
 
 				<div className="container">
 					<div className="row">
@@ -844,4 +896,4 @@ class Pricing extends React.Component {
 	}
 }
 
-export default Pricing;
+export default Main;

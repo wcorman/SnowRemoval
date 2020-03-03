@@ -4,7 +4,6 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 import InputMask from 'react-input-mask';
-import MaterialInput from '@material-ui/core/Input';
 
 function PhoneCheck(props) {
 	return (
