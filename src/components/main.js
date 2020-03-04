@@ -3,12 +3,10 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Auth } from 'aws-amplify';
-import Amplify, { Analytics, Storage, API } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
 
 import DatePicker from 'react-datepicker';
 
-import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -18,7 +16,7 @@ import InfoModal from './modal';
 
 const DOMAIN = 'localhost:4000';
 const API_PREFIX = '/orders';
-const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
+// const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
 
 class Main extends React.Component {
 	constructor() {
@@ -118,12 +116,14 @@ class Main extends React.Component {
 						email: user.attributes.email,
 						address: '',
 						city: 'Saskatoon',
+						province: 'Saskatchewan',
 						name: user.attributes.name,
 						phone_number: user.attributes.phone_number,
 						'custom:firstName': user.attributes['custom:firstName'],
 						'custom:lastName': user.attributes['custom:lastName'],
 						'custom:numberOfOrders': parseInt(user.attributes['custom:numberOfOrders'], 10),
-						'custom:rewardStatus': parseInt(user.attributes['custom:rewardStatus'], 10),
+						// 'custom:rewardStatus': parseInt(user.attributes['custom:rewardStatus'], 10),
+						'custom:rewardStatus': 3,
 						'custom:totalSpent': parseInt(user.attributes['custom:totalSpent'], 10)
 					}
 				});
@@ -342,99 +342,30 @@ class Main extends React.Component {
 		}
 	};
 
-	makeOrder = () => {
-		Auth.currentSession().then((data) => console.log('DATA: ', data)).catch((err) => console.log(err));
-
-		Auth.currentAuthenticatedUser({ bypassCache: true })
-			.then((user) => {
-				console.log('USER: ', user);
-				let rewardStatus = parseInt(user.attributes['custom:rewardStatus'], 10);
-				let numberOfOrders = parseInt(user.attributes['custom:numberOfOrders'], 10);
-				console.log('rewardStatus: ', rewardStatus);
-				console.log('Number of Orders: ', numberOfOrders);
-
-				if (rewardStatus < 3) {
-					return Auth.updateUserAttributes(user, {
-						'custom:rewardStatus': (rewardStatus + 1).toString(),
-						'custom:numberOfOrders': (numberOfOrders + 1).toString()
-					});
-				} else {
-					return Auth.updateUserAttributes(user, {
-						'custom:rewardStatus': '0',
-						'custom:numberOfOrders': (numberOfOrders + 1).toString()
-					});
-				}
-			})
-			.then((data) => console.log(data))
-			.catch((err) => console.log(err));
-	};
-
 	onPayment = (amount) => {
 		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
 		this.setLoading(false);
 
 		const customerId = this.state.testUser.id;
 
-		const free = this.state.testUser['custom:rewardStatus'] === 3;
-		const firstTimer = this.state.testUser['custom:numberOfOrders'] === 0;
 
-		switch (this.state.orderType) {
-			case 'Scheduled':
-				this.setState({
-					...this.state,
-					driveways: this.state.schedule.driveways,
-					price: free ? 0 : this.state.schedule.price
-				});
-				break;
-			case 'Same Day':
-				this.setState({
-					...this.state,
-					driveways: this.state.sameDay.driveways,
-					price: free ? 0 : this.state.sameDay.price
-				});
-				break;
-			case 'Priority':
-				this.setState({
-					...this.state,
-					driveways: this.state.priority.driveways,
-					price: free ? 0 : this.state.priority.price
-				});
-				break;
-			default:
-				break;
-		}
+		const { calendarDate, price } = this.state;
 
-		const { orderType, calendarDate, driveways, price } = this.state;
-
-		const rewardStatus = this.state.freeClearing ? 0 : this.state.customer.rewardStatus + 1;
-		const numberOfOrders = this.state.customer.numberOfOrders + 1;
-		const totalSpent = this.state.customer.totalSpent;
 		console.log('Amount: ', amount);
-		console.log('Price: ', price);
 
-		var moment = require('moment');
+		// var moment = require('moment');
 
-		const newOrder2 = {
-			selectedDate:
-				this.state.orderType === 'Same Day' || this.state.orderType === 'Priority'
-					? moment().format('MMM Do YYYY, h:mm a')
-					: moment(calendarDate, 'x').format('MMM Do YYYY')
-		};
+		// const newOrder2 = {
+		// 	selectedDate:
+		// 		this.state.orderType === 'Same Day' || this.state.orderType === 'Priority'
+		// 			? moment().format('MMM Do YYYY, h:mm a')
+		// 			: moment(calendarDate, 'x').format('MMM Do YYYY')
+		// };
 
-		console.log('orders state: ', this.state.customer.orders);
+		// let newOrdersList = this.state.customer.orders;
+		// newOrdersList.push(newOrder2);
 
-		let newOrdersList = this.state.customer.orders;
-		newOrdersList.push(newOrder2);
-
-		const customer = {};
-
-		if (firstTimer) {
-			this.post(customerId);
-			// axios.post(`${BASE_URL}`, customer).then((res) => console.log(res.data));
-		} else {
-			this.post(customerId);
-			// axios.put(`${BASE_URL}` + '/' + `${this.state.customer.id}`, customer).then((res) => console.log(res.data));
-		}
+		this.makeOrder(customerId);
 
 		this.setState({
 			...this.state,
@@ -553,33 +484,75 @@ class Main extends React.Component {
 	};
 
 	setModalShow = (selection, showModal) => {
+		const free = this.state.testUser['custom:rewardStatus'] === 3;
+
 		if (selection === 'schedule') {
 			this.setState({
 				scheduleModal: showModal,
-				orderType: 'Scheduled'
+				orderType: 'Scheduled',
+				price: free ? 0 : this.state.schedule.price
 			});
 		} else if (selection === 'sameDay') {
 			this.setState({
 				sameDayModal: showModal,
-				orderType: 'Same Day'
+				orderType: 'Same Day',
+				price: free ? 0 : this.state.sameDay.price
 			});
 		} else if (selection === 'priority') {
 			this.setState({
 				priorityModal: showModal,
-				orderType: 'Priority'
+				orderType: 'Priority',
+				price: free ? 0 : this.state.priority.price
 			});
 		}
 	};
 
-	post = async (customerId) => {
+	makeOrder = async (customerId) => {
 		console.log('calling api');
+		var moment = require('moment');
+
+		const selectedDate =
+			this.state.orderType === 'Same Day' || this.state.orderType === 'Priority'
+				? moment().format('MMM Do YYYY, h:mm a')
+				: moment(this.state.calendarDate, 'x').format('MMM Do YYYY');
+
+		switch (this.state.orderType) {
+			case 'Scheduled':
+				this.setState({
+					...this.state,
+					driveways: this.state.schedule.driveways,
+					price: this.state.schedule.price
+				});
+				break;
+			case 'Same Day':
+				this.setState({
+					...this.state,
+					driveways: this.state.sameDay.driveways,
+					price: this.state.sameDay.price
+				});
+				break;
+			case 'Priority':
+				this.setState({
+					...this.state,
+					driveways: this.state.priority.driveways,
+					price: this.state.priority.price
+				});
+				break;
+			default:
+				break;
+		}
 
 		let orderList;
 		let newOrder = {
 			type: this.state.orderType,
 			price: this.state.price,
 			driveways: this.state.driveways,
-			date: 'Aug 23, 2020'
+			date: selectedDate,
+			name: this.state.testUser.name,
+			city: this.state.testUser.city,
+			address: this.state.testUser.address,
+			phone: this.state.testUser.phone_number,
+			email: this.state.testUser.email,
 		};
 
 		await this.get(customerId).then((oldOrders) => {
@@ -637,7 +610,6 @@ class Main extends React.Component {
 		const response = await API.get('powderHoundsAPI', `/items/${customerId}`);
 		console.log(response);
 		return response;
-		// console.log(JSON.stringify(response, null, 2));
 	};
 
 	render() {
@@ -646,9 +618,9 @@ class Main extends React.Component {
 
 		return (
 			<section className="pricing py-5">
-				<button onClick={() => this.post(customerId)}>POST</button>
+				{/* <button onClick={() => this.makeOrder(customerId)}>POST</button>
 				<button onClick={() => this.get(customerId)}>GET</button>
-				<button onClick={() => this.list(customerId)}>LIST</button>
+				<button onClick={() => this.list(customerId)}>LIST</button> */}
 
 				<div className="container">
 					<div className="row">

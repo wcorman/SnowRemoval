@@ -14,7 +14,7 @@ function PhoneCheck(props) {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<Form>
+				<Form autoComplete="off">
 					<Form.Row>
 						<Form.Group as={Col}>
 							<Form.Label>City</Form.Label>
@@ -38,8 +38,10 @@ function PhoneCheck(props) {
 						<Form.Label>Address</Form.Label>
 						<Form.Control
 							required
+							autoComplete="off"
 							placeholder="Enter Address"
 							id="address"
+							value={props.customer.address}
 							isValid={props.validation.address}
 							onChange={(value) => props.onUpdateField(value.currentTarget)}
 						/>

@@ -4,6 +4,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Logo from '../media/entryImage.png';
 
 import SignIn from './signIn';
 import SignUp from './signUp';
@@ -17,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
 		backgroundRepeat: 'no-repeat',
 		backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
 		backgroundSize: 'cover',
-		backgroundPosition: 'center'
+		backgroundPosition: 'center',
+		position: 'relative',
 	},
 	paper: {
 		margin: theme.spacing(8, 4),
@@ -57,8 +59,14 @@ export default function EntryPage(props) {
 	return (
 		<Grid container component="main" style={{ height: '100vh' }} className={classes.root}>
 			<CssBaseline />
-			<Grid item xs={false} sm={4} md={7} className={classes.image} />
+			<Grid item xs={false} sm={4} md={7} className={classes.image}>
+							<img src={Logo} alt="" className="husky entryImage" />
 
+				{/* <div className="entryImageText">
+					Powder Hounds <br />
+					Residential Snow Clearing
+				</div> */}
+			</Grid>
 			{props.signInScreen ? (
 				<SignIn
 					updateField={props.updateField}
@@ -69,7 +77,12 @@ export default function EntryPage(props) {
 					loading={props.loading}
 				/>
 			) : (
-				<SignUp signUp={props.signUp} updateField={props.updateField} toggle={props.toggleScreen} copyright={copyright} />
+				<SignUp
+					signUp={props.signUp}
+					updateField={props.updateField}
+					toggle={props.toggleScreen}
+					copyright={copyright}
+				/>
 			)}
 		</Grid>
 	);

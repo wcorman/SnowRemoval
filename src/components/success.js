@@ -13,12 +13,6 @@ function Success(props) {
 				<div className="container-fluid contactContainer">
 					<div className="col no-gutter">
 						<div className="text-center">
-							<div>
-								<p className="checkoutTitle">
-									<strong>ORDER COMPLETED</strong>
-								</p>
-							</div>
-							<hr />
 							<img src={Logo} alt="" className="husky" />
 						</div>
 					</div>

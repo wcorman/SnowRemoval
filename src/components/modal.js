@@ -46,7 +46,7 @@ function InfoModal(props) {
 					chosendate={props.chosendate}
 					onUpdateField={props.onUpdateField}
 					nextStage={props.nextStage}
-					customer={props.customer}
+					customer={props.testCustomer}
 					validation={props.validation}
 				/>
 			);
@@ -56,7 +56,7 @@ function InfoModal(props) {
 					orderType={props.orderType}
 					options={props.options}
 					onPayment={props.onPayment}
-					customer={props.customer}
+					customer={props.testCustomer}
 					chosendate={props.chosendate}
 					loading={props.loading}
 					nextStage={props.nextStage}

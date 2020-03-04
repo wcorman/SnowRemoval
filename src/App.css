@@ -29,7 +29,6 @@
 	max-height: 300px;
 }
 
-
 @media only screen and (max-width: 991px) {
 	.contactForm {
 		max-height: 350px;
@@ -117,4 +116,29 @@
 
 .signInLogo {
 	width: 112px;
+}
+
+.signOutBbutton {
+	font-size: 18px;
+	float: right;
+}
+
+.container {
+	overflow: hidden;
+	padding: 0 0 10px 0;
+	align-items: flex-end;
+	justify-content: end;
+}
+
+.entryContainer {
+	position: relative;
+}
+
+.entryImage {
+	margin-top: 150px;
+}
+@media only screen and (max-width: 599px) {
+	.entryImage {
+		display: none;
+	}
 }
