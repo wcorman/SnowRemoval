@@ -42,35 +42,7 @@ class Entry extends Component {
 				passwordConfirm: true
 			}
 		};
-
-		// async function checkUser() {
-		// 	console.log('Will/Did Mount...');
-
-		// 	const checkStatus = (user) => {
-		// 		console.log('THIS IS THE USER: ', user);
-
-		// 		if (user) {
-		// 			this.setState({
-		// 				authenticated: true
-		// 			});
-		// 		} else {
-		// 			this.setState({
-		// 				authenticated: false
-		// 			});
-		// 		}
-		// 	};
-		// 	Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
-		// 	// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
-		// }
 	}
-
-	// componentWillMount() {
-	// this.checkUser();
-	// }
-
-	// componentDidMount() {
-	// 	this.checkUser();
-	// }
 
 	signIn = async () => {
 		try {
@@ -191,25 +163,20 @@ class Entry extends Component {
 		// 	window.location.reload();
 		// };
 		return (
-			<div>
-				{/* <button onClick={() => Auth.federatedSignIn()}>Sign In</button>
-				<button onClick={checkUser}>Check User</button>
-				<button onClick={signOut}>Sign Out</button> */}
-
-				<EntryPage
-					facebookLogin={this.facebookLogin}
-					errorMessage={this.state.errorMessage}
-					signIn={this.signIn}
-					signUp={this.signUp}
-					signUpSubmit={this.signUpSubmit}
-					values={this.state}
-					updateField={this.updateField}
-					validation={this.state.validation}
-					loading={this.state.loading}
-					toggleScreen={this.toggleScreen}
-					signInScreen={this.state.signInScreen}
-				/>
-			</div>
+			<EntryPage
+				className="vhTest"
+				facebookLogin={this.facebookLogin}
+				errorMessage={this.state.errorMessage}
+				signIn={this.signIn}
+				signUp={this.signUp}
+				signUpSubmit={this.signUpSubmit}
+				values={this.state}
+				updateField={this.updateField}
+				validation={this.state.validation}
+				loading={this.state.loading}
+				toggleScreen={this.toggleScreen}
+				signInScreen={this.state.signInScreen}
+			/>
 		);
 	}
 }

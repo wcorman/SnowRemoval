@@ -10,11 +10,6 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-body {
-	background: #007bff;
-	background: linear-gradient(to right, #0062e6, #33aeff);
-}
-
 .pricing .card {
 	border: none;
 	border-radius: 1rem;
@@ -120,7 +115,7 @@ section {
 	width: 100%;
 	max-width: 375px;
 	height: auto;
-	margin-top: 24px;
+	margin-top: 0;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

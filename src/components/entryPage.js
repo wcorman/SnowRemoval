@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		height: '100vh'
 	},
 	image: {
-		backgroundImage: 'url(https://source.unsplash.com/collection/446755/1600x900)',
+		backgroundImage: 'url(https://source.unsplash.com/r53rNKb_7s8/1600x900)',
 		backgroundRepeat: 'no-repeat',
 		backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
 		backgroundSize: 'cover',
@@ -58,7 +58,7 @@ export default function EntryPage(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid container component="main" style={{ height: '100vh' }} className={classes.root}>
+		<Grid container component="main" className={classes.root}>
 			<CssBaseline />
 			<Grid item xs={false} sm={4} md={7} className={classes.image}>
 				<img src={Logo} alt="" className="husky entryImage" />
@@ -70,6 +70,7 @@ export default function EntryPage(props) {
 			</Grid>
 			{props.signInScreen ? (
 				<SignIn
+				className="vhTest"
 					updateField={props.updateField}
 					toggle={props.toggleScreen}
 					copyright={copyright}

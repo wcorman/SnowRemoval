@@ -2,7 +2,6 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -35,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(8, 4),
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center'
+		alignItems: 'center',
+		height: '100vh'
 	},
 	avatar: {
 		margin: theme.spacing(1),
@@ -50,16 +50,16 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export default function SignIn2(props) {
+export default function SignIn(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid  item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-			<div style={{marginTop: "16px", marginBottom: '16px'}} className={classes.paper}>
+		<Grid item xs={12} sm={8} md={5} component='signIn' elevation={6} square>
+			<div style={{ marginTop: '16px', marginBottom: '16px' }} className={classes.paper}>
 				{/* <Avatar className={classes.avatar} /> */}
 				<Image src={Logo} className="signInLogo" />
 				<Image src={huskyLogo} className="signInHuskyLogo" />
-				<hr className="signInHuskyLogo"/>
+				<hr className="signInHuskyLogo" />
 
 				<Typography component="h1" variant="h5">
 					Sign in

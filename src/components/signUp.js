@@ -46,7 +46,7 @@ export default function SignUp(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+		<Grid item xs={12} sm={8} md={5} component='signUp'elevation={6} square>
 			<div style={{marginTop: "16px", marginBottom: '16px'}} className={classes.paper}>
 				{/* <Avatar className={classes.avatar} /> */}
 				<Image src={Logo} className="signInLogo" />
@@ -68,6 +68,7 @@ export default function SignUp(props) {
 						label="Email Address"
 						helperText={!props.validation.email ? 'Not a valid email format' : ''}
 						name="email"
+						type="email"
 						autoFocus
 						onChange={(value) => props.updateField(value.currentTarget)}
 					/>
