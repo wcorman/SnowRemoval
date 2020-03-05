@@ -78,10 +78,13 @@ export default function EntryPage(props) {
 				/>
 			) : (
 				<SignUp
+					values={props.values}
 					signUp={props.signUp}
+					signUpSubmit={props.signUpSubmit}
 					updateField={props.updateField}
 					toggle={props.toggleScreen}
 					copyright={copyright}
+					validation={props.validation}
 				/>
 			)}
 		</Grid>

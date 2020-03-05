@@ -9,6 +9,7 @@ import Success from '../components/success';
 import InfoForm from '../components/infoForm';
 
 function InfoModal(props) {
+	
 	const modalScreen = () => {
 		if (props.showform === 0) {
 			return (
@@ -30,8 +31,6 @@ function InfoModal(props) {
 							loading={props.loading}
 							displayrewardcard={props.displayrewardcard}
 							firstTimer={props.firstTimer}
-							rewardStatus={props.rewardStatus}
-							numberOfOrders={props.numberOfOrders}
 							nextStage={props.nextStage}
 						/>
 					)}
@@ -60,7 +59,6 @@ function InfoModal(props) {
 					chosendate={props.chosendate}
 					loading={props.loading}
 					nextStage={props.nextStage}
-					isFree={props.isFree}
 				/>
 			);
 		} else if (props.showform === 3) {
@@ -69,7 +67,6 @@ function InfoModal(props) {
 					orderType={props.orderType}
 					options={props.options}
 					onPayment={props.onPayment}
-					customer={props.customer}
 					chosendate={props.chosendate}
 				/>
 			);

@@ -16,7 +16,8 @@ function Checkout(props) {
 			return 'Priority Snow Clearing';
 		}
 	};
-
+	
+	const isFree = props.customer['custom:rewardStatus'] === 3;
 	let displayToday = props.orderType !== 'Scheduled' ? `${props.chosendate} (today)` : '';
 	let displayType = chooseType(props.orderType);
 	var moment = require('moment');
@@ -59,14 +60,14 @@ function Checkout(props) {
 									<i>Grand total:</i>{' '}
 									<strong className="grandTotal">
 										{' '}
-										{!props.isFree && `$${props.options.price}`}
-										{props.isFree && `FREE`}
+										{!isFree && `$${props.options.price}`}
+										{isFree && `FREE`}
 									</strong>{' '}
 								</p>
 							</div>
 							<hr />
 							<div className="text-center">
-								{!props.isFree && (
+								{!isFree && (
 									<div>
 										<PayPalButton
 											id="payPalButton"
@@ -100,7 +101,7 @@ function Checkout(props) {
 										</p>
 									</div>
 								)}
-								{props.isFree && (
+								{isFree && (
 									<Button
 										style={{ marginBottom: '8px' }}
 										onClick={() => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Auth, API } from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 
 import EntryPage from './entryPage';
 
@@ -36,9 +36,10 @@ class Entry extends Component {
 			authenticated: checkUser(),
 			loading: false,
 			validation: {
-				name: false,
-				email: false,
-				password: false
+				name: true,
+				email: true,
+				password: true,
+				passwordConfirm: true
 			}
 		};
 
@@ -126,15 +127,7 @@ class Entry extends Component {
 			.then((data) => {
 				console.log('SIGNUP DATA: ', data);
 
-				API.post('powderHoundsAPI', '/items', {
-					body: {
-						customerId: `${data.userSub}`,
-						orders: []
-					}
-				})
-					.then((res) => console.log('Res: ', res))
-					.catch((err) => console.log('Error: ', err));
-					this.toggleScreen();
+				this.toggleScreen();
 			})
 			.catch((err) => console.log(err));
 	};
@@ -146,8 +139,37 @@ class Entry extends Component {
 		});
 	};
 
+	signUpSubmit = () => {
+		return this.validation() ? this.signUp() : null;
+	};
+
+	validation = () => {
+		const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+		const nameRegex = /^[a-zA-Z0-9]+[\s][a-zA-Z0-9]+/;
+		const passwordRegex = /^(?=[a-z0-9!@#$%^&*()+=?]*[A-Z])(?=[A-Z0-9!@#$%^&*()+=?]*[a-z])[A-Za-z0-9!@#$%^&*(,8)+=?]{8,}$/;
+
+		let emailTest = emailRegex.test(this.state.email);
+		let nameTest = nameRegex.test(this.state.name);
+		let passwordTest = passwordRegex.test(this.state.password);
+		let passwordConfirmTest = this.state.password === this.state.passwordConfirm;
+
+		this.setState({
+			...this.state,
+			validation: {
+				email: emailTest,
+				name: nameTest,
+				password: passwordTest,
+				passwordConfirm: passwordConfirmTest
+			}
+		});
+
+		const formValid = emailTest && nameTest && passwordTest && passwordConfirmTest;
+
+		return formValid;
+	};
+
 	updateField = (input) => {
-		console.log(input.value);
+		console.log(input);
 
 		const field = input.id;
 
@@ -155,56 +177,19 @@ class Entry extends Component {
 			...this.state,
 			[field]: input.value
 		});
-
-		if (field === 'name') {
-			if (input.value.length > 1) {
-				this.setState({
-					validation: {
-						...this.state,
-						name: true
-					}
-				});
-			} else if (input.value.length < 2) {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state,
-						name: false
-					}
-				});
-			}
-		} else {
-			if (field === 'message' && input.value.length > 10) {
-				this.setState({
-					validation: {
-						...this.state,
-						message: true
-					}
-				});
-			} else if (field === 'message' && input.value.length < 11) {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state,
-						message: false
-					}
-				});
-			}
-		}
 	};
 
 	render() {
-		const isLoggedOut = !this.state.authenticated;
-		const checkUser = () => {
-			Auth.currentAuthenticatedUser({ bypassCache: true })
-				.then((user) => console.log({ user }))
-				.catch((err) => console.log(err));
-		};
+		// const checkUser = () => {
+		// 	Auth.currentAuthenticatedUser({ bypassCache: true })
+		// 		.then((user) => console.log({ user }))
+		// 		.catch((err) => console.log(err));
+		// };
 
-		const signOut = () => {
-			Auth.signOut().then((data) => console.log(data)).catch((err) => console.log(err));
-			window.location.reload();
-		};
+		// const signOut = () => {
+		// 	Auth.signOut().then((data) => console.log(data)).catch((err) => console.log(err));
+		// 	window.location.reload();
+		// };
 		return (
 			<div>
 				{/* <button onClick={() => Auth.federatedSignIn()}>Sign In</button>
@@ -216,6 +201,8 @@ class Entry extends Component {
 					errorMessage={this.state.errorMessage}
 					signIn={this.signIn}
 					signUp={this.signUp}
+					signUpSubmit={this.signUpSubmit}
+					values={this.state}
 					updateField={this.updateField}
 					validation={this.state.validation}
 					loading={this.state.loading}

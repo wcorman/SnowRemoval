@@ -1,10 +1,6 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -59,46 +55,57 @@ export default function SignUp(props) {
 				</Typography>
 				<form className={classes.form} noValidate>
 					<TextField
+						error={!props.validation.email}
+						value={props.values.email}
 						variant="outlined"
 						margin="normal"
 						required
 						fullWidth
 						id="email"
 						label="Email Address"
+						helperText={!props.validation.email ? 'Not a valid email format' : ''}
 						name="email"
 						autoFocus
 						onChange={(value) => props.updateField(value.currentTarget)}
 					/>
 					<TextField
+						error={!props.validation.name}
 						variant="outlined"
 						margin="normal"
 						required
 						fullWidth
 						id="name"
-						label="Name"
+						label="Full Name"
+						helperText={!props.validation.name ? 'Requires both first and last name' : ''}
 						name="name"
 						onChange={(value) => props.updateField(value.currentTarget)}
 					/>
 					<TextField
+						error={!props.validation.password}
 						variant="outlined"
 						margin="normal"
 						required
 						fullWidth
 						name="password"
 						label="Password"
+						helperText={
+							!props.validation.password ? 'Upper and lowercase letters with a 8 character minimum' : ''
+						}
 						type="password"
 						id="password"
 						onChange={(value) => props.updateField(value.currentTarget)}
 					/>
 					<TextField
+						error={!props.validation.passwordConfirm}
 						variant="outlined"
 						margin="normal"
 						required
 						fullWidth
 						name="password-confirm"
 						label="Confirm Password"
-						type="password-confirm"
-						id="password-confirm"
+						helperText={!props.validation.confirmPassword ? 'Does not match password' : ''}
+						type="password"
+						id="passwordConfirm"
 						onChange={(value) => props.updateField(value.currentTarget)}
 					/>
 					<p style={{ color: 'red' }}>{props.errorMessage}</p>
@@ -107,7 +114,7 @@ export default function SignUp(props) {
 						variant="contained"
 						color="primary"
 						className={classes.submit}
-						onClick={() => props.signUp()}
+						onClick={() => props.signUpSubmit()}
 					>
 						Sign Up
 					</Button>

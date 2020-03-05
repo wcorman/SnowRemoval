@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import Amplify from 'aws-amplify';
-import { withAuthenticator, Authenticator } from 'aws-amplify-react';
+import { withAuthenticator } from 'aws-amplify-react';
 import awsconfig from './aws-exports'; // if you are using Amplify CLI
 
 import Jumbotron from './components/hero';

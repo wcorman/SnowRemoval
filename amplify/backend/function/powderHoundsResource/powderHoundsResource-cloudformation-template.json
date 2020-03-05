@@ -71,7 +71,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-snowremoval-test-232413-deployment",
-					"S3Key": "amplify-builds/powderHoundsResource-69584271506e33476a51-build.zip"
+					"S3Key": "amplify-builds/powderHoundsResource-4f464e432b734d636a61-build.zip"
 				}
 			}
 		},

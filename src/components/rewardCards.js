@@ -11,7 +11,7 @@ import free from '../media/loyaltyCards/free.svg';
 function RewardCards(props) {
 	const firstName = props.testCustomer['custom:firstName'];
 	const rewardStatus = props.testCustomer['custom:rewardStatus'];
-	const phoneNumber = props.testCustomer.phone_number;
+	const phoneCheck = props.testCustomer.phone_number;
 	return (
 		<div>
 			<Modal.Header closeButton>
@@ -27,7 +27,7 @@ function RewardCards(props) {
 
 			<Modal.Body>
 				{!props.loading &&
-				phoneNumber &&
+				phoneCheck &&
 				rewardStatus === 0 && (
 					<Form>
 						<Form.Row>
@@ -55,7 +55,7 @@ function RewardCards(props) {
 				)}
 
 				{!props.loading &&
-				phoneNumber &&
+				phoneCheck &&
 				rewardStatus === 1 && (
 					<Form>
 						<Form.Row>
@@ -83,7 +83,7 @@ function RewardCards(props) {
 				)}
 
 				{!props.loading &&
-				phoneNumber &&
+				phoneCheck &&
 				rewardStatus === 2 && (
 					<Form>
 						<Form.Row>
@@ -111,7 +111,7 @@ function RewardCards(props) {
 				)}
 
 				{!props.loading &&
-				phoneNumber &&
+				phoneCheck &&
 				rewardStatus === 3 && (
 					<Form>
 						<Form.Row>

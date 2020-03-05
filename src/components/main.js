@@ -7,16 +7,11 @@ import { Auth, API } from 'aws-amplify';
 
 import DatePicker from 'react-datepicker';
 
-
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 import InfoModal from './modal';
-
-const DOMAIN = 'localhost:4000';
-const API_PREFIX = '/orders';
-// const BASE_URL = `http://${DOMAIN}${API_PREFIX}`;
 
 class Main extends React.Component {
 	constructor() {
@@ -119,6 +114,7 @@ class Main extends React.Component {
 						province: 'Saskatchewan',
 						name: user.attributes.name,
 						phone_number: user.attributes.phone_number,
+						phone_check: false,
 						'custom:firstName': user.attributes['custom:firstName'],
 						'custom:lastName': user.attributes['custom:lastName'],
 						'custom:numberOfOrders': parseInt(user.attributes['custom:numberOfOrders'], 10),
@@ -127,32 +123,34 @@ class Main extends React.Component {
 						'custom:totalSpent': parseInt(user.attributes['custom:totalSpent'], 10)
 					}
 				});
-
 				return true;
 			};
+
 			const noUser = (error) => {
 				console.log('ERROR: ', error);
 				return false;
 			};
-			Auth.currentUserInfo().then((user) => setAttributes(user)).catch((err) => noUser(err));
+			Auth.currentUserInfo()
+				.then((user) => setAttributes(user))
+				.then(() => {
+					if (this.state.testUser['custom:numberOfOrders'] === 0) {
+						API.post('powderHoundsAPI', '/items', {
+							body: {
+								customerId: this.state.testUser.id,
+								firstName: this.state.testUser['custom:firstName'],
+								lastName: this.state.testUser['custom:lastName'],
+								orders: []
+							}
+						})
+							.then((res) => console.log('Res: ', res))
+							.catch((err) => console.log('Error: ', err));
+					}
+				})
+				.catch((err) => noUser(err));
 		};
 
 		getUser();
 	}
-
-	emailValidation = (email) => {
-		var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/g;
-
-		if (pattern.test(email)) {
-			this.setState({
-				validForm: 0
-			});
-		} else {
-			this.setState({
-				validForm: 1
-			});
-		}
-	};
 
 	updateField = (input) => {
 		const field = input.id;
@@ -173,14 +171,6 @@ class Main extends React.Component {
 
 	fieldValidation = (input) => {
 		const field = input.id;
-
-		this.setState({
-			...this.state,
-			customer: {
-				...this.state.customer,
-				[field]: input.value
-			}
-		});
 
 		if (field === 'firstName') {
 			if (input.value.length > 1) {
@@ -309,23 +299,24 @@ class Main extends React.Component {
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
 		let finalNumber = prefix.concat(formattedNumber).replace(/\s/g, '');
 		console.log(finalNumber);
-		this.setState({
-			...this.state,
-			customer: {
-				...this.state.customer,
-				phoneNumber: finalNumber
-			}
-		});
+
 		this.setLoading(true);
 
 		Auth.currentAuthenticatedUser({ bypassCache: true })
 			.then((user) => {
-				return Auth.updateUserAttributes(user, { phone_number: finalNumber });
+				Auth.updateUserAttributes(user, { phone_number: finalNumber });
 			})
 			.then((data) => console.log(data))
 			.then(() => {
-				console.log('Phone Number Updated...');
+				this.setState({
+					...this.state,
+					testUser: {
+						...this.state.testUser,
+						phone_number: finalNumber
+					}
+				});
 				this.setLoading(false);
+				console.log('Phone Number Updated...');
 			})
 			.catch((err) => console.log(err));
 	};
@@ -343,27 +334,10 @@ class Main extends React.Component {
 	};
 
 	onPayment = (amount) => {
-		console.log(this.state.customer.firstName + ' paid $' + amount + ' to Powder Hounds');
+		console.log(this.state.testUser['custom:firstName'] + ' paid $' + amount + ' to Powder Hounds');
 		this.setLoading(false);
 
 		const customerId = this.state.testUser.id;
-
-
-		const { calendarDate, price } = this.state;
-
-		console.log('Amount: ', amount);
-
-		// var moment = require('moment');
-
-		// const newOrder2 = {
-		// 	selectedDate:
-		// 		this.state.orderType === 'Same Day' || this.state.orderType === 'Priority'
-		// 			? moment().format('MMM Do YYYY, h:mm a')
-		// 			: moment(calendarDate, 'x').format('MMM Do YYYY')
-		// };
-
-		// let newOrdersList = this.state.customer.orders;
-		// newOrdersList.push(newOrder2);
 
 		this.makeOrder(customerId);
 
@@ -552,7 +526,7 @@ class Main extends React.Component {
 			city: this.state.testUser.city,
 			address: this.state.testUser.address,
 			phone: this.state.testUser.phone_number,
-			email: this.state.testUser.email,
+			email: this.state.testUser.email
 		};
 
 		await this.get(customerId).then((oldOrders) => {
@@ -614,7 +588,7 @@ class Main extends React.Component {
 
 	render() {
 		const dateError = this.state.dateError;
-		const customerId = this.state.testUser.id;
+		// const customerId = this.state.testUser.id;
 
 		return (
 			<section className="pricing py-5">
@@ -798,11 +772,8 @@ class Main extends React.Component {
 				</div>
 
 				<InfoModal
-					customer={this.state.customer}
 					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
-					rewardStatus={this.state.customer.rewardStatus}
-					numberOfOrders={this.state.customer.numberOfOrders}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
@@ -816,15 +787,11 @@ class Main extends React.Component {
 					show={this.state.scheduleModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
-					isFree={this.state.testUser['custom:rewardStatus'] === 3}
 					onHide={() => this.setModalShow('schedule', false)}
 				/>
 				<InfoModal
-					customer={this.state.customer}
 					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
-					rewardStatus={this.state.customer.rewardStatus}
-					numberOfOrders={this.state.customer.numberOfOrders}
 					nextStage={this.nextStage}
 					displayrewardcard={this.state.displayRewardCard}
 					showform={this.state.showForm}
@@ -838,15 +805,11 @@ class Main extends React.Component {
 					show={this.state.sameDayModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
-					isFree={this.state.testUser['custom:rewardStatus'] === 3}
 					onHide={() => this.setModalShow('sameDay', false)}
 				/>
 				<InfoModal
-					customer={this.state.customer}
 					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
-					rewardStatus={this.state.customer.rewardStatus}
-					numberOfOrders={this.state.customer.numberOfOrders}
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
@@ -860,7 +823,6 @@ class Main extends React.Component {
 					show={this.state.priorityModal}
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
-					isFree={this.state.testUser['custom:rewardStatus'] === 3}
 					onHide={() => this.setModalShow('priority', false)}
 				/>
 			</section>

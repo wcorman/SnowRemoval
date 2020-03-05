@@ -74,7 +74,8 @@ const sendToThem = (firstName, phoneNumber, type) => {
 			from: '+13064036554',
 			body: `Hi ${firstName}, \nThanks for choosing Powder Hounds for your ${type.toLowerCase()} snow clearing! \nWe'll send you a confirmation text once the job is complete. ❄️`
 		})
-		.then((message) => console.log(message.sid));
+		.then((message) => console.log(message.sid))
+		.catch((err) => console.log);
 };
 
 /********************************
@@ -195,23 +196,33 @@ app.post(path, function(req, res) {
 		req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
 	}
 
-	const { type, name, price, driveways, date, address, phone, email } = req.body.orders[req.body.orders.length - 1];
-	const { firstName } = req.body;
-
-	sendToMe(phone, name, address, phone, email, type, driveways, price, date);
-	sendToThem(firstName, phone, type);
+	if (req.body.orders.length > 0) {
+		const { type, name, price, driveways, date, address, phone, email } = req.body.orders[
+			req.body.orders.length - 1
+		];
+    const { firstName } = req.body;
+    
+		sendToMe(phone, name, address, phone, email, type, driveways, price, date);
+		sendToThem(firstName, phone, type);
+	}
 
 	let putItemParams = {
 		TableName: tableName,
 		Item: req.body
-  };
+	};
+
 	dynamodb.put(putItemParams, (err, data) => {
 		if (err) {
 			res.statusCode = 500;
 			res.json({ error: err, url: req.url, body: req.body });
 			console.log('Body: ', req.body);
 		} else {
-			res.json({ success: 'post call succeed!', url: req.url, newOrder: req.body.orders[req.body.orders.length - 1], data: data });
+			res.json({
+				success: 'post call succeed!',
+				url: req.url,
+				newOrder: req.body.orders[req.body.orders.length - 1],
+				data: data
+			});
 		}
 	});
 });
