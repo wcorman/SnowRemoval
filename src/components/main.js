@@ -50,32 +50,14 @@ class Main extends React.Component {
 			priorityModal: false,
 			price: 0,
 			showForm: 0,
-			displayRewardCard: false,
 			testUser: {},
 			validation: {
 				phone: false,
-				firstName: false,
-				lastName: false,
-				email: false,
 				address: false
 			},
 			orderType: null,
 			firstTimer: false,
-			isLoading: false,
-			customer: {
-				firstName: '',
-				lastName: '',
-				email: '',
-				phoneNumber: '',
-				city: 'Saskatoon',
-				province: 'Saskatchewan',
-				address: '',
-				orders: [],
-				rewardStatus: 0,
-				numberOfOrders: 0,
-				totalSpent: 0,
-				id: null
-			}
+			isLoading: false
 		};
 	}
 
@@ -171,63 +153,7 @@ class Main extends React.Component {
 	fieldValidation = (input) => {
 		const field = input.id;
 
-		if (field === 'firstName') {
-			if (input.value.length > 1) {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state.validation,
-						firstName: true
-					}
-				});
-			} else {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state.validation,
-						firstName: false
-					}
-				});
-			}
-		} else if (field === 'lastName') {
-			if (input.value.length > 1) {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state.validation,
-						lastName: true
-					}
-				});
-			} else if (input.value.length < 2) {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state.validation,
-						lastName: false
-					}
-				});
-			}
-		} else if (field === 'email') {
-			var emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-			if (emailPattern.test(input.value)) {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state.validation,
-						email: true
-					}
-				});
-			} else {
-				this.setState({
-					...this.state,
-					validation: {
-						...this.state.validation,
-						email: false
-					}
-				});
-			}
-		} else if (field === 'address') {
+		if (field === 'address') {
 			if (input.value.length > 5) {
 				this.setState({
 					...this.state,
@@ -776,7 +702,6 @@ class Main extends React.Component {
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
-					displayrewardcard={this.state.displayRewardCard}
 					validation={this.state.validation}
 					firstTimer={this.state.firstTimer}
 					onPayment={this.onPayment}
@@ -792,7 +717,6 @@ class Main extends React.Component {
 					testCustomer={this.state.testUser}
 					onUpdateField={this.updateField}
 					nextStage={this.nextStage}
-					displayrewardcard={this.state.displayRewardCard}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
 					validation={this.state.validation}
@@ -812,7 +736,6 @@ class Main extends React.Component {
 					nextStage={this.nextStage}
 					showform={this.state.showForm}
 					orderType={this.state.orderType}
-					displayrewardcard={this.state.displayRewardCard}
 					validation={this.state.validation}
 					firstTimer={this.state.firstTimer}
 					onPayment={this.onPayment}

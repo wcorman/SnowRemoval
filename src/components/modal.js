@@ -18,7 +18,6 @@ function InfoModal(props) {
 						<PhoneCheck
 							phoneNumber={props.testCustomer.phone_number}
 							loading={props.loading}
-							displayrewardcard={props.displayrewardcard}
 							onUpdateField={props.onUpdateField}
 							validation={props.validation}
 							nextStage={props.nextStage}
@@ -29,7 +28,6 @@ function InfoModal(props) {
 							phoneNumber={props.testCustomer.phone_number}
 							testCustomer={props.testCustomer}
 							loading={props.loading}
-							displayrewardcard={props.displayrewardcard}
 							firstTimer={props.firstTimer}
 							nextStage={props.nextStage}
 						/>
