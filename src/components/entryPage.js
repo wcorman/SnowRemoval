@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 		backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
 		backgroundSize: 'cover',
 		backgroundPosition: 'center',
-		position: 'relative',
+		position: 'relative'
 	},
 	paper: {
 		margin: theme.spacing(8, 4),
@@ -43,9 +43,10 @@ const useStyles = makeStyles((theme) => ({
 const copyright = () => {
 	return (
 		<Typography variant="body2" color="textSecondary" align="center">
-			{'Copyright © '}
-			<Link color="inherit" href="https://www.powderhoundscanada.com/">
-				Anicca Development
+			{/* {'Copyright © '} */}
+			{'Developed by '}
+			<Link color="inherit" href="http://www.wescorman.me/">
+				Wes Corman
 			</Link>{' '}
 			{new Date().getFullYear()}
 			{'.'}
@@ -60,7 +61,7 @@ export default function EntryPage(props) {
 		<Grid container component="main" style={{ height: '100vh' }} className={classes.root}>
 			<CssBaseline />
 			<Grid item xs={false} sm={4} md={7} className={classes.image}>
-							<img src={Logo} alt="" className="husky entryImage" />
+				<img src={Logo} alt="" className="husky entryImage" />
 
 				{/* <div className="entryImageText">
 					Powder Hounds <br />

@@ -15,6 +15,7 @@ import { Auth } from 'aws-amplify';
 
 import Logo from '../media/navLogo.svg';
 import Image from 'react-bootstrap/Image';
+import huskyLogo from '../media/huskyLogo.svg';
 
 import SignInWithFacebook from './facebookButton';
 import SignInWithGoogle from './googleButton';
@@ -53,10 +54,12 @@ export default function SignIn2(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-			<div className={classes.paper}>
+		<Grid  item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+			<div style={{marginTop: "16px", marginBottom: '16px'}} className={classes.paper}>
 				{/* <Avatar className={classes.avatar} /> */}
 				<Image src={Logo} className="signInLogo" />
+				<Image src={huskyLogo} className="signInHuskyLogo" />
+				<hr className="signInHuskyLogo"/>
 
 				<Typography component="h1" variant="h5">
 					Sign in
@@ -91,7 +94,7 @@ export default function SignIn2(props) {
 						onChange={(value) => props.updateField(value.currentTarget)}
 					/>
 					<p style={{ color: 'red', margin: '0' }}>{props.errorMessage}</p>
-					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+					{/* <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" /> */}
 					<div>
 						<LinearProgress hidden={!props.loading} />
 					</div>

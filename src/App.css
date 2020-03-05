@@ -137,8 +137,25 @@
 .entryImage {
 	margin-top: 150px;
 }
+
+.signInHuskyLogo {
+	width: 320px;
+}
+
 @media only screen and (max-width: 599px) {
 	.entryImage {
+		display: none;
+	}
+	.signInLogo {
+		display: none;
+	}
+	.signInHuskyLogo {
+		display: inline;
+	}
+}
+
+@media only screen and (min-width: 599px) {
+	.signInHuskyLogo {
 		display: none;
 	}
 }

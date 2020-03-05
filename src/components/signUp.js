@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Image from 'react-bootstrap/Image';
 import Logo from '../media/navLogo.svg';
+import huskyLogo from '../media/huskyLogo.svg';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -46,9 +47,11 @@ export default function SignUp(props) {
 
 	return (
 		<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-			<div className={classes.paper}>
+			<div style={{marginTop: "16px", marginBottom: '16px'}} className={classes.paper}>
 				{/* <Avatar className={classes.avatar} /> */}
 				<Image src={Logo} className="signInLogo" />
+				<Image src={huskyLogo} className="signInHuskyLogo" />
+				<hr className="signInHuskyLogo"/>
 
 				<Typography component="h1" variant="h5">
 					Sign Up
