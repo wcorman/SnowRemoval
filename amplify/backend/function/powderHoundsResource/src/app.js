@@ -200,8 +200,8 @@ app.post(path, function(req, res) {
 		const { type, name, price, driveways, date, address, phone, email } = req.body.orders[
 			req.body.orders.length - 1
 		];
-    const { firstName } = req.body;
-    
+		const { firstName } = req.body;
+
 		sendToMe(phone, name, address, phone, email, type, driveways, price, date);
 		sendToThem(firstName, phone, type);
 	}

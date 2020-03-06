@@ -38,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(1)
 	},
 	submit: {
-		margin: theme.spacing(3, 0, 2)
+		margin: theme.spacing(3, 0, 2),
+		height: '46px'
 	}
 }));
 
@@ -46,12 +47,12 @@ export default function SignUp(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid item xs={12} sm={8} md={5} component='signUp'elevation={6} square>
-			<div style={{marginTop: "16px", marginBottom: '16px'}} className={classes.paper}>
+		<Grid item xs={12} sm={8} md={5} component="signUp" elevation={6} square>
+			<div style={{ marginTop: '16px', marginBottom: '16px' }} className={classes.paper}>
 				{/* <Avatar className={classes.avatar} /> */}
 				<Image src={Logo} className="signInLogo" />
 				<Image src={huskyLogo} className="signInHuskyLogo" />
-				<hr className="signInHuskyLogo"/>
+				<hr className="signInHuskyLogo" />
 
 				<Typography component="h1" variant="h5">
 					Sign Up

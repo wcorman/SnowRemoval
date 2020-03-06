@@ -1,23 +1,19 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Auth } from 'aws-amplify';
 
 import Logo from '../media/navLogo.svg';
 import Image from 'react-bootstrap/Image';
 import huskyLogo from '../media/huskyLogo.svg';
 
-import SignInWithFacebook from './facebookButton';
-import SignInWithGoogle from './googleButton';
+import { FacebookLoginButton } from 'react-social-login-buttons';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -46,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
 		marginTop: theme.spacing(1)
 	},
 	submit: {
-		margin: theme.spacing(3, 0, 2)
+		margin: theme.spacing(3, 0, 2),
+		height: '46px',
 	}
 }));
 
@@ -54,7 +51,7 @@ export default function SignIn(props) {
 	const classes = useStyles();
 
 	return (
-		<Grid item xs={12} sm={8} md={5} component='signIn' elevation={6} square>
+		<Grid item xs={12} sm={8} md={5} component="signIn" elevation={6} square>
 			<div style={{ marginTop: '16px', marginBottom: '16px' }} className={classes.paper}>
 				{/* <Avatar className={classes.avatar} /> */}
 				<Image src={Logo} className="signInLogo" />
@@ -64,9 +61,6 @@ export default function SignIn(props) {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				{/* <button onClick={() => Auth.federatedSignIn()}>Sign In</button>
-					<button onClick={checkUser}>Check User</button>
-					<button onClick={signOut}>Sign Out</button> */}
 
 				<form className={classes.form} noValidate>
 					<TextField
@@ -124,18 +118,13 @@ export default function SignIn(props) {
 						</Grid>
 					</Grid>
 					<hr style={{ marginTop: '24px' }} />
+				</form>
 
 					<div className="socialButtons">
-						<SignInWithFacebook />
-						<SignInWithGoogle
-							style={{ height: '43px', fontSize: '18px' }}
-							onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-						>
-							<span>Continue with Google</span>
-						</SignInWithGoogle>
+						<FacebookLoginButton onClick={() => props.facebookSignIn()}><span>Continue with Facebook</span></FacebookLoginButton>
+						{/* <GoogleLoginButton /> */}
 					</div>
 					<Box mt={5}>{props.copyright()}</Box>
-				</form>
 			</div>
 		</Grid>
 	);

@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Logo from '../media/entryImage.png';
 
+import { Auth } from 'aws-amplify';
+
 import SignIn from './signIn';
 import SignUp from './signUp';
 
@@ -54,12 +56,17 @@ const copyright = () => {
 	);
 };
 
+const facebookLogin = () => {
+	Auth.federatedSignIn({ provider: 'Facebook' });
+};
+
 export default function EntryPage(props) {
 	const classes = useStyles();
 
 	return (
 		<Grid container component="main" className={classes.root}>
 			<CssBaseline />
+
 			<Grid item xs={false} sm={4} md={7} className={classes.image}>
 				<img src={Logo} alt="" className="husky entryImage" />
 
@@ -69,15 +76,16 @@ export default function EntryPage(props) {
 				</div> */}
 			</Grid>
 			{props.signInScreen ? (
-				<SignIn
-				className="vhTest"
-					updateField={props.updateField}
-					toggle={props.toggleScreen}
-					copyright={copyright}
-					signIn={props.signIn}
-					errorMessage={props.errorMessage}
-					loading={props.loading}
-				/>
+					<SignIn
+						className="vhTest"
+						updateField={props.updateField}
+						toggle={props.toggleScreen}
+						copyright={copyright}
+						signIn={props.signIn}
+						errorMessage={props.errorMessage}
+						loading={props.loading}
+						facebookSignIn={facebookLogin}
+					/>
 			) : (
 				<SignUp
 					values={props.values}

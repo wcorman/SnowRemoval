@@ -16,7 +16,7 @@ function Checkout(props) {
 			return 'Priority Snow Clearing';
 		}
 	};
-	
+
 	const isFree = props.customer['custom:rewardStatus'] === 3;
 	let displayToday = props.orderType !== 'Scheduled' ? `${props.chosendate} (today)` : '';
 	let displayType = chooseType(props.orderType);
@@ -93,7 +93,7 @@ function Checkout(props) {
 												currency: 'CAD',
 												buyerCountry: 'CA'
 											}}
-											onSuccess={(details) => props.onPayment(props.options.price)}
+											onSuccess={() => props.onPayment(props.options.price)}
 											catchError={(err) => console.log(err)}
 										/>
 										<p className="text-center small">
