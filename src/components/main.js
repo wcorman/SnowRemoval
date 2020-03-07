@@ -89,7 +89,7 @@ class Main extends React.Component {
 					...this.state,
 					firstTimer: !parseInt(user.attributes['custom:numberOfOrders'], 10),
 					testUser: {
-						id: user.username,
+						id: user.attributes.sub,
 						email: user.attributes.email,
 						address: '',
 						city: 'Saskatoon',
@@ -112,9 +112,72 @@ class Main extends React.Component {
 				return false;
 			};
 			Auth.currentUserInfo()
-				.then((user) => setAttributes(user))
+				.then((user) => {
+					setAttributes(user);
+
+					if (!this.state.testUser['custom:firstName']) {
+						// For first time Social login to make sure requires params are passed to state
+						console.log('FIRST TIME SOCIAL LOGIN...');
+						let fullName = this.state.testUser.name;
+						let firstName;
+						let lastName;
+						let nameArray = fullName.split(/(\s+)/).filter(function(e) {
+							return e.trim().length > 0;
+						});
+						console.log(nameArray);
+
+						firstName = nameArray[0];
+						lastName = nameArray.slice(-1)[0];
+						console.log('first!!', firstName);
+						console.log('last!!', lastName);
+						Auth.currentAuthenticatedUser({ bypassCache: true })
+							.then((user) => {
+								console.log(' ANNICA!!', user);
+								Auth.updateUserAttributes(user, {
+									'custom:firstName': firstName,
+									'custom:lastName': lastName,
+									'custom:rewardStatus': '0',
+									'custom:totalSpent': '0',
+									'custom:numberOfOrders': '0'
+								});
+
+								this.setState({
+									...this.state,
+									firstTimer: !parseInt(user.attributes['custom:numberOfOrders'], 10),
+									testUser: {
+										id: user.attributes.sub,
+										email: user.attributes.email,
+										address: '',
+										city: 'Saskatoon',
+										province: 'Saskatchewan',
+										name: user.attributes.name,
+										phone_number: user.attributes.phone_number,
+										phone_check: false,
+										'custom:firstName': user.attributes['custom:firstName'],
+										'custom:lastName': user.attributes['custom:lastName'],
+										'custom:numberOfOrders': 0,
+										'custom:rewardStatus': 0,
+										'custom:totalSpent': 0,
+									}
+								});
+								API.post('powderHoundsAPI', '/items', {
+									body: {
+										customerId: user.attributes.sub,
+										firstName: user.attributes['custom:firstName'],
+										lastName: user.attributes['custom:lastName'],
+										orders: []
+									}
+								})
+									.then((res) => console.log('Res: ', res))
+									.catch((err) => console.log('Error: ', err));
+							})
+							.then((data) => console.log(data))
+							.catch((err) => console.log(err));
+					}
+				})
 				.then(() => {
 					if (this.state.testUser['custom:numberOfOrders'] === 0) {
+						console.log('custom:numberOfOrders is present');
 						API.post('powderHoundsAPI', '/items', {
 							body: {
 								customerId: this.state.testUser.id,

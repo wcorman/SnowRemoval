@@ -33,7 +33,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />
@@ -61,7 +61,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />
@@ -89,7 +89,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />
@@ -117,7 +117,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one for{' '}
+								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />

@@ -9,7 +9,6 @@ import Success from '../components/success';
 import InfoForm from '../components/infoForm';
 
 function InfoModal(props) {
-	
 	const modalScreen = () => {
 		if (props.showform === 0) {
 			return (
@@ -72,7 +71,16 @@ function InfoModal(props) {
 	};
 
 	return (
-		<Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+		<Modal
+			{...props}
+			size="lg"
+			aria-labelledby="contained-modal-title-vcenter"
+			centered
+			style={{
+				maxHeight: '100%',
+				overflowY: 'auto'
+			}}
+		>
 			{modalScreen()}
 		</Modal>
 	);
