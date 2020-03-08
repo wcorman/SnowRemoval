@@ -8,12 +8,23 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 import Logo from '../media/navLogo.svg';
 import Image from 'react-bootstrap/Image';
 import huskyLogo from '../media/huskyLogo.svg';
 
 import { FacebookLoginButton } from 'react-social-login-buttons';
+import { createButton } from 'react-social-login-buttons';
+import { Pets } from '@material-ui/icons';
+// import AccountCircle from '@material-ui/icons/AccountCircle';
+
+const buttonConfig = {
+	text: 'Continue as guest',
+	icon: Pets,
+	iconFormat: (name) => `fa fa-${name}`,
+	style: { background: '#3b5998' },
+	activeStyle: { background: '#293e69' }
+};
+const MyCustomLoginButton = createButton(buttonConfig);
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -43,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
-		height: '46px',
+		height: '46px'
 	}
 }));
 
@@ -120,11 +131,14 @@ export default function SignIn(props) {
 					<hr style={{ marginTop: '24px' }} />
 				</form>
 
-					<div className="socialButtons">
-						<FacebookLoginButton onClick={() => props.facebookSignIn()}><span>Continue with Facebook</span></FacebookLoginButton>
-						{/* <GoogleLoginButton /> */}
-					</div>
-					<Box mt={5}>{props.copyright()}</Box>
+				<div className="socialButtons">
+					<MyCustomLoginButton onClick={() => props.signIn(true)} />
+					{/* <FacebookLoginButton disabled onClick={() => props.facebookSignIn()}>
+						<span>Continue with Facebook</span>
+					</FacebookLoginButton> */}
+					{/* <GoogleLoginButton /> */}
+				</div>
+				<Box mt={5}>{props.copyright()}</Box>
 			</div>
 		</Grid>
 	);

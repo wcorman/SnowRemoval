@@ -16,13 +16,13 @@ function RewardCards(props) {
 		<div>
 			<Modal.Header closeButton>
 				{props.firstTimer && (
-					<Modal.Title id="contained-modal-title-vcenter">Welcome to Powder Hounds!</Modal.Title>
+					<Modal.Title id="contained-modal-title-vcenter">Welcome to Powder Hounds, {firstName}!</Modal.Title>
 				)}
-				{!props.firstTimer && (
+				{/* {!props.firstTimer && (
 					<Modal.Title id="contained-modal-title-vcenter">
 						Welcome back, {firstName}!
 					</Modal.Title>
-				)}{' '}
+				)}{' '} */}
 			</Modal.Header>
 
 			<Modal.Body>
@@ -33,7 +33,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />
@@ -61,7 +61,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />
@@ -89,7 +89,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />
@@ -117,7 +117,7 @@ function RewardCards(props) {
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
 								<Form.Label />
-								Hey, {firstName}! This is your reward card. For every 3 snow clearings, you get one for{' '}
+								This is your reward card. For every 3 snow clearings, you get one for{' '}
 								<strong>FREE</strong>
 								.
 								<hr />

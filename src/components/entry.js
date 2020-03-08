@@ -44,13 +44,15 @@ class Entry extends Component {
 		};
 	}
 
-	signIn = async () => {
+	signIn = async (guest) => {
 		try {
 			this.setState({
 				...this.state,
 				loading: true
 			});
-			await Auth.signIn(this.state.email, this.state.password);
+			guest
+				? await Auth.signIn('powderhoundscontact@gmail.com', 'Zfhj7Vw4PmaUUMMJ')
+				: await Auth.signIn(this.state.email, this.state.password);
 			console.log('sign in success!');
 			this.setState({
 				...this.state,
@@ -152,16 +154,6 @@ class Entry extends Component {
 	};
 
 	render() {
-		// const checkUser = () => {
-		// 	Auth.currentAuthenticatedUser({ bypassCache: true })
-		// 		.then((user) => console.log({ user }))
-		// 		.catch((err) => console.log(err));
-		// };
-
-		// const signOut = () => {
-		// 	Auth.signOut().then((data) => console.log(data)).catch((err) => console.log(err));
-		// 	window.location.reload();
-		// };
 		return (
 			<EntryPage
 				className="vhTest"

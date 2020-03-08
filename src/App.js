@@ -12,7 +12,7 @@ import Main from './components/main';
 import ContactSection from './components/contactSection';
 import Footer from './components/footer';
 
-Amplify.configure(awsconfig);
+// Amplify.configure(awsconfig);
 
 function App() {
 	return (
