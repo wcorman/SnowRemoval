@@ -109,7 +109,7 @@
 
 .container {
 	overflow: hidden;
-	padding: 0 0 10px 0;
+	padding: 5px 0 10px 0;
 	align-items: flex-end;
 	justify-content: end;
 }

@@ -47,7 +47,7 @@ const copyright = () => {
 		<Typography variant="body2" color="textSecondary" align="center">
 			{/* {'Copyright © '} */}
 			{'Developed by '}
-			<Link color="inherit" href="http://www.wescorman.me/" target="_blank">
+			<Link color="inherit" href="https://www.linkedin.com/in/wes-corman/" target="_blank">
 				Wes Corman
 			</Link>{' '}
 			{new Date().getFullYear()}

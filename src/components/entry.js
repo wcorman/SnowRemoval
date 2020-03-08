@@ -118,7 +118,7 @@ class Entry extends Component {
 	};
 
 	validation = () => {
-		const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+		const emailRegex = /^[\w]+@([\w-]+\.)+[\w-]{2,4}$/;
 		const nameRegex = /^[a-zA-Z0-9]+[\s][a-zA-Z0-9]+/;
 		const passwordRegex = /^(?=[a-z0-9!@#$%^&*()+=?]*[A-Z])(?=[A-Z0-9!@#$%^&*()+=?]*[a-z])[A-Za-z0-9!@#$%^&*(,8)+=?]{8,}$/;
 
