@@ -584,7 +584,7 @@ class Main extends React.Component {
 				<button onClick={() => this.get(customerId)}>GET</button>
 				<button onClick={() => this.list(customerId)}>LIST</button> */}
 
-				<div className="container">
+				<div className="container options">
 					<div className="row">
 						<div className="col-lg-4">
 							<div id="pricing" className="card mb-5 mb-lg-0">

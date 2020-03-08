@@ -109,9 +109,13 @@
 
 .container {
 	overflow: hidden;
-	padding: 5px 0 10px 0;
+	padding: 0 0 18px 0;
 	align-items: flex-end;
 	justify-content: end;
+}
+
+.options {
+	padding-top: 5px;
 }
 
 .entryContainer {
