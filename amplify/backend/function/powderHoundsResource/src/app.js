@@ -11,7 +11,7 @@ var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware'
 var bodyParser = require('body-parser');
 var express = require('express');
 
-AWS.config.update({ region: process.env.TABLE_REGION });
+AWS.config.update({ region: 'us-west-2' });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -20,9 +20,9 @@ if (process.env.ENV && process.env.ENV !== 'NONE') {
 	tableName = tableName + '-' + process.env.ENV;
 }
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const textClient = require('twilio')(accountSid, authToken);
+// const accountSid = process.env.TWILIO_ACCOUNT_SID;
+// const authToken = process.env.TWILIO_AUTH_TOKEN;
+// const textClient = require('twilio')(accountSid, authToken);
 
 const userIdPresent = false; // TODO: update in case is required to use that definition
 const partitionKeyName = 'customerId';
@@ -56,27 +56,47 @@ const convertUrlType = (param, type) => {
 	}
 };
 
-// Functions for sending order confirmation SMS
-const sendToMe = (phone, name, address, phoneNumber, email, type, driveways, price, date) => {
-	textClient.messages
-		.create({
-			to: phone,
-			from: '+13064036554',
-			body: `NEW ORDER! ⚡️\nName: ${name} \nAddress: ${address} \nPhone #: ${phoneNumber} \nEmail: ${email} \nDriveways: ${driveways} \nTotal Paid: $${price} \nOrder Type: ${type} \nDate: ${date}`
-		})
-		.then((message) => console.log(message.sid));
-};
+// Create SMS Attribute parameters
+// var params = {
+// 	attributes: {
+// 		DefaultSMSType: 'Transactional' /* highest reliability */
+// 		//'DefaultSMSType': 'Promotional' /* lowest cost */
+// 	}
+// };
 
-const sendToThem = (firstName, phoneNumber, type) => {
-	textClient.messages
-		.create({
-			to: phoneNumber,
-			from: '+13064036554',
-			body: `Hi ${firstName}, \nThanks for choosing Powder Hounds for your ${type.toLowerCase()} snow clearing! \nWe'll send you a confirmation text once the job is complete. ❄️`
-		})
-		.then((message) => console.log(message.sid))
-		.catch((err) => console.log);
-};
+// Create promise and SNS service object
+// var setSMSTypePromise = new AWS.SNS({ apiVersion: '2010-03-31' }).setSMSAttributes(params).promise();
+
+// Handle promise's fulfilled/rejected states
+// setSMSTypePromise
+// 	.then(function(data) {
+// 		console.log(data);
+// 	})
+// 	.catch(function(err) {
+// 		console.error(err, err.stack);
+// 	});
+
+// // Functions for sending order confirmation SMS
+// const sendToMe = (phone, name, address, phoneNumber, email, type, driveways, price, date) => {
+// 	textClient.messages
+// 		.create({
+// 			to: phone,
+// 			from: '+13064036554',
+// 			body: `NEW ORDER! ⚡️\nName: ${name} \nAddress: ${address} \nPhone #: ${phoneNumber} \nEmail: ${email} \nDriveways: ${driveways} \nTotal Paid: $${price} \nOrder Type: ${type} \nDate: ${date}`
+// 		})
+// 		.then((message) => console.log(message.sid));
+// };
+
+// const sendToThem = (firstName, phoneNumber, type) => {
+// 	textClient.messages
+// 		.create({
+// 			to: phoneNumber,
+// 			from: '+13064036554',
+// 			body: `Hi ${firstName}, \nThanks for choosing Powder Hounds for your ${type.toLowerCase()} snow clearing! \nWe'll send you a confirmation text once the job is complete. ❄️`
+// 		})
+// 		.then((message) => console.log(message.sid))
+// 		.catch((err) => console.log);
+// };
 
 /********************************
  * HTTP Get method for list objects *
@@ -194,16 +214,6 @@ app.post(path, function(req, res) {
 	console.log('REQ: ', req);
 	if (userIdPresent) {
 		req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-	}
-
-	if (req.body.orders.length > 0) {
-		const { type, name, price, driveways, date, address, phone, email } = req.body.orders[
-			req.body.orders.length - 1
-		];
-		const { firstName } = req.body;
-
-		sendToMe(phone, name, address, phone, email, type, driveways, price, date);
-		sendToThem(firstName, phone, type);
 	}
 
 	let putItemParams = {

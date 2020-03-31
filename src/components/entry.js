@@ -23,7 +23,6 @@ class Entry extends Component {
 			Auth.currentAuthenticatedUser({ bypassCache: true })
 				.then((user) => checkStatus(user))
 				.catch((err) => noUser(err));
-			// Auth.currentAuthenticatedUser().then((user) => checkStatus(user)).catch((err) => console.log(err));
 		}
 
 		this.state = {
@@ -51,7 +50,7 @@ class Entry extends Component {
 				loading: true
 			});
 			guest
-				? await Auth.signIn('powderhoundscontact@gmail.com', 'Zfhj7Vw4PmaUUMMJ')
+				? await Auth.signIn('powderhoundscontact@gmail.com', 'Wu9hgQzwWA4anKf1wn58huMZqGdz1bjmWQ6y3QNfoj8')
 				: await Auth.signIn(this.state.email, this.state.password);
 			console.log('sign in success!');
 			this.setState({
@@ -118,7 +117,7 @@ class Entry extends Component {
 	};
 
 	validation = () => {
-		const emailRegex = /^[\w]+@([\w-]+\.)+[\w-]{2,4}$/;
+		const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 		const nameRegex = /^[a-zA-Z0-9]+[\s][a-zA-Z0-9]+/;
 		const passwordRegex = /^(?=[a-z0-9!@#$%^&*()+=?]*[A-Z])(?=[A-Z0-9!@#$%^&*()+=?]*[a-z])[A-Za-z0-9!@#$%^&*(,8)+=?]{8,}$/;
 

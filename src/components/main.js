@@ -97,10 +97,11 @@ class Main extends React.Component {
 						name: user.attributes.name,
 						// phone_number: user.attributes.phone_number,
 						phone_check: false,
+						phoneOptIn: false,
 						'custom:firstName': user.attributes['custom:firstName'],
 						'custom:lastName': user.attributes['custom:lastName'],
 						'custom:numberOfOrders': parseInt(user.attributes['custom:numberOfOrders'], 10),
-						'custom:rewardStatus': parseInt(user.attributes['custom:rewardStatus'], 10),
+						'custom:rewardStatus': 3,
 						'custom:totalSpent': parseInt(user.attributes['custom:totalSpent'], 10)
 					}
 				});
@@ -155,9 +156,9 @@ class Main extends React.Component {
 										phone_check: false,
 										'custom:firstName': user.attributes['custom:firstName'],
 										'custom:lastName': user.attributes['custom:lastName'],
-										'custom:numberOfOrders': 0,
-										'custom:rewardStatus': 0,
-										'custom:totalSpent': 0,
+										'custom:numberOfOrders': 2,
+										'custom:rewardStatus': 2,
+										'custom:totalSpent': 0
 									}
 								});
 								API.post('powderHoundsAPI', '/items', {
@@ -176,7 +177,7 @@ class Main extends React.Component {
 					}
 				})
 				.then(() => {
-					if (this.state.testUser['custom:numberOfOrders'] === 0) {
+					if (!this.state.testUser['custom:numberOfOrders']) {
 						console.log('custom:numberOfOrders is present');
 						API.post('powderHoundsAPI', '/items', {
 							body: {
@@ -201,16 +202,31 @@ class Main extends React.Component {
 
 		if (field === 'phoneNumber') {
 			this.phoneValidation(input.value);
+			this.setState({
+				testUser: {
+					...this.state.testUser,
+					[field]: input.value
+				}
+			});
+		} else if (field === 'phoneOptIn') {
+			const flip = !this.state.testUser.phoneOptIn;
+
+			this.setState({
+				...this.state,
+				testUser: {
+					...this.state.testUser,
+					phoneOptIn: flip
+				}
+			});
 		} else {
 			this.fieldValidation(input);
+			this.setState({
+				testUser: {
+					...this.state.testUser,
+					[field]: input.value
+				}
+			});
 		}
-
-		this.setState({
-			testUser: {
-				...this.state.testUser,
-				[field]: input.value
-			}
-		});
 	};
 
 	fieldValidation = (input) => {
@@ -281,18 +297,20 @@ class Main extends React.Component {
 	};
 
 	findCustomerByPhone = () => {
+		let optIn = this.state.testUser.phoneOptIn;
 		let typedNumber = this.state.testUser.phoneNumber;
-		console.log(typedNumber);
 		const prefix = '+1';
 		let formattedNumber = typedNumber.replace(/-/g, '').replace(/[()]/g, '');
 		let finalNumber = prefix.concat(formattedNumber).replace(/\s/g, '');
-		console.log(finalNumber);
 
 		this.setLoading(true);
 
 		Auth.currentAuthenticatedUser({ bypassCache: true })
 			.then((user) => {
-				Auth.updateUserAttributes(user, { phone_number: finalNumber });
+				Auth.updateUserAttributes(user, {
+					phone_number: finalNumber,
+					'custom:phoneOpt': optIn ? 'true' : 'false'
+				});
 			})
 			.then((data) => console.log(data))
 			.then(() => {
@@ -470,7 +488,6 @@ class Main extends React.Component {
 	};
 
 	makeOrder = async (customerId) => {
-		console.log('calling api');
 		var moment = require('moment');
 
 		const selectedDate =
@@ -503,7 +520,7 @@ class Main extends React.Component {
 			default:
 				break;
 		}
-		// Mgi7tudYHMbWrWwo0KwlhCdb
+
 		let orderList;
 		let newOrder = {
 			type: this.state.orderType,
@@ -521,28 +538,47 @@ class Main extends React.Component {
 			console.log('TESTING BUTES: ', oldOrders);
 			orderList = oldOrders.orders;
 			console.log('oldOrders.orders: ', oldOrders.orders);
+			const firstName = this.state.testUser['custom:firstName'];
+			const lastName = this.state.testUser['custom:lastName'];
 
 			orderList.push(newOrder);
 			console.log(' Old Array: ', orderList);
-			API.post('powderHoundsAPI', '/items', {
-				body: {
-					customerId: `${customerId}`,
-					firstName: `${this.state.testUser['custom:firstName']}`,
-					lastName: `${this.state.testUser['custom:lastName']}`,
-					orders: orderList
-				}
-			})
-				.then((res) => console.log('Res: ', res))
-				.catch((err) => console.log('Error: ', err));
+
+			async function updateDatabase() {
+				return await API.post('powderHoundsAPI', '/items', {
+					body: {
+						customerId: `${customerId}`,
+						firstName: firstName,
+						lastName: lastName,
+						orders: orderList
+					}
+				});
+			}
+
+			updateDatabase();
+
+			// SEND SMS
+			const orderInfo = {
+				type: this.state.orderType,
+				price: this.state.price,
+				driveways: this.state.driveways,
+				date: selectedDate,
+				name: this.state.testUser.name,
+				firstName: `${this.state.testUser['custom:firstName']}`,
+				address: this.state.testUser.address,
+				phoneNumber: this.state.testUser.phone_number,
+				email: this.state.testUser.email
+			};
+
+			API.post('powderHoundsAPI', '/messages', {
+				body: orderInfo
+			});
 		});
 
 		Auth.currentAuthenticatedUser({ bypassCache: true })
 			.then((user) => {
-				console.log('USER: ', user);
 				let rewardStatus = parseInt(user.attributes['custom:rewardStatus'], 10);
 				let numberOfOrders = parseInt(user.attributes['custom:numberOfOrders'], 10);
-				console.log('rewardStatus: ', rewardStatus);
-				console.log('Number of Orders: ', numberOfOrders);
 
 				if (rewardStatus < 3) {
 					return Auth.updateUserAttributes(user, {
@@ -563,20 +599,17 @@ class Main extends React.Component {
 	get = async (customerId) => {
 		console.log('calling api');
 		const response = await API.get('powderHoundsAPI', `/items/object/${customerId}`);
-		console.log(response.orders);
 		return response;
 	};
 
 	list = async (customerId) => {
 		console.log('calling api');
 		const response = await API.get('powderHoundsAPI', `/items/${customerId}`);
-		console.log(response);
 		return response;
 	};
 
 	render() {
 		const dateError = this.state.dateError;
-		// const customerId = this.state.testUser.id;
 
 		return (
 			<section className="pricing py-5">
@@ -616,6 +649,7 @@ class Main extends React.Component {
 												className="datePicker d-flex justify-content-center"
 												dateFormat="MMM dd yyyy"
 												withPortal
+												disabledKeyboardNavigation
 											/>
 										</div>
 									</OverlayTrigger>{' '}
@@ -775,6 +809,7 @@ class Main extends React.Component {
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
 					onHide={() => this.setModalShow('schedule', false)}
+					optIn={this.state.testUser.phoneOptIn}
 				/>
 				<InfoModal
 					testCustomer={this.state.testUser}
@@ -792,6 +827,7 @@ class Main extends React.Component {
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
 					onHide={() => this.setModalShow('sameDay', false)}
+					optIn={this.state.testUser.phoneOptIn}
 				/>
 				<InfoModal
 					testCustomer={this.state.testUser}
@@ -809,6 +845,7 @@ class Main extends React.Component {
 					loading={this.state.isLoading}
 					setLoading={this.setLoading}
 					onHide={() => this.setModalShow('priority', false)}
+					optIn={this.state.testUser.phoneOptIn}
 				/>
 			</section>
 		);

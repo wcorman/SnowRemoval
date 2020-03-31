@@ -2,6 +2,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 import InputMask from 'react-input-mask';
 
@@ -9,7 +11,7 @@ function PhoneCheck(props) {
 	return (
 		<div>
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">What number can we text you at?</Modal.Title>
+				<Modal.Title id="contained-modal-title-vcenter">Please enter your phone number</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
@@ -36,7 +38,6 @@ function PhoneCheck(props) {
 							</InputMask>
 						</Form.Group>
 					</Form.Row>
-
 					<Button
 						disabled={!props.validation.phone}
 						variant="primary"
@@ -44,6 +45,19 @@ function PhoneCheck(props) {
 					>
 						Next
 					</Button>
+					{/* <FormControlLabel
+						className="checkbox"
+						control={
+							<Switch
+								checked={props.optIn}
+								onChange={(value) => props.onUpdateField(value.currentTarget)}
+								name="checkedA"
+								color="primary"
+								id="phoneOptIn"
+							/>
+						}
+						label="Opt in for text confirmations"
+					/>{' '} */}
 				</Form>
 			</Modal.Body>
 		</div>

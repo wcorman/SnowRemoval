@@ -15,9 +15,14 @@ function RewardCards(props) {
 	return (
 		<div>
 			<Modal.Header closeButton>
-				{props.firstTimer && (
+				{/* {props.firstTimer && (
 					<Modal.Title id="contained-modal-title-vcenter">Welcome to Powder Hounds, {firstName}!</Modal.Title>
-				)}
+				)} */}
+					<Modal.Title id="contained-modal-title-vcenter">
+						This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
+						<strong>FREE</strong>
+						.
+					</Modal.Title>
 				{/* {!props.firstTimer && (
 					<Modal.Title id="contained-modal-title-vcenter">
 						Welcome back, {firstName}!
@@ -32,11 +37,6 @@ function RewardCards(props) {
 					<Form>
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
-								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
-								<strong>FREE</strong>
-								.
-								<hr />
 								<div className="text-center">
 									<img src={threeMore} alt="3 more to go" className="rewardCard" />
 								</div>
@@ -60,11 +60,6 @@ function RewardCards(props) {
 					<Form>
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
-								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
-								<strong>FREE</strong>
-								.
-								<hr />
 								<div className="text-center">
 									<img src={twoMore} alt="3 more to go" className="rewardCard" />
 								</div>
@@ -88,11 +83,6 @@ function RewardCards(props) {
 					<Form>
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
-								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one clearing for{' '}
-								<strong>FREE</strong>
-								.
-								<hr />
 								<div className="text-center">
 									<img src={oneMore} alt="3 more to go" className="rewardCard" />
 								</div>
@@ -116,11 +106,6 @@ function RewardCards(props) {
 					<Form>
 						<Form.Row>
 							<Form.Group style={{ width: '100%' }}>
-								<Form.Label />
-								This is your reward card. For every 3 snow clearings, you get one for{' '}
-								<strong>FREE</strong>
-								.
-								<hr />
 								<div className="text-center">
 									<img src={free} alt="free" className="rewardCard" />
 								</div>

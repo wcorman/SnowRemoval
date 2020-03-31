@@ -49,9 +49,9 @@ const copyright = () => {
 			{'Developed by '}
 			<Link color="inherit" href="https://www.linkedin.com/in/wes-corman/" target="_blank">
 				Wes Corman
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
+			</Link>{''}
+			{/* {new Date().getFullYear()}
+			{'.'} */}
 		</Typography>
 	);
 };

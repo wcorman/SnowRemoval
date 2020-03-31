@@ -20,6 +20,20 @@
                     "/DELETE"
                 ]
             }
+        },
+        {
+            "name": "/messages",
+            "lambdaFunction": "sendMessage",
+            "privacy": {
+                "open": true
+            }
+        },
+        {
+            "name": "/sms",
+            "lambdaFunction": "sendMessage",
+            "privacy": {
+                "open": true
+            }
         }
     ],
     "resourceName": "powderHoundsAPI",
@@ -27,6 +41,9 @@
     "functionArns": [
         {
             "lambdaFunction": "powderHoundsResource"
+        },
+        {
+            "lambdaFunction": "sendMessage"
         }
     ],
     "privacy": {
@@ -43,6 +60,15 @@
                 "Name",
                 "Arn"
             ]
+        },
+        {
+            "category": "function",
+            "resourceName": "sendMessage",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
         }
-    ]
+    ],
+    "uuid": "e00381c6"
 }

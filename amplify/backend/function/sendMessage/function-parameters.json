@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "auth": {
+            "snowremoval3203d8b5": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}

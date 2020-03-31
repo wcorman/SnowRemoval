@@ -12,13 +12,13 @@ import Logo from '../media/navLogo.svg';
 import Image from 'react-bootstrap/Image';
 import huskyLogo from '../media/huskyLogo.svg';
 
-import { FacebookLoginButton } from 'react-social-login-buttons';
+// import { FacebookLoginButton } from 'react-social-login-buttons';
 import { createButton } from 'react-social-login-buttons';
 import { Pets } from '@material-ui/icons';
 // import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const buttonConfig = {
-	text: 'Continue as guest',
+	text: 'Continue as guest (Balto)',
 	icon: Pets,
 	iconFormat: (name) => `fa fa-${name}`,
 	style: { background: '#3b5998' },

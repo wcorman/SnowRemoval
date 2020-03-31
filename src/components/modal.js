@@ -20,6 +20,7 @@ function InfoModal(props) {
 							onUpdateField={props.onUpdateField}
 							validation={props.validation}
 							nextStage={props.nextStage}
+							optIn={props.optIn}
 						/>
 					)}
 					{props.testCustomer.phone_number && (
