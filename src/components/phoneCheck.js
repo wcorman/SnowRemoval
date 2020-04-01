@@ -5,7 +5,24 @@ import Modal from 'react-bootstrap/Modal';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
+import { withStyles } from '@material-ui/core/styles';
+import { lightBlue, grey } from '@material-ui/core/colors';
+
 import InputMask from 'react-input-mask';
+
+const OptInButton = withStyles({
+	switchBase: {
+		color: grey[300],
+		'&$checked': {
+			color: lightBlue[500]
+		},
+		'&$checked + $track': {
+			backgroundColor: lightBlue[500]
+		}
+	},
+	checked: {},
+	track: {}
+})(Switch);
 
 function PhoneCheck(props) {
 	return (
@@ -45,19 +62,19 @@ function PhoneCheck(props) {
 					>
 						Next
 					</Button>
-					{/* <FormControlLabel
+					<FormControlLabel
 						className="checkbox"
 						control={
-							<Switch
+							<OptInButton
 								checked={props.optIn}
 								onChange={(value) => props.onUpdateField(value.currentTarget)}
 								name="checkedA"
-								color="primary"
+								color="secondary"
 								id="phoneOptIn"
 							/>
 						}
-						label="Opt in for text confirmations"
-					/>{' '} */}
+						label="Receive text confirmations"
+					/>{' '}
 				</Form>
 			</Modal.Body>
 		</div>

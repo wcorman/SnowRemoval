@@ -97,7 +97,7 @@ class Main extends React.Component {
 						name: user.attributes.name,
 						// phone_number: user.attributes.phone_number,
 						phone_check: false,
-						phoneOptIn: false,
+						phoneOptIn: user.attributes['custom:phoneOpt'],
 						'custom:firstName': user.attributes['custom:firstName'],
 						'custom:lastName': user.attributes['custom:lastName'],
 						'custom:numberOfOrders': parseInt(user.attributes['custom:numberOfOrders'], 10),
@@ -133,13 +133,13 @@ class Main extends React.Component {
 						console.log('last!!', lastName);
 						Auth.currentAuthenticatedUser({ bypassCache: true })
 							.then((user) => {
-								console.log(' ANNICA!!', user);
 								Auth.updateUserAttributes(user, {
 									'custom:firstName': firstName,
 									'custom:lastName': lastName,
 									'custom:rewardStatus': '0',
 									'custom:totalSpent': '0',
-									'custom:numberOfOrders': '0'
+									'custom:totalSpent': '0',
+									'custom:phoneOpt': 'true'
 								});
 
 								this.setState({
@@ -156,6 +156,7 @@ class Main extends React.Component {
 										phone_check: false,
 										'custom:firstName': user.attributes['custom:firstName'],
 										'custom:lastName': user.attributes['custom:lastName'],
+										phoneOptIn: user.attributes['custom:phoneOpt'],
 										'custom:numberOfOrders': 2,
 										'custom:rewardStatus': 2,
 										'custom:totalSpent': 0

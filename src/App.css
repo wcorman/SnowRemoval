@@ -102,6 +102,19 @@
 	width: 112px;
 }
 
+.settingsBbutton {
+	font-size: 18px;
+	float: left;
+	border-radius: 0 0 20px 20px !important;
+}
+
+@media only screen and (max-width: 575px) {
+	.settingsBbutton {
+		border-radius: 0 0 20px 0 !important;
+	}
+}
+
+
 .signOutBbutton {
 	font-size: 18px;
 	float: right;
@@ -161,4 +174,5 @@
 
 .checkbox {
 	margin-left: 14px !important;
+	float: right;
 }
