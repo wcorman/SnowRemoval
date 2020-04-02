@@ -568,7 +568,8 @@ class Main extends React.Component {
 				firstName: `${this.state.testUser['custom:firstName']}`,
 				address: this.state.testUser.address,
 				phoneNumber: this.state.testUser.phone_number,
-				email: this.state.testUser.email
+				email: this.state.testUser.email,
+				optIn: this.state.testUser.phoneOptIn
 			};
 
 			API.post('powderHoundsAPI', '/messages', {
