@@ -89,8 +89,18 @@
 	display: none;
 }
 
+.link {
+	cursor: pointer;
+	color: white;
+}
+
 .policy {
 	cursor: pointer;
+	color: black;
+	width: 85%;
+	padding: 20px;
+	text-align: center;
+	margin: 0 auto;
 }
 
 .socialButtons {

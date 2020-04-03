@@ -12,7 +12,10 @@ import Entry from './components/entry';
 import Main from './components/main';
 import ContactSection from './components/contactSection';
 import Footer from './components/footer';
+import FAQ from './components/faq';
+import PrivacyPolicy from './components/privacyPolicy';
 import Logo from './media/mainLogo.svg';
+
 
 // Amplify.configure(awsconfig);
 
@@ -22,6 +25,13 @@ function App() {
 			<div className="App">
 				<NavBar />
 				<Switch>
+					<Route path="/faq">
+						<FAQ />
+					</Route>
+					<Route path="/policy">
+						<PrivacyPolicy />
+					</Route>
+
 					<Route path="/">
 						<img src={Logo} alt="Powder Hounds Canada" className="husky" />
 						<Main />
