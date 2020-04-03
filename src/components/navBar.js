@@ -28,9 +28,9 @@ function NavBar() {
 			<Button className="signOutBbutton" variant="contained" color="secondary" onClick={signOut}>
 				Sign Out
 			</Button>
-			<SettingsButton className="settingsBbutton" variant="contained" color="secondary">
+			{/* <SettingsButton className="settingsBbutton" variant="contained" color="secondary">
 				Settings
-			</SettingsButton>
+			</SettingsButton> */}
 		</div>
 	);
 }
