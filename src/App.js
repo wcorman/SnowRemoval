@@ -5,23 +5,33 @@ import './App.css';
 import { withAuthenticator } from 'aws-amplify-react';
 import awsconfig from './aws-exports'; // if you are using Amplify CLI
 
-import Jumbotron from './components/hero';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import NavBar from './components/navBar';
 import Entry from './components/entry';
 import Main from './components/main';
 import ContactSection from './components/contactSection';
 import Footer from './components/footer';
+import Logo from './media/mainLogo.svg';
 
 // Amplify.configure(awsconfig);
 
 function App() {
 	return (
-		<div className="App">
-			<Jumbotron />
-			<Main />
-			<hr />
-			<ContactSection />
-			<Footer />
-		</div>
+		<Router>
+			<div className="App">
+				<NavBar />
+				<Switch>
+					<Route path="/">
+						<img src={Logo} alt="Powder Hounds Canada" className="husky" />
+						<Main />
+						<hr />
+						<ContactSection />
+					</Route>
+				</Switch>
+				<Footer />
+			</div>
+		</Router>
 	);
 }
 

@@ -1,23 +1,38 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
+import Button from '@material-ui/core/Button';
 
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Image from 'react-bootstrap/Image';
-import Logo from '../media/navLogo.svg';
+import { withStyles } from '@material-ui/core/styles';
+import { lightBlue } from '@material-ui/core/colors';
+import { Auth } from 'aws-amplify';
+
+function signOut() {
+	Auth.signOut().then((data) => console.log(data)).catch((err) => console.log(err));
+	window.location.reload();
+}
+
+const SettingsButton = withStyles((theme) => ({
+	root: {
+		color: theme.palette.getContrastText(lightBlue[600]),
+		backgroundColor: lightBlue[500],
+		'&:hover': {
+			backgroundColor: lightBlue[700]
+		}
+	}
+}))(Button);
 
 function NavBar() {
-  return (
-  <Navbar bg="light" variant="light" style={{backgroundColor: '#e3f2fd'}}>
-    <Image src={Logo} className="huskyNav"/>
-    <Nav className="mr-auto" >
-      <Nav.Link href="#pricing">Pricing</Nav.Link>
-      <Nav.Link href="#contactForm">Contact</Nav.Link>
-    </Nav>
-
-  </Navbar>
-  );
+	return (
+		<div className="container">
+			<Button className="signOutBbutton" variant="contained" color="secondary" onClick={signOut}>
+				Sign Out
+			</Button>
+			<SettingsButton className="settingsBbutton" variant="contained" color="secondary">
+				Settings
+			</SettingsButton>
+		</div>
+	);
 }
 
 export default NavBar;
