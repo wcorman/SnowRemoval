@@ -101,7 +101,7 @@ class Main extends React.Component {
 						'custom:firstName': user.attributes['custom:firstName'],
 						'custom:lastName': user.attributes['custom:lastName'],
 						'custom:numberOfOrders': parseInt(user.attributes['custom:numberOfOrders'], 10),
-						'custom:rewardStatus': 3,
+						'custom:rewardStatus': parseInt(user.attributes['custom:rewardStatus'], 10),
 						'custom:totalSpent': parseInt(user.attributes['custom:totalSpent'], 10)
 					}
 				});

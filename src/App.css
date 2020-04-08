@@ -4,12 +4,27 @@
 	background: linear-gradient(to right, #0062e6, #33aeff);
 }
 
-.contactForm {
+.contactCard {
 	background: white;
 	color: black;
-	border-radius: 25px;
+	border-radius: 25px 0 0 25px;
 	padding: 0;
 	max-height: 300px;
+}
+
+.infoCard {
+	background: white;
+	color: black;
+	border-radius: 0 25px 25px 0;
+	padding: 0;
+	max-height: 365px;
+}
+
+@media only screen and (max-width: 767px) {
+	.contactCard,
+	.infoCard {
+		border-radius: 0;
+	}
 }
 
 @media only screen and (max-width: 991px) {
@@ -124,7 +139,6 @@
 	}
 }
 
-
 .signOutBbutton {
 	font-size: 18px;
 	float: right;
@@ -156,17 +170,28 @@
 	margin-top: 150px;
 }
 
+.settingsAvatar {
+	text-align: center;
+	margin: auto 0;
+}
+
+.settingsSidebar {
+	background-repeat: 'no-repeat';
+	background-color: '#33aeff';
+	border-radius: '0 36px 36px 0';
+	border-style: 'solid';
+}
+
 .signInHuskyLogo {
 	width: 290px;
 }
 
 @media only screen and (max-width: 599px) {
+	.signInLogo,
 	.entryImage {
-		display: none;
+		display: none !important;
 	}
-	.signInLogo {
-		display: none;
-	}
+
 	.signInHuskyLogo {
 		display: inline;
 	}
@@ -185,4 +210,18 @@
 .checkbox {
 	margin-left: 14px !important;
 	float: right;
+}
+
+.house {
+	width: 100%;
+	max-width: 500px;
+	height: 300px !important;
+	margin-top: 24px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.houseContainer {
+	justify-content: center;
 }

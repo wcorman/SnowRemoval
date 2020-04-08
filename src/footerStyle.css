@@ -77,9 +77,23 @@
 	.site-footer {
 		padding-bottom: 0;
 	}
-	.site-footer .copyright-text,
 	.site-footer .social-icons {
 		text-align: center;
+	}
+
+	.footerSection {
+		padding-bottom: 0 !important;
+		margin-bottom: 0 !important;
+	}
+}
+@media (max-width: 575px) {
+	.site-footer .copyright-text {
+		text-align: center;
+	}
+
+	.footerSection {
+		padding-bottom: 0 !important;
+		margin-bottom: 0 !important;
 	}
 }
 .social-icons {

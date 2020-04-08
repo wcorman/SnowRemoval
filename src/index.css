@@ -266,8 +266,7 @@ section {
 }
 
 .contactContainer {
-	width: 90% !important;
-	border-radius: 25px !important;
+	border-radius: 25px 25px 0 0 !important;
 	margin: 62px 0;
 }
 

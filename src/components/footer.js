@@ -7,42 +7,44 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		'& > *': {
-			margin: theme.spacing(1)
-		},
-		colorPrimary: 'white'
-	},
-	icon: {
-		colorPrimary: 'white'
-	}
-}));
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 
-const useStyles2 = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
 	customHoverFocus: {
 		'&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(255,255,255, 0.1)' }
 	}
 }));
 
 function Footer() {
-	const classes = useStyles2();
+	const classes = useStyles();
+
+	const popover = (
+		<Popover id="popover-basic">
+			<Popover.Title as="h3">Available for work 🚀</Popover.Title>
+			<Popover.Content>
+				If you need a hand with your project, I would love to discuss it further.
+			</Popover.Content>
+		</Popover>
+	);
 
 	return (
 		<footer className="site-footer">
-			<div className="container">
-				<div className="container">
+			<div className="container footerSection">
+				<div className="container footerSection">
 					<div className="row">
-						<div className="col-sm-12 col-md-6">
+						<div className="col-sm-12 col-md-6 footerSection">
 							<h6>About</h6>
-							<p className="text-justify">
-								Powder Hounds is Saskatoon's first hassle-free solution for clearing your snow.
+							<p className="text-justify footerSection">
+								Winter in the prairies can be cold and long. Powder Hounds is Saskatoon's first
+								hassle-free solution for clearing your snow. No quotes, just service.
 							</p>
 						</div>
 
 						<div className="col-xs-6 col-md-3" />
 
-						<div className="col-xs-6 col-md-3">
+						<div className="col-xs-6 col-md-3 footerSection">
 							<h6>Quick Links</h6>
 							<ul className="footer-links">
 								<li>
@@ -56,14 +58,23 @@ function Footer() {
 					</div>
 					<hr />
 				</div>
-				<div className="container">
+				<div className="container footerSection">
 					<div className="row">
 						<div className="col-md-8 col-sm-6 col-xs-12">
 							<p className="copyright-text">
 								Copyright &copy; {new Date().getFullYear()} All Rights Reserved by{' '}
 								<Link to="/" classNameName="footer">
 									Powder Hounds Canada
-								</Link>{' '}
+								</Link>
+								.
+							</p>
+							<p>
+								Developed by {' '}
+								<OverlayTrigger key="top" placement="top" overlay={popover}>
+									<a href="https://www.linkedin.com/in/wes-corman/" target="_blank">
+										Wes Corman
+									</a>
+								</OverlayTrigger>.
 							</p>
 						</div>
 
@@ -82,13 +93,19 @@ function Footer() {
 									</IconButton>
 								</li>
 								<li>
-									<IconButton
-										color="primary"
-										className={classes.customHoverFocus}
-										aria-label="instagram"
+									<OverlayTrigger
+										key="top"
+										placement="top"
+										overlay={<Tooltip id={`tooltip-top`}>Coming soon</Tooltip>}
 									>
-										<InstagramIcon fontSize="large" style={{ color: '#C13584' }} />
-									</IconButton>
+										<IconButton
+											color="primary"
+											className={classes.customHoverFocus}
+											aria-label="instagram"
+										>
+											<InstagramIcon fontSize="large" style={{ color: '#C13584' }} />
+										</IconButton>
+									</OverlayTrigger>{' '}
 								</li>
 							</ul>
 						</div>

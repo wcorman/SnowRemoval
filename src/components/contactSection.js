@@ -106,14 +106,14 @@ class ContactSection extends Component {
 						</Tilt>
 					</div>
 
-					<Card className="col-md-8 col-lg-6 contactForm">
+					<Card className="col-md-8 col-lg-6 contactCard">
 						<Card.Header as="h3">Any questions?</Card.Header>
 						<Card.Body className="contactSectionBody">
 							<Card.Title>
 								<ul>
-									<li>Need more shoveled than just your front sidewalk & driveway?</li>
+									<li>Need more shoveled than just your sidewalk & driveway?</li>
 									<li>Need to pay with cash?</li>
-									<li>Want to say hi? :)</li>
+									<li>Want to say hi? 😊</li>
 								</ul>
 							</Card.Title>
 
