@@ -23,9 +23,7 @@ function Footer() {
 	const popover = (
 		<Popover id="popover-basic">
 			<Popover.Title as="h3">Available for work 🚀</Popover.Title>
-			<Popover.Content>
-				If you need a hand with your project, I would love to discuss it further.
-			</Popover.Content>
+			<Popover.Content>If you need a hand with your project, I would love to discuss it further.</Popover.Content>
 		</Popover>
 	);
 
@@ -63,7 +61,7 @@ function Footer() {
 						<div className="col-md-8 col-sm-6 col-xs-12">
 							<p className="copyright-text">
 								Copyright &copy; {new Date().getFullYear()} All Rights Reserved by{' '}
-								<Link to="/" classNameName="footer">
+								<Link to="/" className="">
 									Powder Hounds Canada
 								</Link>
 								.
@@ -71,7 +69,11 @@ function Footer() {
 							<p>
 								Developed by {' '}
 								<OverlayTrigger key="top" placement="top" overlay={popover}>
-									<a href="https://www.linkedin.com/in/wes-corman/" target="_blank">
+									<a
+										style={{ textDecoration: 'underline' }}
+										href="https://www.linkedin.com/in/wes-corman/"
+										target="_blank"
+									>
 										Wes Corman
 									</a>
 								</OverlayTrigger>.

@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Logo from '../media/entryImage.png';
 
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
+
 import { Auth } from 'aws-amplify';
 
 import SignIn from './signIn';
@@ -42,14 +45,25 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const popover = (
+	<Popover id="popover-basic">
+		<Popover.Title as="h3">Available for work 🚀</Popover.Title>
+		<Popover.Content>If you need a hand with your project, I would love to discuss it further.</Popover.Content>
+	</Popover>
+);
+
 const copyright = () => {
 	return (
 		<Typography variant="body2" color="textSecondary" align="center">
 			{/* {'Copyright © '} */}
 			{'Developed by '}
-			<Link color="inherit" href="https://www.linkedin.com/in/wes-corman/" target="_blank">
-				Wes Corman
-			</Link>{''}
+			<OverlayTrigger key="top" placement="bottom" overlay={popover}>
+				<Link style={{textDecoration: 'underline'}} color="inherit" href="https://www.linkedin.com/in/wes-corman/" target="_blank">
+					Wes Corman
+				</Link>
+			</OverlayTrigger>
+
+			{''}
 			{/* {new Date().getFullYear()}
 			{'.'} */}
 		</Typography>
@@ -76,16 +90,15 @@ export default function EntryPage(props) {
 				</div> */}
 			</Grid>
 			{props.signInScreen ? (
-					<SignIn
-						className="vhTest"
-						updateField={props.updateField}
-						toggle={props.toggleScreen}
-						copyright={copyright}
-						signIn={props.signIn}
-						errorMessage={props.errorMessage}
-						loading={props.loading}
-						facebookSignIn={facebookLogin}
-					/>
+				<SignIn
+					updateField={props.updateField}
+					toggle={props.toggleScreen}
+					copyright={copyright}
+					signIn={props.signIn}
+					errorMessage={props.errorMessage}
+					loading={props.loading}
+					facebookSignIn={facebookLogin}
+				/>
 			) : (
 				<SignUp
 					values={props.values}

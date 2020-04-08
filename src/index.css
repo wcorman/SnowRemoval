@@ -163,16 +163,6 @@ section {
 	margin: 0 auto;
 }
 
-.bg-image {
-	background-image: url('https://source.unsplash.com/WEQbe2jBg40/600x1200');
-	background-size: cover;
-	background-position: center;
-}
-
-.login-heading {
-	font-weight: 300;
-}
-
 .btn-login {
 	font-size: 0.9rem;
 	letter-spacing: 0.05rem;

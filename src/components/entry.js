@@ -155,7 +155,6 @@ class Entry extends Component {
 	render() {
 		return (
 			<EntryPage
-				className="vhTest"
 				facebookLogin={this.facebookLogin}
 				errorMessage={this.state.errorMessage}
 				signIn={this.signIn}
